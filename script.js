@@ -66,8 +66,8 @@ document.getElementById('click-button').addEventListener('click', () => {
     // 加班标识
     if (currDate.getHours() < 9 || currDate.getHours() > 17) {
         let selfElement = document.getElementById("self");
-        selfElement.innerHTML.replace('🛌','🧍‍♂️');
-        selfElement.innerHTML.replace('🛀','🧍‍♂️');
+        selfElement.innerHTML = selfElement.innerHTML.replace('🛌', '🧍‍♂️');
+        selfElement.innerHTML = selfElement.innerHTML.replace('🛀', '🧍‍♂️');
         if (!document.getElementById('current-job').textContent.includes("（加班中）")) {
             document.getElementById('current-job').textContent += "（加班中）";
         }
