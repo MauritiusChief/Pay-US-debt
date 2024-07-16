@@ -5,14 +5,46 @@ body {
     align-items: center;
     height: 100vh;
     background-color: #f0f0f0;
+    transition: background-color 0.5s ease, color 0.1s ease;
+}
+body div {
+    transition: background-color 0.5s ease, color 0.1s ease;
 }
 
-.game-container {
+.total-display { grid-area: header; }
+.shop { grid-area: menu; }
+.clicker { grid-area: main; }
+.model-display { grid-area: right; }
+.notice { grid-area: footer; }
+
+.grid-container {
+    display: grid;
+    grid-template-areas:
+    'menu header header header header right'
+    'menu main main main main right'
+    'menu footer footer footer footer right';
+    gap: 20px;
+    padding: 10px;
+}
+
+.grid-container div {
     text-align: center;
     background: #fff;
-    padding: 20px;
+    padding: 20px 40px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.total-display {
+    text-align: center;
+}
+
+.clicker {
+    text-align: center;
+}
+
+.clicker {
+    text-align: center;
 }
 
 button {
@@ -25,4 +57,20 @@ button {
 .shop button {
     display: block;
     margin: 10px auto;
+}
+
+.dawn-mode {
+    background-color: rgb(130, 130, 130);
+}
+.dawn-mode .grid-container div {
+    background-color: rgb(190, 190, 190);
+}
+
+.dark-mode {
+    background-color: rgb(20, 20, 20);
+    color: white;
+}
+.dark-mode .grid-container div {
+    background-color: rgb(40, 40, 40);
+    color: white;
 }

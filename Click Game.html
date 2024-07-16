@@ -7,19 +7,33 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="game-container">
-        <h1>挣钱帮美帝还债</h1>
-        <div class="stats">
-            <p>已赚美元: <span id="coin-count">0 $</span></p>
-            <p>每次点击可赚: <span id="coins-per-click">1 $</span></p>
+    <div class="grid-container">
+        <div class="total-display">
+            <h1>挣钱帮美帝还债</h1>
             <p>美债总额: <span id="goal">加载中...</span></p>
-			<p>美债记录时间: <span id="goal-date">加载中...</span></p>
+            <p>美债记录时间: <span id="goal-date">加载中...</span></p>
+            <h3>已赚美元: <span id="coin-count">0 $</span></h3>
+            <h3>距离目标: <span id="goal-remain">加载中...</span></h3>
+            <button id="game-pause">暂停</button>
         </div>
-        <button id="click-button">点我赚美刀</button>
+        <div class="clicker">
+            <p>当前工作：<span id="current-job">搬运工</span></p>    
+            <p>当前时间：<span id="current-date">加载中...</span></p>
+            <p>工作时薪: <span id="coins-per-click">12.5 $</span></p>
+            <button id="click-button">努力赚美刀</button>
+        </div>
         <div class="shop">
             <h2>商店</h2>
-            <button id="auto-clicker" data-cost="10" data-earn="1">自动点击器 (10 $)</button>
-            <button id="upgrade-click" data-cost="20" data-earn="2">点击升级 (20 $)</button>
+            <button id="click-button">购买小货车</button>
+            <h2>执照</h2>
+        </div>
+        <div class="model-display">
+            <h2>资产</h2>
+            <span id="self" type="person">🧍‍♂️</span>
+        </div>
+        <div class="notice">
+            <h4>通知</h4>
+            <p></p>
         </div>
     </div>
     <script src="script.js"></script>
