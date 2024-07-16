@@ -59,13 +59,26 @@ button {
     margin: 10px auto;
 }
 
+#self .tooltiptext {
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    padding: 3px;
+    text-align: center;
+    border-radius: 6px;
+    position: absolute;
+}
+#self:hover .tooltiptext {
+    visibility: visible;
+}
+
+/* 直观展示时间 */
 .dawn-mode {
     background-color: rgb(130, 130, 130);
 }
 .dawn-mode .grid-container div {
     background-color: rgb(190, 190, 190);
 }
-
 .dark-mode {
     background-color: rgb(20, 20, 20);
     color: white;

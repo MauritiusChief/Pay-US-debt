@@ -25,12 +25,12 @@ function everyHourEvent() {
     // 小人图标
     document.querySelectorAll("[type=person]").forEach(personTag => {
         if (currDate.getHours() < 9 ) { // 0-9点
-            personTag.textContent = personTag.textContent.replace('🧍‍♂️','🛌');
-            personTag.textContent = personTag.textContent.replace('🛀','🛌');
+            personTag.innerHTML = personTag.innerHTML.replace('🧍‍♂️','🛌');
+            personTag.innerHTML = personTag.innerHTML.replace('🛀','🛌');
         } else if (currDate.getHours() > 17) { // 18-23点
-            personTag.textContent = personTag.textContent.replace('🧍‍♂️','🛀');
+            personTag.innerHTML = personTag.innerHTML.replace('🧍‍♂️','🛀');
         } else {
-            personTag.textContent = personTag.textContent.replace('🛌','🧍‍♂️');
+            personTag.innerHTML = personTag.innerHTML.replace('🛌','🧍‍♂️');
         }
     })
 
@@ -65,7 +65,9 @@ document.getElementById('click-button').addEventListener('click', () => {
     incrementTime();
     // 加班标识
     if (currDate.getHours() < 9 || currDate.getHours() > 17) {
-        document.getElementById("self").textContent = '🧍‍♂️';
+        let selfElement = document.getElementById("self");
+        selfElement.innerHTML.replace('🛌','🧍‍♂️');
+        selfElement.innerHTML.replace('🛀','🧍‍♂️');
         if (!document.getElementById('current-job').textContent.includes("（加班中）")) {
             document.getElementById('current-job').textContent += "（加班中）";
         }
