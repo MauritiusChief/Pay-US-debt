@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美帝还债记</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1>挣钱帮美帝还债</h1>
+        <div class="stats">
+            <p>已赚美元: <span id="coin-count">0 $</span></p>
+            <p>每次点击可赚: <span id="coins-per-click">1 $</span></p>
+            <p>美债总额: <span id="goal">加载中...</span></p>
+			<p>美债记录时间: <span id="goal-date">加载中...</span></p>
+        </div>
+        <button id="click-button">点我赚美刀</button>
+        <div class="shop">
+            <h2>商店</h2>
+            <button id="auto-clicker" data-cost="10" data-earn="1">自动点击器 (10 $)</button>
+            <button id="upgrade-click" data-cost="20" data-earn="2">点击升级 (20 $)</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
