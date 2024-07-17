@@ -11,11 +11,11 @@ body div {
     transition: background-color 0.5s ease, color 0.1s ease;
 }
 
-.total-display { grid-area: header; }
-.shop { grid-area: menu; }
-.clicker { grid-area: main; }
-.model-display { grid-area: right; }
-.notice { grid-area: footer; }
+#total-display { grid-area: header; }
+#shop { grid-area: menu; }
+#clicker { grid-area: main; }
+#model-display { grid-area: right; }
+#notice { grid-area: footer; }
 
 .grid-container {
     display: grid;
@@ -27,7 +27,7 @@ body div {
     padding: 10px;
 }
 
-.grid-container div {
+.grid-container .grid-panel {
     text-align: center;
     background: #fff;
     padding: 20px 40px;
@@ -35,15 +35,11 @@ body div {
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-.total-display {
+#total-display {
     text-align: center;
 }
 
-.clicker {
-    text-align: center;
-}
-
-.clicker {
+#clicker {
     text-align: center;
 }
 
@@ -54,12 +50,12 @@ button {
     cursor: pointer;
 }
 
-.shop button {
+#shop button {
     display: block;
     margin: 10px auto;
 }
 
-#self .tooltiptext {
+.hastooltip .tooltiptext {
     visibility: hidden;
     background-color: black;
     color: #fff;
@@ -68,7 +64,7 @@ button {
     border-radius: 6px;
     position: absolute;
 }
-#self:hover .tooltiptext {
+.hastooltip:hover .tooltiptext {
     visibility: visible;
 }
 
@@ -76,14 +72,14 @@ button {
 .dawn-mode {
     background-color: rgb(130, 130, 130);
 }
-.dawn-mode .grid-container div {
+.dawn-mode .grid-container .grid-panel {
     background-color: rgb(190, 190, 190);
 }
 .dark-mode {
     background-color: rgb(20, 20, 20);
     color: white;
 }
-.dark-mode .grid-container div {
+.dark-mode .grid-container .grid-panel {
     background-color: rgb(40, 40, 40);
     color: white;
 }

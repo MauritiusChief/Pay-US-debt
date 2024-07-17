@@ -8,7 +8,15 @@ let currDate = new Date(...dateArray);
 let gameStarted = false;
 let currentTimer;
 
+const shopList = [
+    {id:'buy-mini-truck', price:3500, dividedPrice:320, dividedMonth:12}
+]
+let dividedBuyList = [];
+let propertyList = [];
+
+// 初始执行函数
 // alert("你是一个正直的美国公民，被奸人诬陷投入此赛博牢狱，你需要还清所有美国国债来重获自由。点击按钮挣取美刀。")
+updateShop();
 
 // document.getElementById('click-button').addEventListener('click', () => {
 //     if (!gameStarted) {
@@ -20,8 +28,7 @@ let currentTimer;
 function everyHourEvent() {
     incrementTime();
     // 消除（加班中）标记
-    jobText = document.getElementById('current-job').textContent;
-    document.getElementById('current-job').textContent = jobText.replace("（加班中）", '');
+    document.getElementById('overtime').textContent = '';
     // 小人图标
     document.querySelectorAll("[type=person]").forEach(personTag => {
         if (currDate.getHours() < 9 ) { // 0-9点
@@ -33,8 +40,38 @@ function everyHourEvent() {
             personTag.innerHTML = personTag.innerHTML.replace('🛌','🧍‍♂️');
         }
     })
-
+    updateShop();
     updateDisplay();
+
+    // console.log(propertyList)
+    // console.log(dividedBuyList)
+}
+
+function incrementTime() {
+    currDate.setHours(currDate.getHours() + 1);
+    switch (currDate.getHours()) {
+        case 17:
+        case 6:
+            document.body.classList.remove("dark-mode");
+            document.body.classList.add("dawn-mode");
+            break;
+        case 0:
+            document.body.classList.remove("dawn-mode");
+            document.body.classList.add("dark-mode");
+            break;
+        case 9:
+            document.body.classList.remove("dawn-mode");
+            break;
+        default:
+            break;
+    }
+    if (currDate.getHours() === 10) {
+        everyDayEvent();
+    }
+}
+
+function everyDayEvent() {
+    updateDividedPay()
 }
 
 // Fetch the current national debt
@@ -61,6 +98,13 @@ fetch('https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accoun
 
 // 点击挣钱按钮
 document.getElementById('click-button').addEventListener('click', () => {
+    // 更新时薪数据
+    // 根据资产更新职业
+    if (propertyList.includes('mini-truck')) {
+        coinsPerClick = 23.5;
+    } else {
+        coinsPerClick = 12.5;
+    }
     coinCount += coinsPerClick;
     incrementTime();
     // 加班标识
@@ -68,8 +112,8 @@ document.getElementById('click-button').addEventListener('click', () => {
         let selfElement = document.getElementById("self");
         selfElement.innerHTML = selfElement.innerHTML.replace('🛌', '🧍‍♂️');
         selfElement.innerHTML = selfElement.innerHTML.replace('🛀', '🧍‍♂️');
-        if (!document.getElementById('current-job').textContent.includes("（加班中）")) {
-            document.getElementById('current-job').textContent += "（加班中）";
+        if (!document.getElementById('overtime').textContent.includes("（加班中）")) {
+            document.getElementById('overtime').textContent = "（加班中）";
         }
     }
     
@@ -77,6 +121,7 @@ document.getElementById('click-button').addEventListener('click', () => {
     clearInterval(currentTimer);
     currentTimer = setInterval(everyHourEvent, 1000);
     
+    updateShop();
     updateDisplay();
     checkGoal();
 });
@@ -109,36 +154,74 @@ document.getElementById('game-pause').addEventListener('click', () => {
 //     }
 // });
 
-function incrementTime() {
-    currDate.setHours(currDate.getHours() + 1);
-    switch (currDate.getHours()) {
-        case 17:
-        case 6:
-            document.body.classList.remove("dark-mode");
-            document.body.classList.add("dawn-mode");
-            break;
-        case 0:
-            document.body.classList.remove("dawn-mode");
-            document.body.classList.add("dark-mode");
-            break;
-        case 9:
-            document.body.classList.remove("dawn-mode");
-            break;
-        default:
-            break;
-    }
-}
+
 
 function updateDisplay() {
     document.getElementById('coin-count').textContent = `${coinCount.toLocaleString()} $`;
     document.getElementById('coins-per-click').textContent = `${coinsPerClick.toLocaleString()} $`;
     document.getElementById('goal-remain').textContent = `${(goal - coinCount).toLocaleString()} $`;
     document.getElementById('current-date').textContent = `${currDate.getFullYear()}年${(currDate.getMonth()+1)}月${currDate.getDate()}日${currDate.getHours()}点`;
-    
+
+    propertyList.forEach( propertyItem => {
+        // 分期付款相关
+        dividedBuyItem = dividedBuyList.find(item => item.id === propertyItem);
+        // console.log(dividedBuyItem)
+        if ( dividedBuyItem !== undefined ) {// 已有分期付款，只需更新数字
+            // console.log('已有分期付款，只需更新数字')
+            currDividedMonth = document.querySelector(`#${propertyItem} .divided-month`);
+            currDividedMonth.textContent = currDividedMonth.textContent.replace(/\d+/, dividedBuyItem.dividedMonth);
+            currPayCountDown = document.querySelector(`#${propertyItem} .pay-count-down`);
+            currPayCountDown.textContent = currPayCountDown.textContent.replace(/\d+/, dividedBuyItem.payCountDown);
+            // 更新商店按钮
+            shopButton = document.getElementById('buy-'+propertyItem);
+            shopButton.innerHTML = shopButton.innerHTML.replace('购买', '还款');
+        } else { // 没有分期付款，去掉分期付款显示
+            document.querySelector(`#${propertyItem} .divided-month`).textContent = '';
+            document.querySelector(`#${propertyItem} .pay-count-down`).textContent = '';
+            // 更新商店按钮
+            shopButton = document.getElementById('buy-'+propertyItem);
+            shopButton.innerHTML = shopButton.innerHTML.replace('还款', '购买');
+        }
+    })
+
+    // 根据资产更新职业
+    if (propertyList.includes('mini-truck')) {
+        document.getElementById('current-job').textContent = '小货车司机';
+    } else {
+        document.getElementById('current-job').textContent = '搬运工';
+    }
 }
 
 function updateShop() {
+    shopList.forEach( shopItem => {
+        if ( coinCount >= shopItem.dividedPrice) {
+            document.getElementById(shopItem.id).disabled = false;
+        } else {
+            document.getElementById(shopItem.id).disabled = true;
+        }
+    })
+}
 
+function updateDividedPay() {
+    dividedBuyList.forEach( dividedBuyItem => {
+        dividedBuyItem.payCountDown--;
+        if (dividedBuyItem.payCountDown === 0) {
+            propertyList = propertyList.filter( item => { // 移除这个资产
+                return item !== dividedBuyItem.id;
+            });
+            switch (dividedBuyItem.id) {
+                case "mini-truck":
+                    icon = document.querySelector("#mini-truck .icon");
+                    icon.textContent = icon.textContent.replace("🚚", "");
+                    break;
+                default:
+                    break;
+            }
+            dividedBuyList = dividedBuyList.filter( item => { // 移除这个分期付款
+                return item.id !== dividedBuyItem.id;
+            });
+        }
+    })
 }
 
 function checkGoal() {
