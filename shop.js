@@ -26,7 +26,7 @@ document.getElementById('buy-mini-truck').addEventListener('click', () => {
         } else { // 没有分期付款，创建新分期付款
             // console.log('没有分期付款，创建新分期付款')
             dividedBuyList.push(
-                {id:'mini-truck', dividedPrice:320, dividedMonth:12, payCountDown: 3}
+                {id:'mini-truck', dividedPrice:320, dividedMonth:12, payCountDown: 30}
             )
             // 添加小货车
             propertyList.push('mini-truck');
