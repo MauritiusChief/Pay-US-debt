@@ -47,6 +47,7 @@ function everyHourEvent() {
     // console.log(dividedBuyList)
 }
 
+// 步进时间，同时每天10点触发每日事件
 function incrementTime() {
     currDate.setHours(currDate.getHours() + 1);
     switch (currDate.getHours()) {
@@ -70,6 +71,7 @@ function incrementTime() {
     }
 }
 
+// 每日事件
 function everyDayEvent() {
     updateDividedPay()
 }
@@ -130,42 +132,17 @@ document.getElementById('game-pause').addEventListener('click', () => {
     clearInterval(currentTimer);
 })
 
-// 自动点击器升级按钮
-// document.getElementById('auto-clicker').addEventListener('click', () => {
-//     if (coinCount >= autoClickerCost) {
-//         coinCount -= autoClickerCost;
-//         autoClickerCost *= 2; // Increase cost for next purchase
-// 		autoClickerEarn *= 2;
-//         setInterval(() => {
-//             coinCount += autoClickerEarn;
-//             updateDisplay();
-//         }, 1);
-//         updateDisplay();
-//     }
-// });
-
-// // 单次点击升级按钮
-// document.getElementById('upgrade-click').addEventListener('click', () => {
-//     if (coinCount >= upgradeClickCost) {
-//         coinCount -= upgradeClickCost;
-//         upgradeClickCost *= 2; // Increase cost for next purchase
-//         coinsPerClick *= 2; // Double coins per click
-//         updateDisplay();
-//     }
-// });
-
-
-
+// 更新显示（不是所有显示都在此更新）
 function updateDisplay() {
     document.getElementById('coin-count').textContent = `${coinCount.toLocaleString()} $`;
     document.getElementById('coins-per-click').textContent = `${coinsPerClick.toLocaleString()} $`;
     document.getElementById('goal-remain').textContent = `${(goal - coinCount).toLocaleString()} $`;
     document.getElementById('current-date').textContent = `${currDate.getFullYear()}年${(currDate.getMonth()+1)}月${currDate.getDate()}日${currDate.getHours()}点`;
 
+    // 根据资产更新显示
     propertyList.forEach( propertyItem => {
-        // 分期付款相关
+        // 分期付款期间 以及 偿清贷款 的情况
         dividedBuyItem = dividedBuyList.find(item => item.id === propertyItem);
-        // console.log(dividedBuyItem)
         if ( dividedBuyItem !== undefined ) {// 已有分期付款，只需更新数字
             // console.log('已有分期付款，只需更新数字')
             currDividedMonth = document.querySelector(`#${propertyItem} .divided-month`);
@@ -175,7 +152,7 @@ function updateDisplay() {
             // 更新商店按钮
             shopButton = document.getElementById('buy-'+propertyItem);
             shopButton.innerHTML = shopButton.innerHTML.replace('购买', '还款');
-        } else { // 没有分期付款，去掉分期付款显示
+        } else { // 没有分期付款，去掉分期付款显示（注意：这部分如果到期不还款资产被收回则不会执行）
             document.querySelector(`#${propertyItem} .divided-month`).textContent = '';
             document.querySelector(`#${propertyItem} .pay-count-down`).textContent = '';
             // 更新商店按钮
@@ -192,6 +169,7 @@ function updateDisplay() {
     }
 }
 
+// 更新商店按钮可购买选项
 function updateShop() {
     shopList.forEach( shopItem => {
         if ( coinCount >= shopItem.dividedPrice) {
@@ -202,6 +180,7 @@ function updateShop() {
     })
 }
 
+// 更新分期付款到期未还款
 function updateDividedPay() {
     dividedBuyList.forEach( dividedBuyItem => {
         dividedBuyItem.payCountDown--;
@@ -217,6 +196,12 @@ function updateDividedPay() {
                 default:
                     break;
             }
+            document.querySelector(`#${dividedBuyItem.id} .divided-month`).textContent = '';
+            document.querySelector(`#${dividedBuyItem.id} .pay-count-down`).textContent = '';
+            // 更新商店按钮
+            shopButton = document.getElementById('buy-'+dividedBuyItem.id);
+            shopButton.innerHTML = shopButton.innerHTML.replace('还款', '购买');
+
             dividedBuyList = dividedBuyList.filter( item => { // 移除这个分期付款
                 return item.id !== dividedBuyItem.id;
             });

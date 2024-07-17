@@ -10,7 +10,7 @@ document.getElementById('buy-mini-truck').addEventListener('click', () => {
     } else if ( coinCount >= shopItem.dividedPrice) { // 进入分期付款流程
         coinCount -= shopItem.dividedPrice;
 
-        dividedBuyItem = dividedBuyList.find(dividedBuyItem => dividedBuyItem.id === 'mini-truck')
+        dividedBuyItem = dividedBuyList.find(item => item.id === 'mini-truck');
         if ( dividedBuyItem !== undefined ) { // 已有分期付款
             // console.log('已有分期付款')
             if (dividedBuyItem.dividedMonth > 1) { // 还有1期以上
@@ -19,14 +19,14 @@ document.getElementById('buy-mini-truck').addEventListener('click', () => {
                 dividedBuyItem.payCountDown = 30;
             }  else { // 只剩1期，移除该分期付款
                 // console.log('只剩1期，移除该分期付款')
-                dividedBuyList = dividedBuyList.filter( dividedBuyItem => {
-                    return dividedBuyItem.id !== 'mini-truck';
+                dividedBuyList = dividedBuyList.filter( item => {
+                    return item.id !== 'mini-truck';
                 });
             }
         } else { // 没有分期付款，创建新分期付款
             // console.log('没有分期付款，创建新分期付款')
             dividedBuyList.push(
-                {id:'mini-truck', dividedPrice:320, dividedMonth:12, payCountDown: 30}
+                {id:'mini-truck', dividedPrice:320, dividedMonth:12, payCountDown: 3}
             )
             // 添加小货车
             propertyList.push('mini-truck');
