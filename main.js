@@ -1,7 +1,9 @@
 let coinCount = 0;
-let coinsPerClick = 12.5;
+let coinsPerClick = 0;
 let health = 100.00;
 let effectList = []
+let workStat = 0; // 上班与否标记，用在资源列表更新中，0代表不上班1代表上班，以后可能会改一个方式
+let estiCoinsPerClick = 12.5;
 
 let goal = 100;
 let dateArray = [1000, 0, 1, 8]
@@ -18,18 +20,27 @@ const shopList = [
 ]
 let dividedBuyList = [];
 let propertyList = [];
+let resourceList = [
+    {id:'transport', produce:0, consume:0, stock:0, price:0.5}
+]
+let selfResourceList = [
+    {id:'transport', produce:25}
+]
 
-// 根据资产更新职业
-function updateJobIncom() {
-    if (propertyList.includes('semi-truck')) {
-        coinsPerClick = 43.5;
-    } else if (propertyList.includes('mini-truck')) {
-        coinsPerClick = 23.5;
-    } else {
-        coinsPerClick = 12.5;
-    }
+// 根据资产更新资源产出和收入
+function updateResource() {
+    coinsPerClick = 0;
+    resourceList.forEach( resourceType => {
+        resourceType.produce = 0;
+        /**
+         *  此处添加自动生产装置增加的资源 
+         **/
+        selfResourceType = selfResourceList.find(type => type.id === resourceType.id ); // 添加点击生产的资源
+        resourceType.produce += selfResourceType.produce * workStat; // workStat 0 代表不上班，1代表上班
+        coinsPerClick += ((resourceType.produce - resourceType.consume) * resourceType.price);
+        estiCoinsPerClick = selfResourceType.produce * resourceType.price;
+    })
 }
-
 // 根据资产更新职业
 function updateDisplayJob() {
     if (propertyList.includes('semi-truck')) {
@@ -41,9 +52,8 @@ function updateDisplayJob() {
     }
 }
 
-
+/** 初始化 */
 // 初始执行函数
-// alert("你是一个正直的美国公民，被奸人诬陷投入此赛博牢狱，你需要还清所有美国国债来重获自由。点击按钮挣取美刀。")
 updateShop();
 updateDisplay();
 
@@ -70,9 +80,12 @@ fetch('https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accoun
 });
 
 /** 游戏机制 */
+// 每小时时间，同时承担推进时间的作用
 function everyHourEvent() {
     incrementTime();
     // 触发不上班效果
+    workStat = 0;
+    updateResource();
     if (currDate.getHours() < 9 ) { // 0-8点
         health < 0 ? {} : health += 2;
     } else { // 9点之后整天
@@ -92,14 +105,15 @@ function everyHourEvent() {
             personTag.innerHTML = personTag.innerHTML.replace('🛌','🧍‍♂️');
         }
     })
+    
     updateShop();
     updateDisplay();
+    
 
     // console.log(propertyList)
     // console.log(dividedBuyList)
 }
-
-// 步进时间，同时每天10点触发每日事件
+// 步进时间，每天10点触发每日事件
 function incrementTime() {
     currDate.setHours(currDate.getHours() + 1);
     switch (currDate.getHours()) {
@@ -124,7 +138,6 @@ function incrementTime() {
 
     checkGoal()
 }
-
 // 每日事件
 function everyDayEvent() {
     updateDividedPay()
@@ -132,7 +145,6 @@ function everyDayEvent() {
         everyMonthEvent();
     }
 }
-
 // 每月事件
 function everyMonthEvent() {
 
@@ -140,9 +152,23 @@ function everyMonthEvent() {
 
 // 点击挣钱按钮
 document.getElementById('click-button').addEventListener('click', () => {
-    // 更新时薪数据
+    // 根据资产更新点击资源产量
+    selfResourceList.forEach( selfResourceType => {
+        switch (selfResourceType.id) {
+            case 'transport':
+                if (propertyList.includes('semi-truck')) {
+                    selfResourceType.produce = 85;
+                } else if (propertyList.includes('mini-truck')) {
+                    selfResourceType.produce = 45;
+                } else {
+                    selfResourceType.produce = 25;
+                }
+                break;
+        }
+    });
+    workStat = 1;
     // 根据资产更新职业
-    updateJobIncom();
+    updateResource();
     coinCount += coinsPerClick;
     incrementTime();
     // 加班标识
@@ -153,6 +179,8 @@ document.getElementById('click-button').addEventListener('click', () => {
         if (!document.getElementById('overtime').textContent.includes("（加班中）")) {
             document.getElementById('overtime').textContent = "（加班中）";
         }
+    } else {
+        document.getElementById('overtime').textContent = '';
     }
     if (currDate.getHours() < 9 ) { // 0-8点
         health -= 2;
@@ -174,10 +202,10 @@ document.getElementById('game-pause').addEventListener('click', () => {
     clearInterval(currentTimer);
 })
 
-// 更新显示（不是所有显示都在此更新）
+/** 更新显示（不是所有显示都在此更新）*/
 function updateDisplay() {
     document.getElementById('coin-count').textContent = `${coinCount.toLocaleString()} $`;
-    document.getElementById('coins-per-click').textContent = `${coinsPerClick.toLocaleString()} $`;
+    document.getElementById('coins-per-click').textContent = `${estiCoinsPerClick.toLocaleString()} $`;
     document.getElementById('goal-remain').textContent = `${(goal - coinCount)>0 ? (goal - coinCount).toLocaleString() : 0} $`;
     document.getElementById('current-date').textContent = `${currDate.getFullYear()}年${(currDate.getMonth()+1)}月${currDate.getDate()}日${currDate.getHours()}点`;
     document.getElementById('health').textContent = health;
@@ -216,8 +244,19 @@ function updateDisplay() {
 
     // 根据资产更新职业
     updateDisplayJob();
+
+    // 更新资源列表
+    resourceList.forEach( resourceType => {
+        tableRow = document.getElementById(resourceType.id);
+        tableRow.querySelector(".net-produce .num").innerHTML = (resourceType.produce - resourceType.consume);
+        tableRow.querySelector(".net-produce .produce").innerHTML = resourceType.produce;
+        tableRow.querySelector(".net-produce .consume").innerHTML = resourceType.consume;
+        tableRow.querySelector(".income .num").innerHTML = (resourceType.produce - resourceType.consume)*resourceType.price;
+        tableRow.querySelector(".income .price").innerHTML = resourceType.price;
+    })
 }
 
+/** 更新函数 */
 // 更新商店按钮可购买选项
 function updateShop() {
     shopList.forEach( shopItem => {
@@ -232,7 +271,7 @@ function updateShop() {
     health < 0 ? clickButton.disabled = true : clickButton.disabled = false;
 }
 
-// 更新分期付款到期未还款
+// 更新分期付款到期未还款（包含相关更新显示）
 function updateDividedPay() {
     dividedBuyList.forEach( dividedBuyItem => {
         dividedBuyItem.payCountDown--;

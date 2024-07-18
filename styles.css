@@ -55,6 +55,10 @@ button {
     margin: 10px auto;
 }
 
+td {
+    padding: 5px 10px;
+}
+
 .hastooltip .tooltiptext {
     visibility: hidden;
     background-color: black;
