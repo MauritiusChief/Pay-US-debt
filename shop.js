@@ -9,6 +9,8 @@ document.getElementById('buy-semi-truck').addEventListener('click', () => {
 })
 
 document.getElementById('buy-medicine').addEventListener('click', () => {
+    shopItem = shopList.find(item => item.id === ('buy-medicine') )
+    coinCount -= shopItem.price;
     health += 15;
 })
 
