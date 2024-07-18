@@ -67,6 +67,9 @@ button {
 .hastooltip:hover .tooltiptext {
     visibility: visible;
 }
+.hidden {
+    visibility: hidden;
+}
 
 /* 直观展示时间 */
 .dawn-mode {

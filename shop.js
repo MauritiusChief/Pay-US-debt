@@ -8,6 +8,10 @@ document.getElementById('buy-semi-truck').addEventListener('click', () => {
     buyEvent('semi-truck', '🚛', 30);
 })
 
+document.getElementById('buy-medicine').addEventListener('click', () => {
+    health += 15;
+})
+
 function buyEvent(buyId, buyIcon, buyPayCountDown) {
     shopItem = shopList.find(shopItem => shopItem.id === ('buy-'+buyId) )
     buyDividedPrice = shopItem.dividedPrice; // 改为直接用shopItem数据
@@ -17,7 +21,8 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
         // 资产列表添加商品
         propertyList.push(buyId);
         document.querySelector(`#${buyId} .icon`).textContent += buyIcon;
-    } else if ( coinCount >= shopItem.dividedPrice) { // 进入分期付款流程
+    } else if ( buyPayCountDown > 0 && coinCount >= shopItem.dividedPrice) { // 进入分期付款流程
+        // 这部分代码只有运行分期付款的商品才执行
         coinCount -= shopItem.dividedPrice;
 
         dividedBuyItem = dividedBuyList.find(item => item.id === buyId);

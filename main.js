@@ -1,8 +1,9 @@
 let coinCount = 0;
 let coinsPerClick = 12.5;
+let health = 100.00;
+let effectList = []
 
-let autoClickerEarn = 1;
-let goal = 10;
+let goal = 100;
 let dateArray = [1000, 0, 1, 8]
 let currDate = new Date(...dateArray);
 let gameFinished = false;
@@ -11,7 +12,9 @@ let currentTimer;
 /** 商品及职业列表 */
 const shopList = [
     {id:'buy-mini-truck', price:3500, dividedPrice:640, dividedMonth:6},
-    {id:'buy-semi-truck', price:44500, dividedPrice:4080, dividedMonth:12}
+    {id:'buy-semi-truck', price:44500, dividedPrice:4080, dividedMonth:12},
+
+    {id:'buy-medicine', price:30, dividedPrice:30, dividedMonth:0}
 ]
 let dividedBuyList = [];
 let propertyList = [];
@@ -42,6 +45,7 @@ function updateDisplayJob() {
 // 初始执行函数
 // alert("你是一个正直的美国公民，被奸人诬陷投入此赛博牢狱，你需要还清所有美国国债来重获自由。点击按钮挣取美刀。")
 updateShop();
+updateDisplay();
 
 // Fetch the current national debt
 fetch('https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny?sort=-record_date&format=json&page[number]=1&page[size]=1')
@@ -68,14 +72,21 @@ fetch('https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accoun
 /** 游戏机制 */
 function everyHourEvent() {
     incrementTime();
+    // 触发不上班效果
+    if (currDate.getHours() < 9 ) { // 0-8点
+        health < 0 ? {} : health += 2;
+    } else { // 9点之后整天
+        health < 0 ? {} : health += 1;
+    }
+    health > 100 ? health = 100 : {};
     // 消除（加班中）标记
     document.getElementById('overtime').textContent = '';
-    // 小人图标
+    // 小人不加班图标
     document.querySelectorAll("[type=person]").forEach(personTag => {
-        if (currDate.getHours() < 9 ) { // 0-9点
+        if (currDate.getHours() < 9 ) { // 0-8点
             personTag.innerHTML = personTag.innerHTML.replace('🧍‍♂️','🛌');
             personTag.innerHTML = personTag.innerHTML.replace('🛀','🛌');
-        } else if (currDate.getHours() > 17) { // 18-23点
+        } else if (currDate.getHours() > 16) { // 17-23点
             personTag.innerHTML = personTag.innerHTML.replace('🧍‍♂️','🛀');
         } else {
             personTag.innerHTML = personTag.innerHTML.replace('🛌','🧍‍♂️');
@@ -117,6 +128,14 @@ function incrementTime() {
 // 每日事件
 function everyDayEvent() {
     updateDividedPay()
+    if (currDate.getDate === 1) {
+        everyMonthEvent();
+    }
+}
+
+// 每月事件
+function everyMonthEvent() {
+
 }
 
 // 点击挣钱按钮
@@ -127,13 +146,20 @@ document.getElementById('click-button').addEventListener('click', () => {
     coinCount += coinsPerClick;
     incrementTime();
     // 加班标识
-    if (currDate.getHours() < 9 || currDate.getHours() > 17) {
+    if (currDate.getHours() < 9 || currDate.getHours() > 16) {
         let selfElement = document.getElementById("self");
         selfElement.innerHTML = selfElement.innerHTML.replace('🛌', '🧍‍♂️');
         selfElement.innerHTML = selfElement.innerHTML.replace('🛀', '🧍‍♂️');
         if (!document.getElementById('overtime').textContent.includes("（加班中）")) {
             document.getElementById('overtime').textContent = "（加班中）";
         }
+    }
+    if (currDate.getHours() < 9 ) { // 0-8点
+        health -= 2;
+    } else if ( currDate.getHours() > 16 ) { // 17点-23点
+        health -= 1.5;
+    } else {
+        health -= 1;
     }
     
     // 每次点击则重置计时，避免时间跳动
@@ -154,6 +180,17 @@ function updateDisplay() {
     document.getElementById('coins-per-click').textContent = `${coinsPerClick.toLocaleString()} $`;
     document.getElementById('goal-remain').textContent = `${(goal - coinCount)>0 ? (goal - coinCount).toLocaleString() : 0} $`;
     document.getElementById('current-date').textContent = `${currDate.getFullYear()}年${(currDate.getMonth()+1)}月${currDate.getDate()}日${currDate.getHours()}点`;
+    document.getElementById('health').textContent = health;
+
+    let selfElement = document.getElementById("self");
+    let medicinElement = document.getElementById('buy-medicine');
+    if (health > 0) {
+        medicinElement.classList.add('hidden');
+        selfElement.innerHTML = selfElement.innerHTML.replace('🚑', '🧍‍♂️');
+    } else {
+        medicinElement.classList.remove('hidden');
+        selfElement.innerHTML = selfElement.innerHTML.replace('🧍‍♂️', '🚑');
+    }
 
     // 根据资产更新显示
     propertyList.forEach( propertyItem => {
@@ -190,6 +227,9 @@ function updateShop() {
             document.getElementById(shopItem.id).disabled = true;
         }
     })
+    // 得病无法工作也借用此处
+    clickButton = document.getElementById("click-button");
+    health < 0 ? clickButton.disabled = true : clickButton.disabled = false;
 }
 
 // 更新分期付款到期未还款
@@ -200,7 +240,7 @@ function updateDividedPay() {
             propertyList = propertyList.filter( item => { // 移除这个资产
                 return item !== dividedBuyItem.id;
             });
-            icon = document.querySelector("#mini-truck .icon");
+            icon = document.querySelector(`#${dividedBuyItem.id} .icon`);
             icon.textContent = icon.textContent.replace(dividedBuyItem.icon, "")
             document.querySelector(`#${dividedBuyItem.id} .divided-month`).textContent = '';
             document.querySelector(`#${dividedBuyItem.id} .pay-count-down`).textContent = '';
