@@ -1,11 +1,17 @@
 
 // TODO: 买东西完全可以做成一个模块化函数，只需输入价格、emoji、分期时间等就行
 document.getElementById('buy-mini-truck').addEventListener('click', () => {
-    buyEvent('mini-truck', '🚚', 320, 12, 30);
+    buyEvent('mini-truck', '🚚', 30);
 })
 
-function buyEvent(buyId, buyIcon, buyDividedPrice, buyDividedMonth, buyPayCountDown) {
+document.getElementById('buy-semi-truck').addEventListener('click', () => {
+    buyEvent('semi-truck', '🚛', 30);
+})
+
+function buyEvent(buyId, buyIcon, buyPayCountDown) {
     shopItem = shopList.find(shopItem => shopItem.id === ('buy-'+buyId) )
+    buyDividedPrice = shopItem.dividedPrice; // 改为直接用shopItem数据
+    buyDividedMonth = shopItem.dividedMonth; // 改为直接用shopItem数据
     if (coinCount >= shopItem.price) {
         coinCount -= shopItem.price;
         // 资产列表添加商品
@@ -32,11 +38,11 @@ function buyEvent(buyId, buyIcon, buyDividedPrice, buyDividedMonth, buyPayCountD
             dividedBuyList.push(
                 {id: buyId, icon: buyIcon, dividedPrice: buyDividedPrice, dividedMonth: buyDividedMonth, payCountDown: buyPayCountDown}
             )
-            // 添加小货车
+            // 添加商品以及分期付款标识
             propertyList.push(buyId);
-            document.querySelector("#mini-truck .icon").textContent += buyIcon;
-            document.querySelector("#mini-truck .divided-month").textContent = ` 分期${buyDividedMonth}月 `;
-            document.querySelector("#mini-truck .pay-count-down").textContent = ` 支付倒计时${buyPayCountDown}天`;
+            document.querySelector(`#${buyId} .icon`).textContent += buyIcon;
+            document.querySelector(`#${buyId} .divided-month`).textContent = ` 分期${buyDividedMonth}月 `;
+            document.querySelector(`#${buyId} .pay-count-down`).textContent = ` 支付倒计时${buyPayCountDown}天`;
         }
     }
     updateDisplay();

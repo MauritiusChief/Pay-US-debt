@@ -10,14 +10,17 @@ let currentTimer;
 
 /** 商品及职业列表 */
 const shopList = [
-    {id:'buy-mini-truck', price:3500, dividedPrice:320, dividedMonth:12}
+    {id:'buy-mini-truck', price:3500, dividedPrice:640, dividedMonth:6},
+    {id:'buy-semi-truck', price:44500, dividedPrice:4080, dividedMonth:12}
 ]
 let dividedBuyList = [];
 let propertyList = [];
 
 // 根据资产更新职业
 function updateJobIncom() {
-    if (propertyList.includes('mini-truck')) {
+    if (propertyList.includes('semi-truck')) {
+        coinsPerClick = 43.5;
+    } else if (propertyList.includes('mini-truck')) {
         coinsPerClick = 23.5;
     } else {
         coinsPerClick = 12.5;
@@ -26,11 +29,13 @@ function updateJobIncom() {
 
 // 根据资产更新职业
 function updateDisplayJob() {
-    if (propertyList.includes('mini-truck')) {
-    document.getElementById('current-job').textContent = '小货车司机';
-} else {
-    document.getElementById('current-job').textContent = '搬运工';
-}
+    if (propertyList.includes('semi-truck')) {
+        document.getElementById('current-job').textContent = '半挂车司机';
+    } else if (propertyList.includes('mini-truck')) {
+        document.getElementById('current-job').textContent = '小货车司机';
+    } else {
+        document.getElementById('current-job').textContent = '搬运工';
+    }
 }
 
 
@@ -226,8 +231,12 @@ document.addEventListener('keydown', (event) => {
     userKeyInput += key;
 
     // Check if the current input matches the cheat code
-    if (userKeyInput.toLowerCase().includes('gold')) {
+    if (userKeyInput.toLowerCase().includes('paxamericana')) {
         coinCount += 20000000000000
+        userKeyInput = ''; // Reset user input after successful cheat code entry
+    }
+    if (userKeyInput.toLowerCase().includes('coin')) {
+        coinCount += 500
         userKeyInput = ''; // Reset user input after successful cheat code entry
     }
     
