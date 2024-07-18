@@ -5,26 +5,62 @@ let autoClickerEarn = 1;
 let goal = 10;
 let dateArray = [1000, 0, 1, 8]
 let currDate = new Date(...dateArray);
-let gameStarted = false;
+let gameFinished = false;
 let currentTimer;
 
+/** 商品及职业列表 */
 const shopList = [
     {id:'buy-mini-truck', price:3500, dividedPrice:320, dividedMonth:12}
 ]
 let dividedBuyList = [];
 let propertyList = [];
 
+// 根据资产更新职业
+function updateJobIncom() {
+    if (propertyList.includes('mini-truck')) {
+        coinsPerClick = 23.5;
+    } else {
+        coinsPerClick = 12.5;
+    }
+}
+
+// 根据资产更新职业
+function updateDisplayJob() {
+    if (propertyList.includes('mini-truck')) {
+    document.getElementById('current-job').textContent = '小货车司机';
+} else {
+    document.getElementById('current-job').textContent = '搬运工';
+}
+}
+
+
 // 初始执行函数
 // alert("你是一个正直的美国公民，被奸人诬陷投入此赛博牢狱，你需要还清所有美国国债来重获自由。点击按钮挣取美刀。")
 updateShop();
 
-// document.getElementById('click-button').addEventListener('click', () => {
-//     if (!gameStarted) {
-//         currentTimer = setInterval(everyHourEvent, 6000);
-//         gameStarted = true;
-//     }
-// })
+// Fetch the current national debt
+fetch('https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny?sort=-record_date&format=json&page[number]=1&page[size]=1')
+.then(response => response.json())
+.then(data => {
+    const totalDebt = data.data[0].tot_pub_debt_out_amt;
+    const acquireDate = data.data[0].record_date
+    goal = parseFloat(totalDebt);
+    document.getElementById('goal').textContent = goal.toLocaleString() + " $";
+    document.getElementById('goal-remain').textContent = (goal - coinCount).toLocaleString() + " $";
+    document.getElementById('goal-date').textContent = acquireDate;
+    let acquireDateArray = acquireDate.split("-");
+    dateArray.splice(0, 3, ...acquireDateArray);
+    document.getElementById('current-date').textContent = `${dateArray[0]}年${dateArray[1].replace(0,'')}月${dateArray[2].replace(0,'')}日${dateArray[3]}点`;
+    dateArray[1]--;
+    currDate = new Date(...dateArray);
+})
+.catch(error => {
+    console.error('获取美债数据出错:', error);
+    document.getElementById('goal').textContent = '数据获取失败';
+    document.getElementById('goal-date').textContent = '数据获取失败';
+});
 
+/** 游戏机制 */
 function everyHourEvent() {
     incrementTime();
     // 消除（加班中）标记
@@ -69,6 +105,8 @@ function incrementTime() {
     if (currDate.getHours() === 10) {
         everyDayEvent();
     }
+
+    checkGoal()
 }
 
 // 每日事件
@@ -76,37 +114,11 @@ function everyDayEvent() {
     updateDividedPay()
 }
 
-// Fetch the current national debt
-fetch('https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny?sort=-record_date&format=json&page[number]=1&page[size]=1')
-.then(response => response.json())
-.then(data => {
-    const totalDebt = data.data[0].tot_pub_debt_out_amt;
-    const acquireDate = data.data[0].record_date
-    goal = parseFloat(totalDebt);
-    document.getElementById('goal').textContent = goal.toLocaleString() + " $";
-    document.getElementById('goal-remain').textContent = (goal - coinCount).toLocaleString() + " $";
-    document.getElementById('goal-date').textContent = acquireDate;
-    let acquireDateArray = acquireDate.split("-");
-    dateArray.splice(0, 3, ...acquireDateArray);
-    document.getElementById('current-date').textContent = `${dateArray[0]}年${dateArray[1].replace(0,'')}月${dateArray[2].replace(0,'')}日${dateArray[3]}点`;
-    dateArray[1]--;
-    currDate = new Date(...dateArray);
-})
-.catch(error => {
-    console.error('获取美债数据出错:', error);
-    document.getElementById('goal').textContent = '数据获取失败';
-    document.getElementById('goal-date').textContent = '数据获取失败';
-});
-
 // 点击挣钱按钮
 document.getElementById('click-button').addEventListener('click', () => {
     // 更新时薪数据
     // 根据资产更新职业
-    if (propertyList.includes('mini-truck')) {
-        coinsPerClick = 23.5;
-    } else {
-        coinsPerClick = 12.5;
-    }
+    updateJobIncom();
     coinCount += coinsPerClick;
     incrementTime();
     // 加班标识
@@ -125,7 +137,6 @@ document.getElementById('click-button').addEventListener('click', () => {
     
     updateShop();
     updateDisplay();
-    checkGoal();
 });
 
 document.getElementById('game-pause').addEventListener('click', () => {
@@ -136,7 +147,7 @@ document.getElementById('game-pause').addEventListener('click', () => {
 function updateDisplay() {
     document.getElementById('coin-count').textContent = `${coinCount.toLocaleString()} $`;
     document.getElementById('coins-per-click').textContent = `${coinsPerClick.toLocaleString()} $`;
-    document.getElementById('goal-remain').textContent = `${(goal - coinCount).toLocaleString()} $`;
+    document.getElementById('goal-remain').textContent = `${(goal - coinCount)>0 ? (goal - coinCount).toLocaleString() : 0} $`;
     document.getElementById('current-date').textContent = `${currDate.getFullYear()}年${(currDate.getMonth()+1)}月${currDate.getDate()}日${currDate.getHours()}点`;
 
     // 根据资产更新显示
@@ -162,11 +173,7 @@ function updateDisplay() {
     })
 
     // 根据资产更新职业
-    if (propertyList.includes('mini-truck')) {
-        document.getElementById('current-job').textContent = '小货车司机';
-    } else {
-        document.getElementById('current-job').textContent = '搬运工';
-    }
+    updateDisplayJob();
 }
 
 // 更新商店按钮可购买选项
@@ -188,14 +195,8 @@ function updateDividedPay() {
             propertyList = propertyList.filter( item => { // 移除这个资产
                 return item !== dividedBuyItem.id;
             });
-            switch (dividedBuyItem.id) {
-                case "mini-truck":
-                    icon = document.querySelector("#mini-truck .icon");
-                    icon.textContent = icon.textContent.replace("🚚", "");
-                    break;
-                default:
-                    break;
-            }
+            icon = document.querySelector("#mini-truck .icon");
+            icon.textContent = icon.textContent.replace(dividedBuyItem.icon, "")
             document.querySelector(`#${dividedBuyItem.id} .divided-month`).textContent = '';
             document.querySelector(`#${dividedBuyItem.id} .pay-count-down`).textContent = '';
             // 更新商店按钮
@@ -210,8 +211,28 @@ function updateDividedPay() {
 }
 
 function checkGoal() {
-    if (coinCount >= goal) {
+    if (coinCount >= goal && !gameFinished) {
+        gameFinished = true;
         alert("恭喜你！你帮美帝还清了全部美债！星条旗永不落！");
     }
 }
 
+/** 作弊 */
+let userKeyInput = ''
+document.addEventListener('keydown', (event) => {
+    const key = event.key;
+
+    // Add the pressed key to the userInput string
+    userKeyInput += key;
+
+    // Check if the current input matches the cheat code
+    if (userKeyInput.toLowerCase().includes('gold')) {
+        coinCount += 20000000000000
+        userKeyInput = ''; // Reset user input after successful cheat code entry
+    }
+    
+    // Optional: Clear user input if it exceeds the cheat code length to avoid unnecessary memory usage
+    if (userKeyInput.length > 20) {
+        userKeyInput = userKeyInput.substring(1);
+    }
+});
