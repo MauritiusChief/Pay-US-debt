@@ -14,6 +14,10 @@ document.getElementById('buy-medicine').addEventListener('click', () => {
     health += 15;
 })
 
+document.getElementById('buy-logistic-station').addEventListener('click', () => {
+    buyEvent('logistic-station', '📦', 0);
+})
+
 function buyEvent(buyId, buyIcon, buyPayCountDown) {
     shopItem = shopList.find(shopItem => shopItem.id === ('buy-'+buyId) )
     buyDividedPrice = shopItem.dividedPrice; // 改为直接用shopItem数据
@@ -22,7 +26,7 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
         coinCount -= shopItem.price;
         // 资产列表添加商品
         propertyList.push(buyId);
-        document.querySelector(`#${buyId} .icon`).textContent += buyIcon;
+        document.querySelector(`#${buyId} .icon`).innerHTML += buyIcon;
     } else if ( buyPayCountDown > 0 && coinCount >= shopItem.dividedPrice) { // 进入分期付款流程
         // 这部分代码只有运行分期付款的商品才执行
         coinCount -= shopItem.dividedPrice;
@@ -47,9 +51,9 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
             )
             // 添加商品以及分期付款标识
             propertyList.push(buyId);
-            document.querySelector(`#${buyId} .icon`).textContent += buyIcon;
-            document.querySelector(`#${buyId} .divided-month`).textContent = ` 分期${buyDividedMonth}月 `;
-            document.querySelector(`#${buyId} .pay-count-down`).textContent = ` 支付倒计时${buyPayCountDown}天`;
+            document.querySelector(`#${buyId} .icon`).innerHTML += buyIcon;
+            document.querySelector(`#${buyId} .divided-month`).innerHTML = ` 分期${buyDividedMonth}月 `;
+            document.querySelector(`#${buyId} .pay-count-down`).innerHTML = ` 支付倒计时${buyPayCountDown}天`;
         }
     }
     updateDisplay();

@@ -20,9 +20,9 @@ body div {
 .grid-container {
     display: grid;
     grid-template-areas:
-    'menu header header header header right'
-    'menu main main main main right'
-    'menu footer footer footer footer right';
+    'menu header right'
+    'menu main right'
+    'menu footer right';
     gap: 20px;
     padding: 10px;
 }
@@ -30,7 +30,7 @@ body div {
 .grid-container .grid-panel {
     text-align: center;
     background: #fff;
-    padding: 20px 40px;
+    padding: 20px 30px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }

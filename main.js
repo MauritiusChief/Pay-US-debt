@@ -14,9 +14,11 @@ let currentTimer;
 /** 商品及职业列表 */
 const shopList = [
     {id:'buy-mini-truck', price:3500, dividedPrice:640, dividedMonth:6},
-    {id:'buy-semi-truck', price:44500, dividedPrice:4080, dividedMonth:12},
+    {id:'buy-semi-truck', price:18500, dividedPrice:3400, dividedMonth:6},
 
-    {id:'buy-medicine', price:30, dividedPrice:30, dividedMonth:0}
+    {id:'buy-medicine', price:30, dividedPrice:30, dividedMonth:0},
+
+    {id:'buy-logistic-station', price:4500, dividedPrice:4500, dividedMonth:0}
 ]
 let dividedBuyList = [];
 let propertyList = [];
@@ -32,12 +34,18 @@ function updateResource() {
     coinsPerClick = 0;
     resourceList.forEach( resourceType => {
         resourceType.produce = 0;
-        /**
-         *  此处添加自动生产装置增加的资源 
-         **/
-        selfResourceType = selfResourceList.find(type => type.id === resourceType.id ); // 添加点击生产的资源
+        // 自动生产的资源
+        switch (resourceType.id) {
+            case 'transport':
+                propertyList.forEach( propertyItem => {
+                    propertyItem === 'logistic-station' ? resourceType.produce += 5 : {};
+                })
+                break;
+        }
+        // 点击生产的资源
+        selfResourceType = selfResourceList.find(type => type.id === resourceType.id );
         resourceType.produce += selfResourceType.produce * workStat; // workStat 0 代表不上班，1代表上班
-        coinsPerClick += ((resourceType.produce - resourceType.consume) * resourceType.price);
+        coinsPerClick += ((resourceType.produce - resourceType.consume) * resourceType.price); // 由于在这里自动和点击生产的资源都计入了此处，
         estiCoinsPerClick = selfResourceType.produce * resourceType.price;
     })
 }
@@ -80,12 +88,13 @@ fetch('https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accoun
 });
 
 /** 游戏机制 */
-// 每小时时间，同时承担推进时间的作用
+// 每小时事件（特指不工作时定时触发的时间流逝）
 function everyHourEvent() {
     incrementTime();
     // 触发不上班效果
     workStat = 0;
     updateResource();
+    coinCount += coinsPerClick;
     if (currDate.getHours() < 9 ) { // 0-8点
         health < 0 ? {} : health += 2;
     } else { // 9点之后整天
@@ -113,7 +122,7 @@ function everyHourEvent() {
     // console.log(propertyList)
     // console.log(dividedBuyList)
 }
-// 步进时间，每天10点触发每日事件
+// 实际的步进时间事件，同时每天10点触发每日事件
 function incrementTime() {
     currDate.setHours(currDate.getHours() + 1);
     switch (currDate.getHours()) {
@@ -136,7 +145,9 @@ function incrementTime() {
         everyDayEvent();
     }
 
+    // 无论时间流逝是定时触发还是点击触发都需执行的内容
     checkGoal()
+
 }
 // 每日事件
 function everyDayEvent() {
@@ -233,9 +244,10 @@ function updateDisplay() {
             // 更新商店按钮
             shopButton = document.getElementById('buy-'+propertyItem);
             shopButton.innerHTML = shopButton.innerHTML.replace('购买', '还款');
-        } else { // 没有分期付款，去掉分期付款显示（注意：这部分如果到期不还款资产被收回则不会执行）
-            document.querySelector(`#${propertyItem} .divided-month`).textContent = '';
-            document.querySelector(`#${propertyItem} .pay-count-down`).textContent = '';
+        } else if ( document.getElementById('buy-'+propertyItem).innerHTML.includes('还款') ) { // 没有分期付款，去掉分期付款显示（注意：这部分如果到期不还款资产被收回则不会执行）
+            // 注意：这里用检测文本是否有“还款”来判定是否是分期商品
+            document.querySelector(`#${propertyItem} .divided-month`).innerHTML = '';
+            document.querySelector(`#${propertyItem} .pay-count-down`).innerHTML = '';
             // 更新商店按钮
             shopButton = document.getElementById('buy-'+propertyItem);
             shopButton.innerHTML = shopButton.innerHTML.replace('还款', '购买');
@@ -312,6 +324,10 @@ document.addEventListener('keydown', (event) => {
     // Check if the current input matches the cheat code
     if (userKeyInput.toLowerCase().includes('paxamericana')) {
         coinCount += 20000000000000
+        userKeyInput = ''; // Reset user input after successful cheat code entry
+    }
+    if (userKeyInput.toLowerCase().includes('money')) {
+        coinCount += 6000
         userKeyInput = ''; // Reset user input after successful cheat code entry
     }
     if (userKeyInput.toLowerCase().includes('coin')) {
