@@ -11,8 +11,9 @@ let currDate = new Date(...dateArray);
 let gameFinished = false;
 let currentTimer;
 
-/** 商品及职业列表 */
-const shopList = [
+/** 商品及职业列表
+ ***************/
+const shopList = [ // 商品列表
     {id:'buy-mini-truck', price:3500, dividedPrice:640, dividedMonth:6},
     {id:'buy-semi-truck', price:18500, dividedPrice:3400, dividedMonth:6},
 
@@ -29,7 +30,14 @@ let selfResourceList = [
     {id:'transport', produce:25}
 ]
 
-// 根据资产更新资源产出和收入
+/**根据资产更新资源产出和收入
+ * 需要变量：
+ *      resourceList
+ *      selfResourceList
+ * 更新变量：
+ *      coinsPerClick
+ *      estiCoinsPerClick
+ */
 function updateResource() {
     coinsPerClick = 0;
     resourceList.forEach( resourceType => {
@@ -49,7 +57,11 @@ function updateResource() {
         estiCoinsPerClick = selfResourceType.produce * resourceType.price;
     })
 }
-// 根据资产更新职业
+/**根据资产更新职业
+ * 需要变量：
+ *      propertyList
+ * HTML更新
+ */
 function updateDisplayJob() {
     if (propertyList.includes('semi-truck')) {
         document.getElementById('current-job').textContent = '半挂车司机';
@@ -60,7 +72,8 @@ function updateDisplayJob() {
     }
 }
 
-/** 初始化 */
+/** 初始化
+ ********/
 // 初始执行函数
 updateShop();
 updateDisplay();
@@ -87,14 +100,23 @@ fetch('https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accoun
     document.getElementById('goal-date').textContent = '数据获取失败';
 });
 
-/** 游戏机制 */
-// 每小时事件（特指不工作时定时触发的时间流逝）
+/** 游戏机制 
+ ***********/
+/**每小时事件（特指不工作时定时触发的时间流逝）
+ * 使用函数：
+ *      incrementTime()
+ *      updateShop()
+ *      updateDisplay()
+ * HTML更新
+ */ 
 function everyHourEvent() {
     incrementTime();
-    // 触发不上班效果
+    
+    // 触发不上班效果 TODO:可以做成分开的函数
     workStat = 0;
     updateResource();
     coinCount += coinsPerClick;
+    // 不上班则回复健康
     if (currDate.getHours() < 9 ) { // 0-8点
         health < 0 ? {} : health += 2;
     } else { // 9点之后整天
@@ -103,7 +125,7 @@ function everyHourEvent() {
     health > 100 ? health = 100 : {};
     // 消除（加班中）标记
     document.getElementById('overtime').textContent = '';
-    // 小人不加班图标
+    // 小人不加班时的图标
     document.querySelectorAll("[type=person]").forEach(personTag => {
         if (currDate.getHours() < 9 ) { // 0-8点
             personTag.innerHTML = personTag.innerHTML.replace('🧍‍♂️','🛌');
@@ -122,7 +144,9 @@ function everyHourEvent() {
     // console.log(propertyList)
     // console.log(dividedBuyList)
 }
-// 实际的步进时间事件，同时每天10点触发每日事件
+/**实际的步进时间事件
+ * HTML更新
+ */ 
 function incrementTime() {
     currDate.setHours(currDate.getHours() + 1);
     switch (currDate.getHours()) {
@@ -149,19 +173,30 @@ function incrementTime() {
     checkGoal()
 
 }
-// 每日事件
+/**每日事件
+ */ 
 function everyDayEvent() {
     updateDividedPay()
     if (currDate.getDate === 1) {
         everyMonthEvent();
     }
 }
-// 每月事件
+/**每月事件
+ */
 function everyMonthEvent() {
 
 }
 
-// 点击挣钱按钮
+// 
+/**点击挣钱按钮（工作点击触发的时间流逝）
+ * 使用变量：
+ *      selfResourceList
+ * 使用函数：
+ *      incrementTime()
+ *      updateShop()
+ *      updateDisplay()
+ * HTML更新
+ */ 
 document.getElementById('click-button').addEventListener('click', () => {
     // 根据资产更新点击资源产量
     selfResourceList.forEach( selfResourceType => {
@@ -177,12 +212,12 @@ document.getElementById('click-button').addEventListener('click', () => {
                 break;
         }
     });
+    // 触发上班的效果
     workStat = 1;
-    // 根据资产更新职业
     updateResource();
     coinCount += coinsPerClick;
     incrementTime();
-    // 加班标识
+    // 变更上班与加班时的图标
     if (currDate.getHours() < 9 || currDate.getHours() > 16) {
         let selfElement = document.getElementById("self");
         selfElement.innerHTML = selfElement.innerHTML.replace('🛌', '🧍‍♂️');
@@ -193,6 +228,7 @@ document.getElementById('click-button').addEventListener('click', () => {
     } else {
         document.getElementById('overtime').textContent = '';
     }
+    // 上班与加班时减少健康
     if (currDate.getHours() < 9 ) { // 0-8点
         health -= 2;
     } else if ( currDate.getHours() > 16 ) { // 17点-23点
@@ -213,14 +249,19 @@ document.getElementById('game-pause').addEventListener('click', () => {
     clearInterval(currentTimer);
 })
 
-/** 更新显示（不是所有显示都在此更新）*/
+/** 更新显示（不是所有显示都在此更新）
+ *********************************/
 function updateDisplay() {
+    // 基本文本更新
     document.getElementById('coin-count').textContent = `${coinCount.toLocaleString()} $`;
     document.getElementById('coins-per-click').textContent = `${estiCoinsPerClick.toLocaleString()} $`;
     document.getElementById('goal-remain').textContent = `${(goal - coinCount)>0 ? (goal - coinCount).toLocaleString() : 0} $`;
     document.getElementById('current-date').textContent = `${currDate.getFullYear()}年${(currDate.getMonth()+1)}月${currDate.getDate()}日${currDate.getHours()}点`;
     document.getElementById('health').textContent = health;
 
+    /**健康值相关的图标跟新
+     * 
+     */
     let selfElement = document.getElementById("self");
     let medicinElement = document.getElementById('buy-medicine');
     if (health > 0) {
@@ -231,11 +272,17 @@ function updateDisplay() {
         selfElement.innerHTML = selfElement.innerHTML.replace('🧍‍♂️', '🚑');
     }
 
-    // 根据资产更新显示
+    /**根据资产列表以及分期付款列表，更新分期付款文本的剩余分期月、剩余还款倒计时天数等
+     * 需要变量：
+     *      propertyList
+     *      dividedBuyList
+     * HTML更新：
+     */
     propertyList.forEach( propertyItem => {
         // 分期付款期间 以及 偿清贷款 的情况
         dividedBuyItem = dividedBuyList.find(item => item.id === propertyItem);
-        if ( dividedBuyItem !== undefined ) {// 已有分期付款，只需更新数字
+        // 已有分期付款，只需更新数字
+        if ( dividedBuyItem !== undefined ) {
             // console.log('已有分期付款，只需更新数字')
             currDividedMonth = document.querySelector(`#${propertyItem} .divided-month`);
             currDividedMonth.textContent = currDividedMonth.textContent.replace(/\d+/, dividedBuyItem.dividedMonth);
@@ -244,14 +291,15 @@ function updateDisplay() {
             // 更新商店按钮
             shopButton = document.getElementById('buy-'+propertyItem);
             shopButton.innerHTML = shopButton.innerHTML.replace('购买', '还款');
-        } else if ( document.getElementById('buy-'+propertyItem).innerHTML.includes('还款') ) { // 没有分期付款，去掉分期付款显示（注意：这部分如果到期不还款资产被收回则不会执行）
+        // 没有分期付款，去掉分期付款显示（注意：这部分如果到期不还款资产被收回则不会执行）
+        } else if ( document.getElementById('buy-'+propertyItem).innerHTML.includes('还款') ) { 
             // 注意：这里用检测文本是否有“还款”来判定是否是分期商品
             document.querySelector(`#${propertyItem} .divided-month`).innerHTML = '';
             document.querySelector(`#${propertyItem} .pay-count-down`).innerHTML = '';
             // 更新商店按钮
             shopButton = document.getElementById('buy-'+propertyItem);
             shopButton.innerHTML = shopButton.innerHTML.replace('还款', '购买');
-        }
+        } // 到期不还款的情况在 updateDividedPay()
     })
 
     // 根据资产更新职业
@@ -268,7 +316,8 @@ function updateDisplay() {
     })
 }
 
-/** 更新函数 */
+/** 更新函数
+ ***********/
 // 更新商店按钮可购买选项
 function updateShop() {
     shopList.forEach( shopItem => {

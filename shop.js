@@ -1,5 +1,5 @@
 
-// TODO: 买东西完全可以做成一个模块化函数，只需输入价格、emoji、分期时间等就行
+
 document.getElementById('buy-mini-truck').addEventListener('click', () => {
     buyEvent('mini-truck', '🚚', 30);
 })
