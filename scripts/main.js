@@ -137,8 +137,8 @@ function everyHourEvent() {
             personTag.innerHTML = personTag.innerHTML.replace('🛌','🧍');
         }
     })
-    document.getElementById("zombie") = zombieTag;
-    document.getElementById("vampire") = vampireTag;
+    zombieTag = document.getElementById("zombie");
+    vampireTag = document.getElementById("vampire");
     if (currDate.getHours() < 9 ) { // 0-8点
         zombieTag.innerHTML = zombieTag.innerHTML.replaceAll('🧟‍♂️','⚰️');
         vampireTag.innerHTML = vampireTag.innerHTML.replaceAll('🧛‍♂️','⚰️');
