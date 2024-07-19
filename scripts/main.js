@@ -141,11 +141,11 @@ function everyHourEvent() {
     zombieTag = $("#zombie");
     vampireTag = $("#vampire");
     if (currDate.getHours() < 9 ) { // 0-8点
-        zombieTag.html( zombieTag.html().replaceAll('🧟‍♂️','⚰️') );
-        vampireTag.html( vampireTag.html().replaceAll('🧛‍♂️','⚰️') );
+        zombieTag.html( zombieTag.html().replaceAll('🧟','⚰️') );
+        vampireTag.html( vampireTag.html().replaceAll('🧛','⚰️') );
     } else {
-        zombieTag.html( zombieTag.html().replaceAll('⚰️','🧟‍♂️') );
-        vampireTag.html( vampireTag.html().replaceAll('⚰️','🧛‍♂️') );
+        zombieTag.html( zombieTag.html().replaceAll('⚰️','🧟') );
+        vampireTag.html( vampireTag.html().replaceAll('⚰️','🧛') );
     }
     
     updateShop();
@@ -308,7 +308,7 @@ function updateDisplay() {
             currDividedMonth = $(`#${propertyItem} .divided-month`);
             currDividedMonth.text( currDividedMonth.text().replace(/\d+/, dividedBuyItem.dividedMonth) );
             currPayCountDown = $(`#${propertyItem} .pay-count-down`);
-            currPayCountDown.text( ccurrPayCountDown.text().replace(/\d+/, dividedBuyItem.payCountDown) );
+            currPayCountDown.text( currPayCountDown.text().replace(/\d+/, dividedBuyItem.payCountDown) );
             // 更新商店按钮
             shopButton = $('#buy-'+propertyItem);
             shopButton.html( shopButton.html().replace('购买', '还款') );

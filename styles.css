@@ -73,6 +73,9 @@ td {
 }
 .hidden {
     visibility: hidden;
+    height: 0px;
+    margin: 0px;
+    padding: 0px;
 }
 
 /* 直观展示时间 */

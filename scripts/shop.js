@@ -51,9 +51,9 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
             )
             // 添加商品以及分期付款标识
             propertyList.push(buyId);
-            $(`#${buyId} .icon`).html() += buyIcon;
-            $(`#${buyId} .divided-month`).html(  )` 分期${buyDividedMonth}月 `;
-            $(`#${buyId} .pay-count-down`).html(  )` 支付倒计时${buyPayCountDown}天`;
+            $(`#${buyId} .icon`).html( $(`#${buyId} .icon`).html()+buyIcon );
+            $(`#${buyId} .divided-month`).html( ` 分期${buyDividedMonth}月 ` );
+            $(`#${buyId} .pay-count-down`).html( ` 支付倒计时${buyPayCountDown}天` );
         }
     }
     updateDisplay();
