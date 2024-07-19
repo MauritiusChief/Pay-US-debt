@@ -129,14 +129,23 @@ function everyHourEvent() {
     // 小人不加班时的图标
     document.querySelectorAll("[type=person]").forEach(personTag => {
         if (currDate.getHours() < 9 ) { // 0-8点
-            personTag.innerHTML = personTag.innerHTML.replace('🧍‍♂️','🛌');
+            personTag.innerHTML = personTag.innerHTML.replace('🧍','🛌');
             personTag.innerHTML = personTag.innerHTML.replace('🛀','🛌');
         } else if (currDate.getHours() > 16) { // 17-23点
-            personTag.innerHTML = personTag.innerHTML.replace('🧍‍♂️','🛀');
+            personTag.innerHTML = personTag.innerHTML.replace('🧍','🛀');
         } else {
-            personTag.innerHTML = personTag.innerHTML.replace('🛌','🧍‍♂️');
+            personTag.innerHTML = personTag.innerHTML.replace('🛌','🧍');
         }
     })
+    document.getElementById("zombie") = zombieTag;
+    document.getElementById("vampire") = vampireTag;
+    if (currDate.getHours() < 9 ) { // 0-8点
+        zombieTag.innerHTML = zombieTag.innerHTML.replaceAll('🧟‍♂️','⚰️');
+        vampireTag.innerHTML = vampireTag.innerHTML.replaceAll('🧛‍♂️','⚰️');
+    } else {
+        zombieTag.innerHTML = zombieTag.innerHTML.replaceAll('⚰️','🧟‍♂️');
+        vampireTag.innerHTML = vampireTag.innerHTML.replaceAll('⚰️','🧛‍♂️');
+    }
     
     updateShop();
     updateDisplay();
@@ -221,8 +230,8 @@ document.getElementById('click-button').addEventListener('click', () => {
     // 变更上班与加班时的图标
     if (currDate.getHours() < 9 || currDate.getHours() > 16) {
         let selfElement = document.getElementById("self");
-        selfElement.innerHTML = selfElement.innerHTML.replace('🛌', '🧍‍♂️');
-        selfElement.innerHTML = selfElement.innerHTML.replace('🛀', '🧍‍♂️');
+        selfElement.innerHTML = selfElement.innerHTML.replace('🛌', '🧍');
+        selfElement.innerHTML = selfElement.innerHTML.replace('🛀', '🧍');
         if (!document.getElementById('overtime').textContent.includes("（加班中）")) {
             document.getElementById('overtime').textContent = "（加班中）";
         }
@@ -277,10 +286,10 @@ function updateDisplay() {
     let medicinElement = document.getElementById('buy-medicine');
     if (health > 0) {
         medicinElement.classList.add('hidden');
-        selfElement.innerHTML = selfElement.innerHTML.replace('🚑', '🧍‍♂️');
+        selfElement.innerHTML = selfElement.innerHTML.replace('🚑', '🧍');
     } else {
         medicinElement.classList.remove('hidden');
-        selfElement.innerHTML = selfElement.innerHTML.replace('🧍‍♂️', '🚑');
+        selfElement.innerHTML = selfElement.innerHTML.replace('🧍', '🚑');
     }
 
     /**根据资产列表以及分期付款列表，更新分期付款文本的剩余分期月、剩余还款倒计时天数等
