@@ -65,11 +65,11 @@ function updateResource() {
  */
 function updateDisplayJob() {
     if (propertyList.includes('semi-truck')) {
-        document.getElementById('current-job').textContent = '半挂车司机';
+        $('#current-job').text( '半挂车司机' );
     } else if (propertyList.includes('mini-truck')) {
-        document.getElementById('current-job').textContent = '小货车司机';
+        $('#current-job').text( '小货车司机' );
     } else {
-        document.getElementById('current-job').textContent = '搬运工';
+        $('#current-job').text( '搬运工' );
     }
 }
 
@@ -86,19 +86,19 @@ fetch('https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accoun
     const totalDebt = data.data[0].tot_pub_debt_out_amt;
     const acquireDate = data.data[0].record_date
     goal = parseFloat(totalDebt);
-    document.getElementById('goal').textContent = goal.toLocaleString() + " $";
-    document.getElementById('goal-remain').textContent = (goal - coinCount).toLocaleString() + " $";
-    document.getElementById('goal-date').textContent = acquireDate;
+    $('#goal').text( goal.toLocaleString() + " $" );
+    $('#goal-remain').text( (goal - coinCount).toLocaleString() + " $" );
+    $('#goal-date').text( acquireDate );
     let acquireDateArray = acquireDate.split("-");
     dateArray.splice(0, 3, ...acquireDateArray);
-    document.getElementById('current-date').textContent = `${dateArray[0]}年${dateArray[1].replace(0,'')}月${dateArray[2].replace(0,'')}日${dateArray[3]}点`;
+    $('#current-date').text( `${dateArray[0]}年${dateArray[1].replace(0,'')}月${dateArray[2].replace(0,'')}日${dateArray[3]}点` );
     dateArray[1]--;
     currDate = new Date(...dateArray);
 })
 .catch(error => {
     console.error('获取美债数据出错:', error);
-    document.getElementById('goal').textContent = '数据获取失败';
-    document.getElementById('goal-date').textContent = '数据获取失败';
+    $('#goal').text( '数据获取失败' );
+    $('#goal-date').text( '数据获取失败' );
 });
 
 /** 游戏机制 
@@ -125,26 +125,27 @@ function everyHourEvent() {
     }
     health > 100 ? health = 100 : {};
     // 消除（加班中）标记
-    document.getElementById('overtime').textContent = '';
+    $('#overtime').text( '' );
     // 小人不加班时的图标
-    document.querySelectorAll("[type=person]").forEach(personTag => {
+    $("[type=person]").each(function(index, personTag) {
+        let $personTag = $(personTag);
         if (currDate.getHours() < 9 ) { // 0-8点
-            personTag.innerHTML = personTag.innerHTML.replace('🧍','🛌');
-            personTag.innerHTML = personTag.innerHTML.replace('🛀','🛌');
+            $personTag.html( $personTag.html().replace('🧍','🛌') );
+            $personTag.html( $personTag.html().replace('🛀','🛌') );
         } else if (currDate.getHours() > 16) { // 17-23点
-            personTag.innerHTML = personTag.innerHTML.replace('🧍','🛀');
+            $personTag.html( $personTag.html().replace('🧍','🛀') );
         } else {
-            personTag.innerHTML = personTag.innerHTML.replace('🛌','🧍');
+            $personTag.html( $personTag.html().replace('🛌','🧍') );
         }
     })
-    zombieTag = document.getElementById("zombie");
-    vampireTag = document.getElementById("vampire");
+    zombieTag = $("#zombie");
+    vampireTag = $("#vampire");
     if (currDate.getHours() < 9 ) { // 0-8点
-        zombieTag.innerHTML = zombieTag.innerHTML.replaceAll('🧟‍♂️','⚰️');
-        vampireTag.innerHTML = vampireTag.innerHTML.replaceAll('🧛‍♂️','⚰️');
+        zombieTag.html( zombieTag.html().replaceAll('🧟‍♂️','⚰️') );
+        vampireTag.html( vampireTag.html().replaceAll('🧛‍♂️','⚰️') );
     } else {
-        zombieTag.innerHTML = zombieTag.innerHTML.replaceAll('⚰️','🧟‍♂️');
-        vampireTag.innerHTML = vampireTag.innerHTML.replaceAll('⚰️','🧛‍♂️');
+        zombieTag.html( zombieTag.html().replaceAll('⚰️','🧟‍♂️') );
+        vampireTag.html( vampireTag.html().replaceAll('⚰️','🧛‍♂️') );
     }
     
     updateShop();
@@ -162,15 +163,15 @@ function incrementTime() {
     switch (currDate.getHours()) {
         case 17:
         case 6:
-            document.body.classList.remove("dark-mode");
-            document.body.classList.add("dawn-mode");
+            $('body').removeClass("dark-mode");
+            $('body').addClass("dawn-mode");
             break;
         case 0:
-            document.body.classList.remove("dawn-mode");
-            document.body.classList.add("dark-mode");
+            $('body').removeClass("dawn-mode");
+            $('body').addClass("dark-mode");
             break;
         case 9:
-            document.body.classList.remove("dawn-mode");
+            $('body').removeClass("dawn-mode");
             break;
         default:
             break;
@@ -207,7 +208,7 @@ function everyMonthEvent() {
  *      updateDisplay()
  * HTML更新
  */ 
-document.getElementById('click-button').addEventListener('click', () => {
+$('#click-button').click(() => {
     // 根据资产更新点击资源产量
     selfResourceList.forEach( selfResourceType => {
         switch (selfResourceType.id) {
@@ -229,14 +230,14 @@ document.getElementById('click-button').addEventListener('click', () => {
     incrementTime();
     // 变更上班与加班时的图标
     if (currDate.getHours() < 9 || currDate.getHours() > 16) {
-        let selfElement = document.getElementById("self");
-        selfElement.innerHTML = selfElement.innerHTML.replace('🛌', '🧍');
-        selfElement.innerHTML = selfElement.innerHTML.replace('🛀', '🧍');
-        if (!document.getElementById('overtime').textContent.includes("（加班中）")) {
-            document.getElementById('overtime').textContent = "（加班中）";
+        let selfElement = $("#self");
+        selfElement.html( selfElement.html().replace('🛌', '🧍') );
+        selfElement.html( selfElement.html().replace('🛀', '🧍') );
+        if (!$('#overtime').text().includes("（加班中）")) {
+            $('#overtime').text( "（加班中）" );
         }
     } else {
-        document.getElementById('overtime').textContent = '';
+        $('#overtime').text( '' );
     }
     // 上班与加班时减少健康
     if (currDate.getHours() < 9 ) { // 0-8点
@@ -251,20 +252,20 @@ document.getElementById('click-button').addEventListener('click', () => {
     clearInterval(currentTimer);
     currentTimer = setInterval(everyHourEvent, 1000);
     gamePaused = false;
-    document.getElementById('game-pause').textContent = '暂停'
+    $('#game-pause').text( '暂停' );
     
     updateShop();
     updateDisplay();
 });
 
-document.getElementById('game-pause').addEventListener('click', () => {
+$('#game-pause').click(() => {
     if (gamePaused) { // 已暂停
         currentTimer = setInterval(everyHourEvent, 1000);
-        document.getElementById('game-pause').textContent = '暂停'
+        $('#game-pause').text( '暂停' );
         gamePaused = false;
     } else { // 没暂停
         clearInterval(currentTimer);
-        document.getElementById('game-pause').textContent = '继续'
+        $('#game-pause').text( '继续' );
         gamePaused = true;
     }
 })
@@ -273,23 +274,23 @@ document.getElementById('game-pause').addEventListener('click', () => {
  *********************************/
 function updateDisplay() {
     // 基本文本更新
-    document.getElementById('coin-count').textContent = `${coinCount.toLocaleString()} $`;
-    document.getElementById('coins-per-click').textContent = `${estiCoinsPerClick.toLocaleString()} $`;
-    document.getElementById('goal-remain').textContent = `${(goal - coinCount)>0 ? (goal - coinCount).toLocaleString() : 0} $`;
-    document.getElementById('current-date').textContent = `${currDate.getFullYear()}年${(currDate.getMonth()+1)}月${currDate.getDate()}日${currDate.getHours()}点`;
-    document.getElementById('health').textContent = health;
+    $('#coin-count').text( `${coinCount.toLocaleString()} $` );
+    $('#coins-per-click').text( `${estiCoinsPerClick.toLocaleString()} $` );
+    $('#goal-remain').text( `${(goal - coinCount)>0 ? (goal - coinCount).toLocaleString() : 0} $` );
+    $('#current-date').text( `${currDate.getFullYear()}年${(currDate.getMonth()+1)}月${currDate.getDate()}日${currDate.getHours()}点` );
+    $('#health').text( health );
 
     /**健康值相关的图标跟新
      * 
      */
-    let selfElement = document.getElementById("self");
-    let medicinElement = document.getElementById('buy-medicine');
+    let selfElement = $("#self");
+    let medicinElement = $('#buy-medicine');
     if (health > 0) {
-        medicinElement.classList.add('hidden');
-        selfElement.innerHTML = selfElement.innerHTML.replace('🚑', '🧍');
+        medicinElement.addClass('hidden');
+        selfElement.html( selfElement.html().replace('🚑', '🧍') );
     } else {
-        medicinElement.classList.remove('hidden');
-        selfElement.innerHTML = selfElement.innerHTML.replace('🧍', '🚑');
+        medicinElement.removeClass('hidden');
+        selfElement.html( selfElement.html().replace('🧍', '🚑') );
     }
 
     /**根据资产列表以及分期付款列表，更新分期付款文本的剩余分期月、剩余还款倒计时天数等
@@ -304,21 +305,21 @@ function updateDisplay() {
         // 已有分期付款，只需更新数字
         if ( dividedBuyItem !== undefined ) {
             // console.log('已有分期付款，只需更新数字')
-            currDividedMonth = document.querySelector(`#${propertyItem} .divided-month`);
-            currDividedMonth.textContent = currDividedMonth.textContent.replace(/\d+/, dividedBuyItem.dividedMonth);
-            currPayCountDown = document.querySelector(`#${propertyItem} .pay-count-down`);
-            currPayCountDown.textContent = currPayCountDown.textContent.replace(/\d+/, dividedBuyItem.payCountDown);
+            currDividedMonth = $(`#${propertyItem} .divided-month`);
+            currDividedMonth.text( currDividedMonth.text().replace(/\d+/, dividedBuyItem.dividedMonth) );
+            currPayCountDown = $(`#${propertyItem} .pay-count-down`);
+            currPayCountDown.text( ccurrPayCountDown.text().replace(/\d+/, dividedBuyItem.payCountDown) );
             // 更新商店按钮
-            shopButton = document.getElementById('buy-'+propertyItem);
-            shopButton.innerHTML = shopButton.innerHTML.replace('购买', '还款');
+            shopButton = $('#buy-'+propertyItem);
+            shopButton.html( shopButton.html().replace('购买', '还款') );
         // 没有分期付款，去掉分期付款显示（注意：这部分如果到期不还款资产被收回则不会执行）
-        } else if ( document.getElementById('buy-'+propertyItem).innerHTML.includes('还款') ) { 
+        } else if ( $('#buy-'+propertyItem).html().includes('还款') ) { 
             // 注意：这里用检测文本是否有“还款”来判定是否是分期商品
-            document.querySelector(`#${propertyItem} .divided-month`).innerHTML = '';
-            document.querySelector(`#${propertyItem} .pay-count-down`).innerHTML = '';
+            $(`#${propertyItem} .divided-month`).html( '' );
+            $(`#${propertyItem} .pay-count-down`).html( '' );
             // 更新商店按钮
-            shopButton = document.getElementById('buy-'+propertyItem);
-            shopButton.innerHTML = shopButton.innerHTML.replace('还款', '购买');
+            shopButton = $('#buy-'+propertyItem);
+            shopButton.html( shopButton.html().replace('还款', '购买') );
         } // 到期不还款的情况在 updateDividedPay()
     })
 
@@ -327,12 +328,12 @@ function updateDisplay() {
 
     // 更新资源列表
     resourceList.forEach( resourceType => {
-        tableRow = document.getElementById(resourceType.id);
-        tableRow.querySelector(".net-produce .num").innerHTML = (resourceType.produce - resourceType.consume);
-        tableRow.querySelector(".net-produce .produce").innerHTML = resourceType.produce;
-        tableRow.querySelector(".net-produce .consume").innerHTML = resourceType.consume;
-        tableRow.querySelector(".income .num").innerHTML = (resourceType.produce - resourceType.consume)*resourceType.price;
-        tableRow.querySelector(".income .price").innerHTML = resourceType.price;
+        tableRow = $(`#${resourceType.id}`);
+        tableRow.find(".net-produce .num").html( (resourceType.produce - resourceType.consume) );
+        tableRow.find(".net-produce .produce").html( resourceType.produce );
+        tableRow.find(".net-produce .consume").html( resourceType.consume );
+        tableRow.find(".income .num").html( (resourceType.produce - resourceType.consume)*resourceType.price );
+        tableRow.find(".income .price").html( resourceType.price );
     })
 }
 
@@ -342,14 +343,14 @@ function updateDisplay() {
 function updateShop() {
     shopList.forEach( shopItem => {
         if ( coinCount >= shopItem.dividedPrice) {
-            document.getElementById(shopItem.id).disabled = false;
+            $(`#${shopItem.id}`).prop('disabled', false);
         } else {
-            document.getElementById(shopItem.id).disabled = true;
+            $(`#${shopItem.id}`).prop('disabled', true);
         }
     })
     // 得病无法工作也借用此处
-    clickButton = document.getElementById("click-button");
-    health < 0 ? clickButton.disabled = true : clickButton.disabled = false;
+    ableToWork = health < 0 ? true : false;
+    $("#click-button").prop('disabled', ableToWork)
 }
 
 // 更新分期付款到期未还款（包含相关更新显示）
@@ -360,13 +361,13 @@ function updateDividedPay() {
             propertyList = propertyList.filter( item => { // 移除这个资产
                 return item !== dividedBuyItem.id;
             });
-            icon = document.querySelector(`#${dividedBuyItem.id} .icon`);
-            icon.textContent = icon.textContent.replace(dividedBuyItem.icon, "")
-            document.querySelector(`#${dividedBuyItem.id} .divided-month`).textContent = '';
-            document.querySelector(`#${dividedBuyItem.id} .pay-count-down`).textContent = '';
+            icon = $(`#${dividedBuyItem.id} .icon`);
+            icon.text( icon.text().replace(dividedBuyItem.icon, "") );
+            $(`#${dividedBuyItem.id} .divided-month`).text( '' );
+            $(`#${dividedBuyItem.id} .pay-count-down`).text( '' );
             // 更新商店按钮
-            shopButton = document.getElementById('buy-'+dividedBuyItem.id);
-            shopButton.innerHTML = shopButton.innerHTML.replace('还款', '购买');
+            shopButton = $('#buy-'+dividedBuyItem.id);
+            shopButton.html( shopButton.html().replace('还款', '购买') );
 
             dividedBuyList = dividedBuyList.filter( item => { // 移除这个分期付款
                 return item.id !== dividedBuyItem.id;
@@ -384,7 +385,7 @@ function checkGoal() {
 
 /** 作弊 */
 let userKeyInput = ''
-document.addEventListener('keydown', (event) => {
+$(document).on('keydown', function(event) {
     const key = event.key;
 
     // Add the pressed key to the userInput string

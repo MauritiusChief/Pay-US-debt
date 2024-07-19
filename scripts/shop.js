@@ -1,20 +1,20 @@
 
 
-document.getElementById('buy-mini-truck').addEventListener('click', () => {
+$('#buy-mini-truck').click(() => {
     buyEvent('mini-truck', '🚚', 30);
 })
 
-document.getElementById('buy-semi-truck').addEventListener('click', () => {
+$('#buy-semi-truck').click(() => {
     buyEvent('semi-truck', '🚛', 30);
 })
 
-document.getElementById('buy-medicine').addEventListener('click', () => {
+$('#buy-medicine').click(() => {
     shopItem = shopList.find(item => item.id === ('buy-medicine') )
     coinCount -= shopItem.price;
     health += 15;
 })
 
-document.getElementById('buy-logistic-station').addEventListener('click', () => {
+$('#buy-logistic-station').click(() => {
     buyEvent('logistic-station', '📦', 0);
 })
 
@@ -26,7 +26,7 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
         coinCount -= shopItem.price;
         // 资产列表添加商品
         propertyList.push(buyId);
-        document.querySelector(`#${buyId} .icon`).innerHTML += buyIcon;
+        $(`#${buyId} .icon`).html() += buyIcon;
     } else if ( buyPayCountDown > 0 && coinCount >= shopItem.dividedPrice) { // 进入分期付款流程
         // 这部分代码只有运行分期付款的商品才执行
         coinCount -= shopItem.dividedPrice;
@@ -51,9 +51,9 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
             )
             // 添加商品以及分期付款标识
             propertyList.push(buyId);
-            document.querySelector(`#${buyId} .icon`).innerHTML += buyIcon;
-            document.querySelector(`#${buyId} .divided-month`).innerHTML = ` 分期${buyDividedMonth}月 `;
-            document.querySelector(`#${buyId} .pay-count-down`).innerHTML = ` 支付倒计时${buyPayCountDown}天`;
+            $(`#${buyId} .icon`).html() += buyIcon;
+            $(`#${buyId} .divided-month`).html(  )` 分期${buyDividedMonth}月 `;
+            $(`#${buyId} .pay-count-down`).html(  )` 支付倒计时${buyPayCountDown}天`;
         }
     }
     updateDisplay();
