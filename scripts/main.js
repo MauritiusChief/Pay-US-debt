@@ -10,6 +10,7 @@ let dateArray = [1000, 0, 1, 8]
 let currDate = new Date(...dateArray);
 let gameFinished = false;
 let currentTimer;
+let gamePaused = true;
 
 /** 商品及职业列表
  ***************/
@@ -240,13 +241,23 @@ document.getElementById('click-button').addEventListener('click', () => {
     // 每次点击则重置计时，避免时间跳动
     clearInterval(currentTimer);
     currentTimer = setInterval(everyHourEvent, 1000);
+    gamePaused = false;
+    document.getElementById('game-pause').textContent = '暂停'
     
     updateShop();
     updateDisplay();
 });
 
 document.getElementById('game-pause').addEventListener('click', () => {
-    clearInterval(currentTimer);
+    if (gamePaused) { // 已暂停
+        currentTimer = setInterval(everyHourEvent, 1000);
+        document.getElementById('game-pause').textContent = '暂停'
+        gamePaused = false;
+    } else { // 没暂停
+        clearInterval(currentTimer);
+        document.getElementById('game-pause').textContent = '继续'
+        gamePaused = true;
+    }
 })
 
 /** 更新显示（不是所有显示都在此更新）
