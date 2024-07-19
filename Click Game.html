@@ -23,22 +23,47 @@
             <button id="click-button">努力赚美刀</button>
         </div>
         <div id="shop" class="grid-panel">
-            <h2>商店</h2>
+            <h2>市场</h2>
             <button id="buy-mini-truck" class="shop-goods hastooltip">购买小货车
                 <span class="tooltiptext"><div>3,500.00 $</div><div>分期 640.00 $ * 6月</div></span>
             </button>
             <button id="buy-semi-truck" class="shop-goods hastooltip">购买半挂车
-                <span class="tooltiptext"><div>44,500.00 $</div><div>分期 4080.00 $ * 12月</div></span>
+                <span class="tooltiptext"><div>18,500.00 $</div><div>分期 3,400.00 $ * 6月</div></span>
             </button>
-            <h2>超市</h2>
+            <h2>商店</h2>
             <button id="buy-medicine" class="shop-goods hastooltip">买药<span class="tooltiptext">30.00 $</span></span></button>
             <h2>执照</h2>
+            <button id="buy-logistic-station" class="shop-goods hastooltip">开设物流站点<span class="tooltiptext">4,500.00 $</span></span></button>
         </div>
         <div id="model-display" class="grid-panel">
             <h2>资产</h2>
             <p id="self" type="person" class="hastooltip">🧍‍♂️<span class="tooltiptext">这是你自己</span><span> 健康:</span><span id="health"></span></p>
             <p id="mini-truck"><span class="icon"></span><span class="divided-month"></span><span class="pay-count-down"></span></p>
             <p id="semi-truck"><span class="icon"></span><span class="divided-month"></span><span class="pay-count-down"></span></p>
+
+            <p id="logistic-station" class="hastooltip"><span class="icon"></span><span class="tooltiptext">物流站点</span></p>
+            <h2>资源</h2>
+            <table>
+                <tr>
+                    <th>名称</th>
+                    <th>产出</th>
+                    <th>收入</th>
+                </tr>
+                <tr id="transport">
+                    <td>📦运力</td>
+                    <td class="net-produce hastooltip">
+                        <span class="num">1</span>/小时
+                        <span class="tooltiptext">
+                            <div>生产<span class="produce">1</span>/小时</div>
+                            <div>消耗<span class="consume">1</span>/小时</div>
+                        </span>
+                    </td>
+                    <td class="income hastooltip">
+                        <span class="num">2</span> $
+                        <span class="tooltiptext">单价 <span class="price">1</span> $</span>
+                    </td>
+                </tr>
+            </table>
         </div>
         <div id="notice" class="grid-panel">
             <h4>通知</h4>
