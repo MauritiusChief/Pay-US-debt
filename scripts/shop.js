@@ -18,6 +18,17 @@ $('#buy-logistic-station').click(() => {
     buyEvent('logistic-station', '📦', 0);
 })
 
+/**购买事件，根据钱数全款购买或者分期付款购买
+ * 需要变量：
+ *      shopList
+ *      coinCount
+ * HTML更新：
+ *      在模型面板添加emoji
+ *      劳动力面板去除隐藏
+ * 更新变量：
+ *      propertyList（商品入库）
+ *      dividedBuyList（分期付款时，加上分期付款记录）
+ */
 function buyEvent(buyId, buyIcon, buyPayCountDown) {
     shopItem = shopList.find(shopItem => shopItem.id === ('buy-'+buyId) )
     buyDividedPrice = shopItem.dividedPrice; // 改为直接用shopItem数据

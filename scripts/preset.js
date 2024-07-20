@@ -41,14 +41,17 @@ let selfResourceList = [
 
 /**根据资产更新资源产出和收入
  * 需要变量：
+ *      workingProperty
+ *      selfResourceList（必须先处理，因为后续更新estiCoinsPerClick需要）
+ *      workStat
  *      resourceList
- *      selfResourceList
  * 更新变量：
  *      coinsPerClick
  *      estiCoinsPerClick
  */
 function updateResource() {
     coinsPerClick = 0;
+    // 先根据当前工作使用的资产处理小人自己的资源产出
     selfResourceList.forEach( selfResourceType => {
         switch (selfResourceType.id) {
             case 'transport': // 运力
@@ -85,7 +88,7 @@ function updateResource() {
 }
 /**根据资产更新职业
  * 需要变量：
- *      propertyList
+ *      workingProperty
  * HTML更新
  */
 function updateDisplayJob() {
@@ -115,6 +118,8 @@ function updateDisplay() {
     $('#health').text( health );
 
     /**健康值相关的图标跟新
+     * 需要变量：
+     *      health
      * HTML更新：
      */
     let selfElement = $("#self");

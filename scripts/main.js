@@ -31,10 +31,15 @@ fetch('https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accoun
 /** 游戏机制 
  ***********/
 /**每小时事件（特指不工作时定时触发的时间流逝）
+ * 需要变量：
+ *      currDate
  * 使用函数：
  *      incrementTime()
  *      updateShop()
  *      updateDisplay()
+ * 更新变量：
+ *      workStat（0，没上班）
+ *      health
  * HTML更新
  */ 
 function everyHourEvent() {
@@ -84,7 +89,7 @@ function everyHourEvent() {
  * 需要变量：
  *      coinCount
  *      coinsPerClick
- * 需要函数：
+ * 使用函数：
  *      updateResource()
  * HTML更新
  */ 
@@ -131,12 +136,16 @@ function everyMonthEvent() {
 }
 
 /**点击挣钱按钮（工作点击触发的时间流逝）
- * 使用变量：
- *      selfResourceList
+ * 需要变量：
+ *      currDate
  * 使用函数：
  *      incrementTime()
  *      updateShop()
  *      updateDisplay()
+ * 更新变量：
+ *      workStat（1，上班）
+ *      health
+ *      gamePaused（false，解除暂停）
  * HTML更新
  */ 
 $('#click-button').click(() => {
@@ -189,7 +198,13 @@ $('#game-pause').click(() => {
 
 /** 更新函数
  ***********/
-// 更新商店按钮可购买选项
+/**商店按钮锁定与解锁；点击挣钱按钮锁定与解锁
+ * 需要变量：
+ *      shopList
+ *      coinCount
+ *      health
+ * HTML更新：
+ */
 function updateShop() {
     shopList.forEach( shopItem => {
         if ( coinCount >= shopItem.dividedPrice) {
@@ -203,12 +218,14 @@ function updateShop() {
     $("#click-button").prop('disabled', ableToWork)
 }
 
-/**更新分期付款到期未还款（包含相关更新显示）
- * 需要变量：
- *      dividedBuyList
- *      propertyList（需保证dividedBuyList.item必须在propertyList中有对应）
+/**根据分期付款到期未还款更新或移除资产（包含相关更新显示）
  * HTML更新：
  *      删除分期付款文本的分期月、还款倒计时天数
+ *      勾选盒取消勾选；劳动力面板隐藏
+ * 更新变量：
+ *      dividedBuyList
+ *      propertyList（需保证dividedBuyList.item必须在propertyList中有对应）
+ *      workingProperty
  */
 function updateDividedPay() {
     dividedBuyList.forEach( dividedBuyItem => {
