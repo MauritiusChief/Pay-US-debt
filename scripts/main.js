@@ -141,8 +141,6 @@ function everyHourEvent() {
     
     // 触发不上班效果 TODO:可以做成分开的函数
     workStat = 0;
-    updateResource();
-    coinCount += coinsPerClick;
     // 不上班则回复健康
     if (currDate.getHours() < 9 ) { // 0-8点
         health < 0 ? {} : health += 2;
@@ -182,6 +180,11 @@ function everyHourEvent() {
     // console.log(dividedBuyList)
 }
 /**实际的步进时间事件
+ * 需要变量：
+ *      coinCount
+ *      coinsPerClick
+ * 需要函数：
+ *      updateResource()
  * HTML更新
  */ 
 function incrementTime() {
@@ -207,8 +210,10 @@ function incrementTime() {
     }
 
     // 无论时间流逝是定时触发还是点击触发都需执行的内容
-    checkGoal()
+    updateResource();
+    coinCount += coinsPerClick;
 
+    checkGoal()
 }
 /**每日事件
  */ 
@@ -224,7 +229,6 @@ function everyMonthEvent() {
 
 }
 
-// 
 /**点击挣钱按钮（工作点击触发的时间流逝）
  * 使用变量：
  *      selfResourceList
@@ -235,12 +239,10 @@ function everyMonthEvent() {
  * HTML更新
  */ 
 $('#click-button').click(() => {
-    // 根据资产更新点击资源产量
+    incrementTime();
+
     // 触发上班的效果
     workStat = 1;
-    updateResource();
-    coinCount += coinsPerClick;
-    incrementTime();
     // 变更上班与加班时的图标
     if (currDate.getHours() < 9 || currDate.getHours() > 16) {
         let selfElement = $("#self");
@@ -294,7 +296,7 @@ function updateDisplay() {
     $('#health').text( health );
 
     /**健康值相关的图标跟新
-     * 
+     * HTML更新：
      */
     let selfElement = $("#self");
     let medicinElement = $('#buy-health-elixir');
@@ -341,7 +343,11 @@ function updateDisplay() {
     // 根据资产更新职业
     updateDisplayJob();
 
-    // 更新资源列表
+    /**更新资源列表的产量、收入等数字
+     * 需要变量：
+     *      resourceList
+     * HTML更新：
+     */
     resourceList.forEach( resourceType => {
         tableRow = $(`#${resourceType.id}`);
         tableRow.find(".net-produce .num").html( (resourceType.produce - resourceType.consume) );
