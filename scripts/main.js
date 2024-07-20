@@ -19,7 +19,7 @@ const shopList = [ // 商品列表
     {id:'buy-mini-truck', price:3500, dividedPrice:640, dividedMonth:6},
     {id:'buy-semi-truck', price:18500, dividedPrice:3400, dividedMonth:6},
 
-    {id:'buy-medicine', price:30, dividedPrice:30, dividedMonth:0},
+    {id:'see-doctor', price:300, dividedPrice:300, dividedMonth:0},
 
     {id:'buy-logistic-station', price:4500, dividedPrice:4500, dividedMonth:0}
 ]
@@ -297,7 +297,7 @@ function updateDisplay() {
      * 
      */
     let selfElement = $("#self");
-    let medicinElement = $('#buy-medicine');
+    let medicinElement = $('#see-doctor');
     if (health > 0) {
         medicinElement.addClass('hidden');
         selfElement.html( selfElement.html().replace('🚑', '🧍') );
@@ -315,8 +315,7 @@ function updateDisplay() {
     propertyList.forEach( propertyItem => {
         // 分期付款期间 以及 偿清贷款 的情况
         dividedBuyItem = dividedBuyList.find(item => item.id === propertyItem.id);
-        // 已有分期付款，只需更新数字
-        if ( dividedBuyItem !== undefined ) {
+        if ( dividedBuyItem !== undefined ) { // 已有分期付款，只需更新数字
             // console.log('已有分期付款，只需更新数字')
             currDividedMonth = $(`#${propertyItem.id} .divided-month`);
             currDividedMonth.text( currDividedMonth.text().replace(/\d+/, dividedBuyItem.dividedMonth) );
@@ -325,8 +324,7 @@ function updateDisplay() {
             // 更新商店按钮
             shopButton = $('#buy-'+propertyItem.id);
             shopButton.html( shopButton.html().replace('购买', '还款') );
-        // 没有分期付款，去掉分期付款显示（注意：这部分如果到期不还款资产被收回则不会执行）
-        } else if ( $('#buy-'+propertyItem.id).html().includes('还款') ) { 
+        } else if ( $('#buy-'+propertyItem.id).html().includes('还款') ) { // 没有分期付款，去掉分期付款显示（注意：这部分如果到期不还款资产被收回则不会执行）
             // 注意：这里用检测文本是否有“还款”来判定是否是分期商品
             $(`#${propertyItem.id} .divided-month`).html( '' );
             $(`#${propertyItem.id} .pay-count-down`).html( '' );
@@ -334,6 +332,10 @@ function updateDisplay() {
             shopButton = $('#buy-'+propertyItem.id);
             shopButton.html( shopButton.html().replace('还款', '购买') );
         } // 到期不还款的情况在 updateDividedPay()
+
+        // 更新劳动力分配面板
+        propertyItem.id === workingProperty ? selfWork = 1 : selfWork = 0;
+        $(`#${propertyItem.id} .work-force-limit`).text( propertyItem.amount-selfWork );
     })
 
     // 根据资产更新职业

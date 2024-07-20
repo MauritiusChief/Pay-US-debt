@@ -8,8 +8,8 @@ $('#buy-semi-truck').click(() => {
     buyEvent('semi-truck', '🚛', 30);
 })
 
-$('#buy-medicine').click(() => {
-    shopItem = shopList.find(item => item.id === ('buy-medicine') )
+$('#see-doctor').click(() => {
+    shopItem = shopList.find(item => item.id === ('see-doctor') )
     coinCount -= shopItem.price;
     health += 15;
 })
