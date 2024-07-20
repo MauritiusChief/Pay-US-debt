@@ -19,7 +19,7 @@ const shopList = [ // 商品列表
     {id:'buy-mini-truck', price:3500, dividedPrice:640, dividedMonth:6},
     {id:'buy-semi-truck', price:18500, dividedPrice:3400, dividedMonth:6},
 
-    {id:'see-doctor', price:300, dividedPrice:300, dividedMonth:0},
+    {id:'buy-health-elixir', price:50, dividedPrice:50, dividedMonth:0},
 
     {id:'buy-logistic-station', price:4500, dividedPrice:4500, dividedMonth:0}
 ]
@@ -297,7 +297,7 @@ function updateDisplay() {
      * 
      */
     let selfElement = $("#self");
-    let medicinElement = $('#see-doctor');
+    let medicinElement = $('#buy-health-elixir');
     if (health > 0) {
         medicinElement.addClass('hidden');
         selfElement.html( selfElement.html().replace('🚑', '🧍') );

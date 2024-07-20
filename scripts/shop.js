@@ -8,10 +8,10 @@ $('#buy-semi-truck').click(() => {
     buyEvent('semi-truck', '🚛', 30);
 })
 
-$('#see-doctor').click(() => {
-    shopItem = shopList.find(item => item.id === ('see-doctor') )
+$('#buy-health-elixir').click(() => {
+    shopItem = shopList.find(item => item.id === ('buy-health-elixir') )
     coinCount -= shopItem.price;
-    health += 15;
+    health += 20;
 })
 
 $('#buy-logistic-station').click(() => {
