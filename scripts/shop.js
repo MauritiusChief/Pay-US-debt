@@ -25,8 +25,17 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
     if (coinCount >= shopItem.price) {
         coinCount -= shopItem.price;
         // 资产列表添加商品
-        propertyList.push(buyId);
-        $(`#${buyId} .icon`).html() += buyIcon;
+        propertyItem = propertyList.find(item => {
+            return item.id === buyId
+        })
+        if ( propertyItem !== undefined ) {// 已有这个商品
+            propertyItem.amount++;
+        } else { // 没有这个商品，创建这个商品
+            propertyList.push(
+                {id: buyId, amount: 1, maintainStatus: 5, maintainDecrChance: 0.2}
+            );
+        }
+        $(`#${buyId} .icon`).html( $(`#${buyId} .icon`).html()+buyIcon );
     } else if ( buyPayCountDown > 0 && coinCount >= shopItem.dividedPrice) { // 进入分期付款流程
         // 这部分代码只有运行分期付款的商品才执行
         coinCount -= shopItem.dividedPrice;
@@ -50,11 +59,21 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
                 {id: buyId, icon: buyIcon, dividedPrice: buyDividedPrice, dividedMonth: buyDividedMonth, payCountDown: buyPayCountDown}
             )
             // 添加商品以及分期付款标识
-            propertyList.push(buyId);
+            propertyItem = propertyList.find(item => {
+                return item.id === buyId
+            })
+            if ( propertyItem !== undefined ) {// 已有这个商品
+                propertyItem.amount++;
+            } else { // 没有这个商品，创建这个商品
+                propertyList.push(
+                    {id: buyId, amount: 1, maintainStatus: 5, maintainDecrChance: 0.2}
+                );
+            }
             $(`#${buyId} .icon`).html( $(`#${buyId} .icon`).html()+buyIcon );
             $(`#${buyId} .divided-month`).html( ` 分期${buyDividedMonth}月 ` );
             $(`#${buyId} .pay-count-down`).html( ` 支付倒计时${buyPayCountDown}天` );
         }
     }
+    // console.log(propertyList)
     updateDisplay();
 }

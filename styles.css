@@ -55,6 +55,11 @@ button {
     margin: 10px auto;
 }
 
+#model-display button {
+    margin: 0px;
+    padding: 0px;
+}
+
 td {
     padding: 5px 10px;
 }

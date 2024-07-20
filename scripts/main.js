@@ -4,6 +4,7 @@ let health = 100.00;
 let effectList = []
 let workStat = 0; // 上班与否标记，用在资源列表更新中，0代表不上班1代表上班，以后可能会改一个方式
 let estiCoinsPerClick = 12.5;
+let workingProperty = ''
 
 let goal = 100;
 let dateArray = [1000, 0, 1, 8]
@@ -23,7 +24,9 @@ const shopList = [ // 商品列表
     {id:'buy-logistic-station', price:4500, dividedPrice:4500, dividedMonth:0}
 ]
 let dividedBuyList = [];
+//示例dividedBuyList:[ {id:'property-name', icon:'🎈', dividedPrice:10, dividedMonth:6, payCountDown:30} ]
 let propertyList = [];
+//示例propertyList:[ {id:'property-name', amount:1, maintainStatus:5, maintainDecrChance:0.5} ]
 let resourceList = [
     {id:'transport', produce:0, consume:0, stock:0, price:0.5}
 ]
@@ -47,7 +50,7 @@ function updateResource() {
         switch (resourceType.id) {
             case 'transport':
                 propertyList.forEach( propertyItem => {
-                    propertyItem === 'logistic-station' ? resourceType.produce += 5 : {};
+                    propertyItem.id === 'logistic-station' ? resourceType.produce += 5*propertyItem.amount : {};
                 })
                 break;
         }
@@ -64,13 +67,19 @@ function updateResource() {
  * HTML更新
  */
 function updateDisplayJob() {
-    if (propertyList.includes('semi-truck')) {
-        $('#current-job').text( '半挂车司机' );
-    } else if (propertyList.includes('mini-truck')) {
-        $('#current-job').text( '小货车司机' );
-    } else {
-        $('#current-job').text( '搬运工' );
+    var currentJobText = '';
+    switch (workingProperty) {
+        case 'semi-truck':
+            currentJobText = '半挂车司机';
+            break;
+        case 'mini-truck':
+            currentJobText = '小货车司机';
+            break;
+        default:
+            currentJobText = '搬运工';
+            break;
     }
+    $('#current-job').text( currentJobText );
 }
 
 /** 初始化
@@ -212,13 +221,17 @@ $('#click-button').click(() => {
     // 根据资产更新点击资源产量
     selfResourceList.forEach( selfResourceType => {
         switch (selfResourceType.id) {
-            case 'transport':
-                if (propertyList.includes('semi-truck')) {
-                    selfResourceType.produce = 85;
-                } else if (propertyList.includes('mini-truck')) {
-                    selfResourceType.produce = 45;
-                } else {
-                    selfResourceType.produce = 25;
+            case 'transport': // 运力
+                switch (workingProperty) {
+                    case 'semi-truck':
+                        selfResourceType.produce = 85;
+                        break;
+                    case 'mini-truck':
+                        selfResourceType.produce = 45;
+                        break;
+                    default:
+                        selfResourceType.produce = 25;
+                        break;
                 }
                 break;
         }
@@ -301,24 +314,24 @@ function updateDisplay() {
      */
     propertyList.forEach( propertyItem => {
         // 分期付款期间 以及 偿清贷款 的情况
-        dividedBuyItem = dividedBuyList.find(item => item.id === propertyItem);
+        dividedBuyItem = dividedBuyList.find(item => item.id === propertyItem.id);
         // 已有分期付款，只需更新数字
         if ( dividedBuyItem !== undefined ) {
             // console.log('已有分期付款，只需更新数字')
-            currDividedMonth = $(`#${propertyItem} .divided-month`);
+            currDividedMonth = $(`#${propertyItem.id} .divided-month`);
             currDividedMonth.text( currDividedMonth.text().replace(/\d+/, dividedBuyItem.dividedMonth) );
-            currPayCountDown = $(`#${propertyItem} .pay-count-down`);
+            currPayCountDown = $(`#${propertyItem.id} .pay-count-down`);
             currPayCountDown.text( currPayCountDown.text().replace(/\d+/, dividedBuyItem.payCountDown) );
             // 更新商店按钮
-            shopButton = $('#buy-'+propertyItem);
+            shopButton = $('#buy-'+propertyItem.id);
             shopButton.html( shopButton.html().replace('购买', '还款') );
         // 没有分期付款，去掉分期付款显示（注意：这部分如果到期不还款资产被收回则不会执行）
-        } else if ( $('#buy-'+propertyItem).html().includes('还款') ) { 
+        } else if ( $('#buy-'+propertyItem.id).html().includes('还款') ) { 
             // 注意：这里用检测文本是否有“还款”来判定是否是分期商品
-            $(`#${propertyItem} .divided-month`).html( '' );
-            $(`#${propertyItem} .pay-count-down`).html( '' );
+            $(`#${propertyItem.id} .divided-month`).html( '' );
+            $(`#${propertyItem.id} .pay-count-down`).html( '' );
             // 更新商店按钮
-            shopButton = $('#buy-'+propertyItem);
+            shopButton = $('#buy-'+propertyItem.id);
             shopButton.html( shopButton.html().replace('还款', '购买') );
         } // 到期不还款的情况在 updateDividedPay()
     })
@@ -353,14 +366,26 @@ function updateShop() {
     $("#click-button").prop('disabled', ableToWork)
 }
 
-// 更新分期付款到期未还款（包含相关更新显示）
+/**更新分期付款到期未还款（包含相关更新显示）
+ * 需要变量：
+ *      dividedBuyList
+ *      propertyList（需保证dividedBuyList.item必须在propertyList中有对应）
+ */
 function updateDividedPay() {
     dividedBuyList.forEach( dividedBuyItem => {
         dividedBuyItem.payCountDown--;
         if (dividedBuyItem.payCountDown === 0) {
-            propertyList = propertyList.filter( item => { // 移除这个资产
-                return item !== dividedBuyItem.id;
-            });
+            // 移除这个资产
+            propertyItem = propertyList.find(item => {
+                return item.id === dividedBuyItem.id
+            })
+            if (propertyItem.amount > 1) { // 资产数量-1
+                propertyItem.amount--;
+            } else { // 资产数量不足1，直接移除
+                propertyList = propertyList.filter( item => { 
+                    return item.id !== dividedBuyItem.id;
+                });
+            }
             icon = $(`#${dividedBuyItem.id} .icon`);
             icon.text( icon.text().replace(dividedBuyItem.icon, "") );
             $(`#${dividedBuyItem.id} .divided-month`).text( '' );
@@ -394,15 +419,31 @@ $(document).on('keydown', function(event) {
     // Check if the current input matches the cheat code
     if (userKeyInput.toLowerCase().includes('paxamericana')) {
         coinCount += 20000000000000
-        userKeyInput = ''; // Reset user input after successful cheat code entry
+        userKeyInput = '';
     }
     if (userKeyInput.toLowerCase().includes('money')) {
         coinCount += 6000
-        userKeyInput = ''; // Reset user input after successful cheat code entry
+        userKeyInput = '';
     }
     if (userKeyInput.toLowerCase().includes('coin')) {
         coinCount += 500
-        userKeyInput = ''; // Reset user input after successful cheat code entry
+        userKeyInput = '';
+    }
+    if (userKeyInput.toLowerCase().includes('timefly')) { // 快速过5天
+        clearInterval(currentTimer);
+        Array(5*24).fill().forEach(() => everyHourEvent());
+        if (!gamePaused) {
+            currentTimer = setInterval(everyHourEvent, 1000);
+        }
+        userKeyInput = '';
+    }
+    if (userKeyInput.toLowerCase().includes('tictoc')) { // 快速过1天
+        clearInterval(currentTimer);
+        Array(24).fill().forEach(() => everyHourEvent());
+        if (!gamePaused) {
+            currentTimer = setInterval(everyHourEvent, 1000);
+        }
+        userKeyInput = '';
     }
     
     // Optional: Clear user input if it exceeds the cheat code length to avoid unnecessary memory usage
