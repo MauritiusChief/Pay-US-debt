@@ -57,7 +57,7 @@ button {
 
 #model-display button {
     margin: 0px;
-    padding: 0px;
+    padding: 0px 1px;
 }
 
 td {
@@ -76,9 +76,10 @@ td {
 .hastooltip:hover .tooltiptext {
     visibility: visible;
 }
-.hidden {
+.hidden, .hidden * {
     visibility: hidden;
     height: 0px;
+    width: 0px;
     margin: 0px;
     padding: 0px;
 }

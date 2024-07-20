@@ -44,6 +44,23 @@ let selfResourceList = [
  */
 function updateResource() {
     coinsPerClick = 0;
+    selfResourceList.forEach( selfResourceType => {
+        switch (selfResourceType.id) {
+            case 'transport': // 运力
+                switch (workingProperty) {
+                    case 'semi-truck':
+                        selfResourceType.produce = 85;
+                        break;
+                    case 'mini-truck':
+                        selfResourceType.produce = 45;
+                        break;
+                    default:
+                        selfResourceType.produce = 25;
+                        break;
+                }
+                break;
+        }
+    });
     resourceList.forEach( resourceType => {
         resourceType.produce = 0;
         // 自动生产的资源
@@ -219,23 +236,6 @@ function everyMonthEvent() {
  */ 
 $('#click-button').click(() => {
     // 根据资产更新点击资源产量
-    selfResourceList.forEach( selfResourceType => {
-        switch (selfResourceType.id) {
-            case 'transport': // 运力
-                switch (workingProperty) {
-                    case 'semi-truck':
-                        selfResourceType.produce = 85;
-                        break;
-                    case 'mini-truck':
-                        selfResourceType.produce = 45;
-                        break;
-                    default:
-                        selfResourceType.produce = 25;
-                        break;
-                }
-                break;
-        }
-    });
     // 触发上班的效果
     workStat = 1;
     updateResource();

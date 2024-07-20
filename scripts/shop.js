@@ -36,6 +36,7 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
             );
         }
         $(`#${buyId} .icon`).html( $(`#${buyId} .icon`).html()+buyIcon );
+        $(`#${buyId}`).removeClass('hidden'); // 去除隐藏
     } else if ( buyPayCountDown > 0 && coinCount >= shopItem.dividedPrice) { // 进入分期付款流程
         // 这部分代码只有运行分期付款的商品才执行
         coinCount -= shopItem.dividedPrice;
@@ -72,6 +73,7 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
             $(`#${buyId} .icon`).html( $(`#${buyId} .icon`).html()+buyIcon );
             $(`#${buyId} .divided-month`).html( ` 分期${buyDividedMonth}月 ` );
             $(`#${buyId} .pay-count-down`).html( ` 支付倒计时${buyPayCountDown}天` );
+            $(`#${buyId}`).removeClass('hidden'); // 去除隐藏
         }
     }
     // console.log(propertyList)

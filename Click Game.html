@@ -26,10 +26,10 @@
         <div id="shop" class="grid-panel">
             <h2>市场</h2>
             <button id="buy-mini-truck" class="shop-goods hastooltip">购买小货车
-                <span class="tooltiptext"><div>3,500.00 $</div><div>分期 640.00 $ * 6月</div></span>
+                <span class="tooltiptext">3,500.00 $<br>分期 640.00 $ * 6月</span>
             </button>
             <button id="buy-semi-truck" class="shop-goods hastooltip">购买半挂车
-                <span class="tooltiptext"><div>18,500.00 $</div><div>分期 3,400.00 $ * 6月</div></span>
+                <span class="tooltiptext">18,500.00 $<br>分期 3,400.00 $ * 6月</span>
             </button>
             <h2>商店</h2>
             <button id="buy-medicine" class="shop-goods hastooltip">买药<span class="tooltiptext">30.00 $</span></span></button>
@@ -43,8 +43,24 @@
             <p id="self" type="person" class="hastooltip">🧍<span class="tooltiptext">这是你自己</span><span>健康:</span><span id="health"></span></p>
             <p id="zombie" type="undead" class="hastooltip"></p>
             <p id="vampire" type="undead" class="hastooltip"></p>
-            <p id="mini-truck"><span class="icon"></span><span class="divided-month"></span><span class="pay-count-down"></span></p>
-            <p id="semi-truck"><span class="icon"></span><span class="divided-month"></span><span class="pay-count-down"></span></p>
+            <p id="mini-truck" class="hidden">
+                <span class="icon"></span><span class="divided-month"></span><span class="pay-count-down"></span><br>
+                <span class="work-force use-worker">
+                    <button type="decr">-</button>
+                    <span class="work-force-input">0</span>/<span class="work-force-limit">0</span>
+                    <button type="incr">+</button>
+                </span>
+                <span class="work-here"><input type="checkbox">在此工作</span>
+            </p>
+            <p id="semi-truck" class="hidden">
+                <span class="icon"></span><span class="divided-month"></span><span class="pay-count-down"></span><br>
+                <span class="work-force use-worker">
+                    <button type="decr">-</button>
+                    <span class="work-force-input">0</span>/<span class="work-force-limit">0</span>
+                    <button type="incr">+</button>
+                </span>
+                <span class="work-here"><input type="checkbox">在此工作</span>
+            </p>
 
             <p id="logistic-station" class="hastooltip"><span class="icon"></span><span class="tooltiptext">物流站点</span></p>
             <h2>资源</h2>
@@ -57,14 +73,13 @@
                 <tr id="transport">
                     <td>📦运力</td>
                     <td class="net-produce hastooltip">
-                        <span class="num">1</span>/小时
+                        <span class="num">0</span>/小时
                         <span class="tooltiptext">
-                            <div>生产<span class="produce">1</span>/小时</div>
-                            <div>消耗<span class="consume">1</span>/小时</div>
+                            生产<span class="produce">0</span>/小时<br>消耗<span class="consume">0</span>/小时
                         </span>
                     </td>
                     <td class="income hastooltip">
-                        <span class="num">2</span> $
+                        <span class="num">0</span> $
                         <span class="tooltiptext">单价 <span class="price">1</span> $</span>
                     </td>
                 </tr>
@@ -77,5 +92,6 @@
     </div>
     <script src="scripts/main.js"></script>
     <script src="scripts/shop.js"></script>
+    <script src="scripts/resource.js"></script>
 </body>
 </html>
