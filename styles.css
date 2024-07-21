@@ -11,8 +11,14 @@ body div {
     transition: background-color 0.5s ease, color 0.1s ease;
 }
 
+.svg-icon {
+    width: 20px;
+    height: 20px;
+}
+
 #total-display { grid-area: header; }
 #shop { grid-area: menu; }
+#build { grid-area: menu2; }
 #clicker { grid-area: main; }
 #model-display { grid-area: right; }
 #notice { grid-area: footer; }
@@ -20,9 +26,9 @@ body div {
 .grid-container {
     display: grid;
     grid-template-areas:
-    'menu header right'
-    'menu main right'
-    'menu footer right';
+    'menu menu2 header right'
+    'menu menu2 main right'
+    'menu menu2 footer right';
     gap: 20px;
     padding: 10px;
 }

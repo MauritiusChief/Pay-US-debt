@@ -23,17 +23,25 @@ let gamePaused = true;
 const shopList = [ // 商品列表
     {id:'buy-mini-truck', price:3500, dividedPrice:640, dividedMonth:6},
     {id:'buy-semi-truck', price:18500, dividedPrice:3400, dividedMonth:6},
+    {id:'buy-excavator', price:31000, dividedPrice:2840, dividedMonth:12},
 
     {id:'buy-health-elixir', price:50, dividedPrice:50, dividedMonth:0},
 
-    {id:'buy-logistic-station', price:4500, dividedPrice:4500, dividedMonth:0}
+    {id:'buy-logistic-station', price:4500, dividedPrice:4500, dividedMonth:0},
+]
+const employList = [ // 雇员列表
+    {id:'employ-zombie-worker', salary:3000},
+    {id:'employ-vampire-expert', salary:7500}
 ]
 let dividedBuyList = [];
 //示例dividedBuyList:[ {id:'property-name', icon:'🎈', dividedPrice:10, dividedMonth:6, payCountDown:30} ]
 let propertyList = [];
 //示例propertyList:[ {id:'property-name', amount:1, maintainStatus:5, maintainDecrChance:0.5} ]
+let employeeList = [];
+//示例employeeList:[ {id:'employee-name', amount:1, maintainStatus:5, maintainDecrChance:0.5} ]
 let resourceList = [
-    {id:'transport', produce:0, consume:0, stock:0, price:0.5}
+    {id:'transport', produce:0, consume:0, stock:0, price:0.5},
+    {id:'construct', produce:0, consume:0, stock:0, price:0.75}
 ]
 let selfResourceList = [
     {id:'transport', produce:25}
@@ -67,6 +75,11 @@ function updateResource() {
                         break;
                 }
                 break;
+            case 'construct': // 建造力
+                switch (workingProperty) {
+
+                }
+                break;
         }
     });
     resourceList.forEach( resourceType => {
@@ -81,9 +94,11 @@ function updateResource() {
         }
         // 点击生产的资源
         selfResourceType = selfResourceList.find(type => type.id === resourceType.id );
-        resourceType.produce += selfResourceType.produce * workStat; // workStat 0 代表不上班，1代表上班
+        if (selfResourceType !== undefined) {
+            resourceType.produce += selfResourceType.produce * workStat; // workStat 0 代表不上班，1代表上班
+            estiCoinsPerClick = selfResourceType.produce * resourceType.price;
+        }
         coinsPerClick += ((resourceType.produce - resourceType.consume) * resourceType.price); // 由于在这里自动和点击生产的资源都计入了此处，
-        estiCoinsPerClick = selfResourceType.produce * resourceType.price;
     })
 }
 /**根据资产更新职业

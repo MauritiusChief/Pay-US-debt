@@ -247,7 +247,7 @@ function updateDividedPay() {
                 workingProperty === dividedBuyItem.id ? workingProperty = '' : {};
             }
             icon = $(`#${dividedBuyItem.id} .icon`);
-            icon.text( icon.text().replace(dividedBuyItem.icon, "") );
+            icon.html( icon.html().replace(dividedBuyItem.icon, "") );
             $(`#${dividedBuyItem.id} .divided-month`).text( '' );
             $(`#${dividedBuyItem.id} .pay-count-down`).text( '' );
             // 更新商店按钮

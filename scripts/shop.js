@@ -3,9 +3,11 @@
 $('#buy-mini-truck').click(() => {
     buyEvent('mini-truck', '🚚', 30);
 })
-
 $('#buy-semi-truck').click(() => {
     buyEvent('semi-truck', '🚛', 30);
+})
+$('#buy-excavator').click(() => {
+    buyEvent('excavator', '<img src="icons/excavator.svg" alt="🚜" class="svg-icon">', 30);
 })
 
 $('#buy-health-elixir').click(() => {
