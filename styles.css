@@ -41,16 +41,9 @@ body div {
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-#total-display {
-    text-align: center;
-}
-
-#clicker {
-    text-align: center;
-}
 
 button {
-    margin: 10px;
+    margin: 10px 0px;
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;

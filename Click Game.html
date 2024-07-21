@@ -26,7 +26,7 @@
         </div>
         <div id="shop" class="grid-panel">
             <h2>市场</h2>
-            <div id="button-container"></div>
+            <div id="buy-vehicle-container"></div>
             <h2>商店</h2>
             <button id="buy-health-elixir" class="shop-goods hastooltip">健康药水<span class="tooltiptext">50.00 $</span></span></button>
             <h2>执照</h2>
@@ -42,7 +42,7 @@
             <p id="self" type="person" class="hastooltip">🧍<span class="tooltiptext">这是你自己</span><span>健康:</span><span id="health"></span></p>
             <p id="zombie" type="undead" class="hastooltip"></p>
             <p id="vampire" type="undead" class="hastooltip"></p>
-            <div id="paragraph-container"></div>
+            <div id="property-container"></div>
 
             <p id="logistic-station" class="hastooltip"><span class="icon"></span><span class="tooltiptext">物流站点</span></p>
             <h2>资源</h2>
@@ -86,15 +86,15 @@
         </div>
     </div>
     <!-- 市场 按钮模板 -->
-    <script id="button-template" type="text/x-handlebars-template">
+    <script id="buy-vehicle-template" type="text/x-handlebars-template">
         {{#each this}}
-            <button id="{{id}}" class="shop-goods hastooltip">{{label}}
+            <button class="shop-goods hastooltip">{{label}}
                 <span class="tooltiptext">{{price}}<br>分期 {{installment}}</span>
             </button>
         {{/each}}
     </script>
-    <!-- 资产 段落模板 -->
-    <script id="paragraph-template" type="text/x-handlebars-template">
+    <!-- 资产 模板 -->
+    <script id="property-template" type="text/x-handlebars-template">
         {{#each this}}
             <p id="{{id}}" class="hastooltip hidden">
                 <span class="icon"></span><span class="tooltiptext">{{label}}</span><span class="divided-month"></span><span class="pay-count-down"></span><br>
@@ -103,7 +103,7 @@
                     <span class="work-force-input">0</span>/<span class="work-force-limit">0</span>
                     <button type="incr">+</button>
                 </span>
-                <span class="work-here"><input type="checkbox">在此工作</span>
+                <span class="work-here"><input type="checkbox">{{prompt}}</span>
             </p>
         {{/each}}
     </script>

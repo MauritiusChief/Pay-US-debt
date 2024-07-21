@@ -21,27 +21,30 @@ const buttonData = [
     }
 ];
 // 编译并渲染按钮模板
-const buttonSource = document.getElementById("button-template").innerHTML;
+const buttonSource = document.getElementById("buy-vehicle-template").innerHTML;
 const buttonTemplate = Handlebars.compile(buttonSource);
 const buttonHtml = buttonTemplate(buttonData);
-document.getElementById("button-container").innerHTML = buttonHtml;
+document.getElementById("buy-vehicle-container").innerHTML = buttonHtml;
 
 const paragraphData = [
     {
         id: "mini-truck",
-        label: "小货车"
+        label: "小货车",
+        prompt: "开小货车"
     },
     {
         id: "semi-truck",
-        label: "半挂车"
+        label: "半挂车",
+        prompt: "开半挂车"
     },
     {
         id: "excavator",
-        label: "挖掘机"
+        label: "挖掘机",
+        prompt: "开挖掘机"
     }
 ];
 // 编译并渲染段落模板
-const paragraphSource = document.getElementById("paragraph-template").innerHTML;
+const paragraphSource = document.getElementById("property-template").innerHTML;
 const paragraphTemplate = Handlebars.compile(paragraphSource);
 const paragraphHtml = paragraphTemplate(paragraphData);
-document.getElementById("paragraph-container").innerHTML = paragraphHtml;
+document.getElementById("property-container").innerHTML = paragraphHtml;
