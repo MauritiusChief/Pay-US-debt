@@ -1,4 +1,4 @@
-
+console.log('shop.js')
 
 $('#buy-mini-truck').click(() => {
     buyEvent('mini-truck', '🚚', 30);

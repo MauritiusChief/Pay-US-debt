@@ -1,4 +1,4 @@
-
+console.log('resource.js')
 
 $('#mini-truck [type=decr]').click(() => {
     

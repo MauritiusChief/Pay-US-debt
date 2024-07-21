@@ -1,4 +1,4 @@
-
+console.log('main.js')
 
 /** 初始化
  ********/

@@ -1,3 +1,4 @@
+console.log('preset.js')
 // 最基础的数据
 let coinCount = 0;
 let coinsPerClick = 0;
