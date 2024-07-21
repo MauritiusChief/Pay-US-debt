@@ -17,7 +17,7 @@ let currDate = new Date(...dateArray);
 let gameFinished = false;
 let currentTimer;
 let gamePaused = true;
-let dividePay = false;
+let dividePay = true;
 
 /** 商品及职业列表
  ***************/
@@ -164,15 +164,9 @@ function updateDisplay() {
             currDividedMonth.text( currDividedMonth.text().replace(/\d+/, dividedBuyItem.dividedMonth) );
             currPayCountDown = $(`#${propertyItem.id} .pay-count-down`);
             currPayCountDown.text( currPayCountDown.text().replace(/\d+/, dividedBuyItem.payCountDown) );
-            // 更新商店按钮
-            // shopButton = $('#buy-'+propertyItem.id);
-            // shopButton.html( shopButton.html().replace('购买', '还款') );
         } else if ( $(`#${propertyItem.id}:has(.divided-month)`).length > 0 ) { // 没有分期付款，去掉分期付款显示（注意：这部分如果到期不还款资产被收回则不会执行）
             $(`#${propertyItem.id} .divided-month`).html( '' );
             $(`#${propertyItem.id} .pay-count-down`).html( '' );
-            // 更新商店按钮
-            // shopButton = $('#buy-'+propertyItem.id);
-            // shopButton.html( shopButton.html().replace('还款', '购买') );
         } // 到期不还款的情况在 updateDividedPay()
 
         // 更新劳动力分配面板
@@ -181,18 +175,13 @@ function updateDisplay() {
     })
 
     // 更新商店按钮
-    // shopButton = $('.vehicle-goods');
-    // if (dividePay) {
-    //     shopButton.html( shopButton.html().replace('购买', '还款') );
-    // } else {
-    //     shopButton.html( shopButton.html().replace('还款', '购买') );
-    // }
     shopList.forEach( shopItem => {
-        shopButton = $('#'+shopItem.id);
-        if (dividePay) {
-            shopButton.html( shopButton.html().replace('购买', '分期') );
-        } else {
+        shopButton = $('button#'+shopItem.id);
+        console.log(shopButton.html())
+        if (!dividePay) {
             shopButton.html( shopButton.html().replace('分期', '购买') );
+        } else {
+            shopButton.html( shopButton.html().replace('购买', '分期') );
         }
     })
 

@@ -4,6 +4,9 @@ console.log('main.js')
  ********/
 // 初始执行函数
 updateShop();
+updateDisplay(); 
+dividePay = false;
+// 很奇怪，必须这样执行一遍才能保证tooltip里面的“分期”不会被 .html().replace替换成“购买”
 updateDisplay();
 
 // Fetch the current national debt
@@ -250,9 +253,6 @@ function updateDividedPay() {
             icon.html( icon.html().replace(dividedBuyItem.icon, "") );
             $(`#${dividedBuyItem.id} .divided-month`).text( '' );
             $(`#${dividedBuyItem.id} .pay-count-down`).text( '' );
-            // 更新商店按钮
-            // shopButton = $('#buy-'+dividedBuyItem.id);
-            // shopButton.html( shopButton.html().replace('还款', '购买') );
 
             dividedBuyList = dividedBuyList.filter( item => { // 移除这个分期付款
                 return item.id !== dividedBuyItem.id;
