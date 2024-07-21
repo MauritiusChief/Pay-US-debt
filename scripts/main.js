@@ -4,9 +4,6 @@ console.log('main.js')
  ********/
 // 初始执行函数
 updateShop();
-updateDisplay(); 
-dividePay = false;
-// 很奇怪，必须这样执行一遍才能保证tooltip里面的“分期”不会被 .html().replace替换成“购买”
 updateDisplay();
 
 // Fetch the current national debt

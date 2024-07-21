@@ -177,11 +177,10 @@ function updateDisplay() {
     // 更新商店按钮
     shopList.forEach( shopItem => {
         shopButton = $('button#'+shopItem.id);
-        console.log(shopButton.html())
         if (!dividePay) {
-            shopButton.html( shopButton.html().replace('分期', '购买') );
+            shopButton.html( shopButton.html().replace('分期买', '购买') );
         } else {
-            shopButton.html( shopButton.html().replace('购买', '分期') );
+            shopButton.html( shopButton.html().replace('购买', '分期买') );
         }
     })
 
