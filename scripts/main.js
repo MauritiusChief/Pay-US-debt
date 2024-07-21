@@ -43,8 +43,7 @@ fetch('https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accoun
  * HTML更新
  */ 
 function everyHourEvent() {
-    incrementTime();
-    
+
     // 触发不上班效果 TODO:可以做成分开的函数
     workStat = 0;
     // 不上班则回复健康
@@ -78,7 +77,7 @@ function everyHourEvent() {
         vampireTag.html( vampireTag.html().replaceAll('⚰️','🧛') );
     }
     
-    updateShop();
+    incrementTime();
     updateDisplay();
     
 
@@ -116,6 +115,7 @@ function incrementTime() {
     }
 
     // 无论时间流逝是定时触发还是点击触发都需执行的内容
+    updateShop();
     updateResource();
     coinCount += coinsPerClick;
 
@@ -149,7 +149,6 @@ function everyMonthEvent() {
  * HTML更新
  */ 
 $('#click-button').click(() => {
-    incrementTime();
 
     // 触发上班的效果
     workStat = 1;
@@ -179,7 +178,7 @@ $('#click-button').click(() => {
     gamePaused = false;
     $('#game-pause').text( '暂停' );
     
-    updateShop();
+    incrementTime();
     updateDisplay();
 });
 
