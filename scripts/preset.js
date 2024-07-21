@@ -17,7 +17,7 @@ let currDate = new Date(...dateArray);
 let gameFinished = false;
 let currentTimer;
 let gamePaused = true;
-let dividePay = true;
+let dividePay = false;
 
 /** 商品及职业列表
  ***************/
