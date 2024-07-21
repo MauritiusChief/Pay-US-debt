@@ -17,6 +17,7 @@ let currDate = new Date(...dateArray);
 let gameFinished = false;
 let currentTimer;
 let gamePaused = true;
+let dividePay = false;
 
 /** 商品及职业列表
  ***************/
@@ -164,20 +165,35 @@ function updateDisplay() {
             currPayCountDown = $(`#${propertyItem.id} .pay-count-down`);
             currPayCountDown.text( currPayCountDown.text().replace(/\d+/, dividedBuyItem.payCountDown) );
             // 更新商店按钮
-            shopButton = $('#buy-'+propertyItem.id);
-            shopButton.html( shopButton.html().replace('购买', '还款') );
-        } else if ( $('#buy-'+propertyItem.id).html().includes('还款') ) { // 没有分期付款，去掉分期付款显示（注意：这部分如果到期不还款资产被收回则不会执行）
-            // 注意：这里用检测文本是否有“还款”来判定是否是分期商品
+            // shopButton = $('#buy-'+propertyItem.id);
+            // shopButton.html( shopButton.html().replace('购买', '还款') );
+        } else if ( $(`#${propertyItem.id}:has(.divided-month)`).length > 0 ) { // 没有分期付款，去掉分期付款显示（注意：这部分如果到期不还款资产被收回则不会执行）
             $(`#${propertyItem.id} .divided-month`).html( '' );
             $(`#${propertyItem.id} .pay-count-down`).html( '' );
             // 更新商店按钮
-            shopButton = $('#buy-'+propertyItem.id);
-            shopButton.html( shopButton.html().replace('还款', '购买') );
+            // shopButton = $('#buy-'+propertyItem.id);
+            // shopButton.html( shopButton.html().replace('还款', '购买') );
         } // 到期不还款的情况在 updateDividedPay()
 
         // 更新劳动力分配面板
         propertyItem.id === workingProperty ? selfWork = 1 : selfWork = 0;
         $(`#${propertyItem.id} .work-force-limit`).text( propertyItem.amount-selfWork );
+    })
+
+    // 更新商店按钮
+    // shopButton = $('.vehicle-goods');
+    // if (dividePay) {
+    //     shopButton.html( shopButton.html().replace('购买', '还款') );
+    // } else {
+    //     shopButton.html( shopButton.html().replace('还款', '购买') );
+    // }
+    shopList.forEach( shopItem => {
+        shopButton = $('#'+shopItem.id);
+        if (dividePay) {
+            shopButton.html( shopButton.html().replace('购买', '分期') );
+        } else {
+            shopButton.html( shopButton.html().replace('分期', '购买') );
+        }
     })
 
     // 根据资产更新职业

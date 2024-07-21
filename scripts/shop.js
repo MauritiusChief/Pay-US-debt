@@ -1,5 +1,11 @@
 console.log('shop.js')
 
+$('#divide-pay [type=checkbox]').on('change', () => {
+    dividePay = !dividePay;
+    // console.log(dividePay)
+    updateShop();
+    updateDisplay();
+})
 $('#buy-mini-truck').click(() => {
     buyEvent('mini-truck', '🚚', 30);
 })
@@ -22,6 +28,7 @@ $('#buy-logistic-station').click(() => {
 
 /**购买事件，根据钱数全款购买或者分期付款购买
  * 需要变量：
+ *      dividePay
  *      shopList
  *      coinCount
  * HTML更新：
@@ -35,7 +42,7 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
     shopItem = shopList.find(shopItem => shopItem.id === ('buy-'+buyId) )
     buyDividedPrice = shopItem.dividedPrice; // 改为直接用shopItem数据
     buyDividedMonth = shopItem.dividedMonth; // 改为直接用shopItem数据
-    if (coinCount >= shopItem.price) {
+    if (!dividePay) { // 进入全款流程
         coinCount -= shopItem.price;
         // 资产列表添加商品
         propertyItem = propertyList.find(item => {
@@ -50,7 +57,7 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
         }
         $(`#${buyId} .icon`).html( $(`#${buyId} .icon`).html()+buyIcon );
         $(`#${buyId}`).removeClass('hidden'); // 去除隐藏
-    } else if ( buyPayCountDown > 0 && coinCount >= shopItem.dividedPrice) { // 进入分期付款流程
+    } else if ( buyPayCountDown > 0 && dividePay) { // 进入分期付款流程
         // 这部分代码只有运行分期付款的商品才执行
         coinCount -= shopItem.dividedPrice;
 
@@ -90,5 +97,6 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
         }
     }
     // console.log(propertyList)
+    updateShop();
     updateDisplay();
 }

@@ -206,7 +206,8 @@ $('#game-pause').click(() => {
  */
 function updateShop() {
     shopList.forEach( shopItem => {
-        if ( coinCount >= shopItem.dividedPrice) {
+        limitPrice = dividePay ? shopItem.dividedPrice : shopItem.price;
+        if ( coinCount >= limitPrice) {
             $(`#${shopItem.id}`).prop('disabled', false);
         } else {
             $(`#${shopItem.id}`).prop('disabled', true);
@@ -250,8 +251,8 @@ function updateDividedPay() {
             $(`#${dividedBuyItem.id} .divided-month`).text( '' );
             $(`#${dividedBuyItem.id} .pay-count-down`).text( '' );
             // 更新商店按钮
-            shopButton = $('#buy-'+dividedBuyItem.id);
-            shopButton.html( shopButton.html().replace('还款', '购买') );
+            // shopButton = $('#buy-'+dividedBuyItem.id);
+            // shopButton.html( shopButton.html().replace('还款', '购买') );
 
             dividedBuyList = dividedBuyList.filter( item => { // 移除这个分期付款
                 return item.id !== dividedBuyItem.id;
