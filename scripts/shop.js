@@ -29,7 +29,7 @@ $('#buy-logistic-station').click(() => {
 /**购买事件，根据钱数全款购买或者分期付款购买
  * 需要变量：
  *      dividePay
- *      shopList
+ *      marketList
  *      coinCount
  * HTML更新：
  *      在模型面板添加emoji
@@ -39,11 +39,12 @@ $('#buy-logistic-station').click(() => {
  *      dividedBuyList（分期付款时，加上分期付款记录）
  */
 function buyEvent(buyId, buyIcon, buyPayCountDown) {
-    shopItem = shopList.find(shopItem => shopItem.id === ('buy-'+buyId) )
-    buyDividedPrice = shopItem.dividedPrice; // 改为直接用shopItem数据
-    buyDividedMonth = shopItem.dividedMonth; // 改为直接用shopItem数据
+    marketItem = marketList.find(marketItem => marketItem.id === ('buy-'+buyId) )
+    buyDividedPrice = marketItem.dividedPrice; // 改为直接用marketItem数据
+    buyDividedMonth = marketItem.dividedMonth; // 改为直接用marketItem数据
     if (!dividePay) { // 进入全款流程
-        coinCount -= shopItem.price;
+        // console.log("进入全款流程")
+        coinCount -= marketItem.price;
         // 资产列表添加商品
         propertyItem = propertyList.find(item => {
             return item.id === buyId
@@ -58,8 +59,9 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
         $(`#${buyId} .icon`).html( $(`#${buyId} .icon`).html()+buyIcon );
         $(`#${buyId}`).removeClass('hidden'); // 去除隐藏
     } else if ( buyPayCountDown > 0 && dividePay) { // 进入分期付款流程
+        // console.log("进入分期付款流程")
         // 这部分代码只有运行分期付款的商品才执行
-        coinCount -= shopItem.dividedPrice;
+        coinCount -= marketItem.dividedPrice;
 
         dividedBuyItem = dividedBuyList.find(item => item.id === buyId);
         if ( dividedBuyItem !== undefined ) { // 已有分期付款

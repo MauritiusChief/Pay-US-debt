@@ -22,14 +22,20 @@ let dividePay = false;
 /** 商品及职业列表
  ***************/
 // 加商品和职业可以很方便地在这里加
-const shopList = [ // 商品列表
-    {id:'buy-mini-truck', price:3500, dividedPrice:640, dividedMonth:6},
-    {id:'buy-semi-truck', price:18500, dividedPrice:3400, dividedMonth:6},
-    {id:'buy-excavator', price:31000, dividedPrice:2840, dividedMonth:12},
+const marketList = [ // 可分期商品列表
+    {id:'buy-mini-truck', price:genPrice(7190,11700,10), dividedMonth:12, step:10},
+    {id:'buy-semi-truck', price:genPrice(138500,183500,100), dividedMonth:24, step:50},
+    {id:'buy-excavator', price:genPrice(20000,61000,50), dividedMonth:12, step:50},
 
-    {id:'buy-health-elixir', price:50, dividedPrice:50, dividedMonth:0},
+    {id:'buy-logistic-station', price:genPrice(3000,5000,50), dividedMonth:3, step:100}
+]
+marketList.forEach( marketItem => {
+    marketItem.dividedPrice = genDividedPrice(marketItem.price,1.1,marketItem.dividedMonth,marketItem.step)
+})
+//示例：{id:'buy-mini-truck', price:3500, dividedPrice:640, dividedMonth:6},
+const shopList = [ // 不可分期商品列表
+    {id:'buy-health-elixir', price:50},
 
-    {id:'buy-logistic-station', price:4500, dividedPrice:4500, dividedMonth:0},
 ]
 const employList = [ // 雇员列表
     {id:'employ-zombie-worker', salary:3000},
@@ -175,8 +181,8 @@ function updateDisplay() {
     })
 
     // 更新商店按钮
-    shopList.forEach( shopItem => {
-        shopButton = $('button#'+shopItem.id);
+    marketList.forEach( marketItem => {
+        shopButton = $('button#'+marketItem.id);
         if (!dividePay) {
             shopButton.html( shopButton.html().replace('分期买', '购买') );
         } else {
@@ -200,4 +206,15 @@ function updateDisplay() {
         tableRow.find(".income .num").html( (resourceType.produce - resourceType.consume)*resourceType.price );
         tableRow.find(".income .price").html( resourceType.price );
     })
+}
+
+function genPrice(min, max, step) {
+    const range = Math.floor((max - min) / step) + 1;
+    const randomStep = Math.floor(Math.random() * range);
+    return min + (randomStep * step);
+}
+function genDividedPrice(value, multiplier, divisor, step) {
+    const dividedValue = value * multiplier / divisor;
+    const roundedValue = Math.round(dividedValue / step) * step;
+    return roundedValue;
 }

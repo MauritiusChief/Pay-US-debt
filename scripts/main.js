@@ -199,18 +199,18 @@ $('#game-pause').click(() => {
  ***********/
 /**商店按钮锁定与解锁；点击挣钱按钮锁定与解锁
  * 需要变量：
- *      shopList
+ *      marketList
  *      coinCount
  *      health
  * HTML更新：
  */
 function updateShop() {
-    shopList.forEach( shopItem => {
-        limitPrice = dividePay ? shopItem.dividedPrice : shopItem.price;
+    marketList.forEach( marketItem => {
+        limitPrice = dividePay ? marketItem.dividedPrice : marketItem.price;
         if ( coinCount >= limitPrice) {
-            $(`#${shopItem.id}`).prop('disabled', false);
+            $(`#${marketItem.id}`).prop('disabled', false);
         } else {
-            $(`#${shopItem.id}`).prop('disabled', true);
+            $(`#${marketItem.id}`).prop('disabled', true);
         }
     })
     // 得病无法工作也借用此处

@@ -27,11 +27,15 @@
         <div id="shop" class="grid-panel">
             <h2>市场</h2>
             <span id="divide-pay"><input type="checkbox">分期付款</span>
-            <div id="buy-vehicle-container"></div>
+
+            <div id="buy-vehicle-container"></div><!-- 买载具列表 -->
+
             <h2>商店</h2>
             <button id="buy-health-elixir" class="shop-goods hastooltip">健康药水<span class="tooltiptext">50.00 $</span></span></button>
             <h2>执照</h2>
-            <button id="buy-logistic-station" class="shop-goods hastooltip">建造仓库<span class="tooltiptext">4,500.00 $</span></span></button>
+
+            <div id="buy-field-container"></div><!-- 买地产列表 -->
+            
             <button id="employ-zombie" class="shop-goods hastooltip">雇佣脏比工人🧟<span class="tooltiptext">3,000.00 $ /月</span></span></button>
             <button id="employ-vampire" class="shop-goods hastooltip">雇佣白脸专家🧛<span class="tooltiptext">7,500.00 $ /月</span></span></button>
         </div>
@@ -43,51 +47,28 @@
             <p id="self" type="person" class="hastooltip">🧍<span class="tooltiptext">这是你自己</span><span>健康:</span><span id="health"></span></p>
             <p id="zombie" type="undead" class="hastooltip"></p>
             <p id="vampire" type="undead" class="hastooltip"></p>
-            <div id="property-container"></div>
+            <div id="property-container"></div><!-- 资产列表 -->
+            <div id="field-container"></div><!-- 地矿资产列表 -->
 
             <p id="logistic-station" class="hastooltip"><span class="icon"></span><span class="tooltiptext">物流站点</span></p>
             <h2>资源</h2>
-            <table>
-                <tr>
-                    <th>名称</th>
-                    <th>产出</th>
-                    <th>收入</th>
-                </tr>
-                <tr id="transport">
-                    <td>📦运力</td>
-                    <td class="net-produce hastooltip">
-                        <span class="num">0</span>/小时
-                        <span class="tooltiptext">
-                            生产<span class="produce">0</span>/小时<br>消耗<span class="consume">0</span>/小时
-                        </span>
-                    </td>
-                    <td class="income hastooltip">
-                        <span class="num">0</span> $
-                        <span class="tooltiptext">单价 <span class="price">1</span> $</span>
-                    </td>
-                </tr>
-                <tr id="construct">
-                    <td>🚧建造力</td>
-                    <td class="net-produce hastooltip">
-                        <span class="num">0</span>/小时
-                        <span class="tooltiptext">
-                            生产<span class="produce">0</span>/小时<br>消耗<span class="consume">0</span>/小时
-                        </span>
-                    </td>
-                    <td class="income hastooltip">
-                        <span class="num">0</span> $
-                        <span class="tooltiptext">单价 <span class="price">1</span> $</span>
-                    </td>
-                </tr>
-            </table>
+            <div id="resource-container"></div><!-- 资源列表 -->
         </div>
         <div id="notice" class="grid-panel">
             <h4>通知</h4>
             <p></p>
         </div>
     </div>
-    <!-- 市场 按钮模板 -->
+    <!-- 载具市场 按钮模板 -->
     <script id="buy-vehicle-template" type="text/x-handlebars-template">
+        {{#each this}}
+            <button id="{{id}}" class="vehicle-goods hastooltip">{{label}}
+                <span class="tooltiptext">{{price}}<br>分期 {{installment}}</span>
+            </button>
+        {{/each}}
+    </script>
+    <!-- 地产市场 按钮模板 -->
+    <script id="buy-field-template" type="text/x-handlebars-template">
         {{#each this}}
             <button id="{{id}}" class="vehicle-goods hastooltip">{{label}}
                 <span class="tooltiptext">{{price}}<br>分期 {{installment}}</span>
@@ -108,9 +89,42 @@
             </p>
         {{/each}}
     </script>
+    <!-- 野地矿产 模板 -->
+    <script id="field-template" type="text/x-handlebars-template">
+        {{#each this}}
+            <p id="{{id}}" class="hastooltip hidden">
+                <span class="icon"></span><span class="tooltiptext">{{label}}</span><span class="divided-month"></span><span class="pay-count-down"></span>
+            </p>
+        {{/each}}
+    </script>
+    <!-- 资源 模板 -->
+    <script id="resource-template" type="text/x-handlebars-template">
+        <table>
+            <tr>
+                <th>名称</th>
+                <th>产出</th>
+                <th>收入</th>
+            </tr>
+            {{#each this}}
+            <tr id="{{id}}">
+                <td>{{label}}</td>
+                <td class="net-produce hastooltip">
+                    <span class="num">0</span>/小时
+                    <span class="tooltiptext">
+                        生产<span class="produce">0</span>/小时<br>消耗<span class="consume">0</span>/小时
+                    </span>
+                </td>
+                <td class="income hastooltip">
+                    <span class="num">0</span> $
+                    <span class="tooltiptext">单价 <span class="price">1</span> $</span>
+                </td>
+            </tr>
+            {{/each}}
+        </table>
+    </script>
     
-    <script src="scripts/htmlgen.js"></script>
     <script src="scripts/preset.js"></script>
+    <script src="scripts/htmlgen.js"></script>
     <script src="scripts/main.js"></script>
     <script src="scripts/shop.js"></script>
     <script src="scripts/resource.js"></script>
