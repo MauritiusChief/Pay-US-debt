@@ -47,6 +47,28 @@ const buttonFieldTemplate = Handlebars.compile(buttonFieldSource);
 const buttonFieldHtml = buttonFieldTemplate(buttonFieldData);
 $("#buy-field-container").html( buttonFieldHtml );
 
+// 雇佣模板
+const employData = [
+    {
+        id: "zombie",
+        label: "脏比工人",
+        icon: "🧟",
+        salary: "3,000.00 $ /月",
+        lore: "大脑有点不太好使"
+    },
+    {
+        id: "vampire",
+        label: "白脸专家",
+        icon: "🧛",
+        salary: "7,500.00 $ /月",
+        lore: "毕业于德古拉堡大学"
+    }
+];
+const employSource = $("#employ-template").html();
+const employTemplate = Handlebars.compile(employSource);
+const employHtml = employTemplate(employData);
+$("#employ-container").html( employHtml );
+
 // 载具展示模板
 const vehicleData = [
     {
@@ -81,6 +103,24 @@ const fieldSource = $("#field-template").html();
 const fieldTemplate = Handlebars.compile(fieldSource);
 const fieldHtml = fieldTemplate(fieldData);
 $("#field-container").html( fieldHtml );
+
+// 劳动力展示模板
+const workForceData = [
+    {
+        id: "zombie",
+        type: "undead",
+        lore: "正担心胆固醇过高问题"
+    },
+    {
+        id: "vampire",
+        type: "undead",
+        lore: "喜欢收集遮阳伞和防晒霜"
+    }
+]
+const workForceSource = $("#work-force-template").html();
+const workForceTemplate = Handlebars.compile(workForceSource);
+const workForceHtml = workForceTemplate(workForceData);
+$("#work-force-container").html( workForceHtml );
 
 // 资源列表模板
 const tableData = [

@@ -9,6 +9,9 @@ let effectList = []
 let workStat = 0; // 上班与否标记，用在资源列表更新中，0代表不上班1代表上班，以后可能会改一个方式
 let estiIncomePerH = 12.5;
 let workingProperty = ''
+var GIdx = 0
+const GIcon = ['🧍','🧍‍♂️','🧍‍♀️']
+const GTxt = ['?','♂','♀']
 
 // 游戏机制数据
 let goal = 100;
@@ -38,19 +41,19 @@ const shopList = { // 不可分期商品列表
     'buy-health-elixir': {price:50},
 }
 const employList = { // 雇员列表
-    'employ-zombie-worker': {salary:3000},
-    'employ-vampire-expert': {salary:7500}
+    'employ-zombie': {salary:3000},
+    'employ-vampire': {salary:7500}
 }
 let dividedBuyList = {};
 //示例dividedBuyList:{ 'property-name': {icon:'🎈', dividedPrice:10, dividedMonth:6, payCountDown:30} }
 let propertyList = {};
-//示例propertyList:{ 'property-name': {amount:1, maintainStatus:5, maintainDecrChance:0.5} }
+//示例propertyList:{ 'property-name': {amount:1, amtInUse:0, maintainStatus:5, maintainDecrChance:0.5} }
 let employeeList = {};
-//示例employeeList:{ employee-name': {amount:1, maintainStatus:5, maintainDecrChance:0.5} }
+//示例employeeList:{ employee-name': {amount:1, inWork:0, maintainStatus:5, maintainDecrChance:0.5} }
 let employeeGStack = []; // F 代表女，M 代表男
 let resourceList = {
     'transport': {produce: 0, consume: 0, stock: 0, price: 0.5},
-    'construct': {produce: 0, consume: 0, stock: 0, price: 0.75}
+    'construct': {produce: 0, consume: 0, stock: 0, price: 1.5}
 };
 let selfResourceList = {
     'transport': {produce:0},
@@ -74,7 +77,7 @@ function updateResource() {
         'transport': {
             'semi-truck': 85,
             'mini-truck': 45,
-            'excavator': 10,
+            'excavator': -5,
             'default': 25
         },
         'construct': {
@@ -154,10 +157,10 @@ function updateDisplay() {
     let medicinElement = $('#buy-health-elixir');
     if (health >= 0) {
         medicinElement.addClass('hidden');
-        selfElement.html( selfElement.html().replace('🚑', '🧍') );
+        selfElement.html( selfElement.html().replace('🚑', GIcon[GIdx]) );
     } else {
         medicinElement.removeClass('hidden');
-        selfElement.html( selfElement.html().replace('🧍', '🚑') );
+        selfElement.html( selfElement.html().replace(GIcon[GIdx], '🚑') );
     }
 
     /**根据资产列表以及分期付款列表，更新分期付款文本的剩余分期月、剩余还款倒计时天数等
@@ -181,9 +184,11 @@ function updateDisplay() {
         } // 到期不还款的情况在 updateDividedPay()
 
         // 更新劳动力分配面板
-        id === workingProperty ? selfWork = 1 : selfWork = 0;
-        $(`#${id} .work-force-limit`).text( propertyList[id].amount-selfWork );
+        $(`#${id} .work-force-limit`).text( propertyList[id].amount );
+        $(`#${id} .work-force-input`).text( propertyList[id].inUse );
+
     }
+
 
     // 更新商店按钮
     for (let id in marketList) {

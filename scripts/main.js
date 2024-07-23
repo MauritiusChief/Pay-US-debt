@@ -59,23 +59,14 @@ function everyHourEvent() {
     $("[type=person]").each(function(index, personTag) {
         let $personTag = $(personTag);
         if (currDate.getHours() < 9 ) { // 0-8点
-            $personTag.html( $personTag.html().replace('🧍','🛌') );
+            $personTag.html( $personTag.html().replace(GIcon[GIdx],'🛌') );
             $personTag.html( $personTag.html().replace('🛀','🛌') );
         } else if (currDate.getHours() > 16) { // 17-23点
-            $personTag.html( $personTag.html().replace('🧍','🛀') );
+            $personTag.html( $personTag.html().replace(GIcon[GIdx],'🛀') );
         } else {
-            $personTag.html( $personTag.html().replace('🛌','🧍') );
+            $personTag.html( $personTag.html().replace('🛌',GIcon[GIdx]) );
         }
     })
-    zombieTag = $("#zombie");
-    vampireTag = $("#vampire");
-    if (currDate.getHours() < 9 ) { // 0-8点
-        zombieTag.html( zombieTag.html().replaceAll('🧟','⚰️') );
-        vampireTag.html( vampireTag.html().replaceAll('🧛','⚰️') );
-    } else {
-        zombieTag.html( zombieTag.html().replaceAll('⚰️','🧟') );
-        vampireTag.html( vampireTag.html().replaceAll('⚰️','🧛') );
-    }
     
     incrementTime();
     updateDisplay();
@@ -155,8 +146,8 @@ $('#click-button').click(() => {
     // 变更上班与加班时的图标
     if (currDate.getHours() < 9 || currDate.getHours() > 16) {
         let selfElement = $("#self");
-        selfElement.html( selfElement.html().replace('🛌', '🧍') );
-        selfElement.html( selfElement.html().replace('🛀', '🧍') );
+        selfElement.html( selfElement.html().replace('🛌', GIcon[GIdx]) );
+        selfElement.html( selfElement.html().replace('🛀', GIcon[GIdx]) );
         if (!$('#overtime').text().includes("（加班中）")) {
             $('#overtime').text( "（加班中）" );
         }
@@ -192,6 +183,18 @@ $('#game-pause').click(() => {
         $('#game-pause').text( '继续' );
         gamePaused = true;
     }
+})
+
+$('#change-gender').click(() => {
+    oldGIdx = GIdx;
+    GIdx = (GIdx+1) % 3;
+    // console.log(oldGIdx+'=>'+GIdx)
+    // console.log(GIcon[oldGIdx]+'=>'+GIcon[GIdx])
+    let selfElement = $("#self");
+    selfElement.html( selfElement.html().replace(GIcon[oldGIdx],GIcon[GIdx]) );
+    let selfGButton = $("#change-gender")
+    selfGButton.html( selfGButton.html().replace(GTxt[oldGIdx],GTxt[GIdx]) );
+    // updateDisplay();
 })
 
 
@@ -270,6 +273,10 @@ $(document).on('keydown', function(event) {
     // Check if the current input matches the cheat code
     if (userKeyInput.toLowerCase().includes('paxamericana')) {
         coinCount += 20000000000000
+        userKeyInput = '';
+    }
+    if (userKeyInput.toLowerCase().includes('gold')) {
+        coinCount += 50000
         userKeyInput = '';
     }
     if (userKeyInput.toLowerCase().includes('money')) {

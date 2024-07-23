@@ -26,10 +26,17 @@ $('#buy-health-elixir').click(() => {
 })
 
 $('#employ-zombie').click(() => {
-
+    employEvent('zombie', '🧟‍♀️', '🧟‍♂️');
+    $('.use-worker').removeClass('hidden');
+})
+$('#dismiss-zombie').click(() => {
+    dismissEvent('zombie', '🧟‍♀️', '🧟‍♂️');
 })
 $('#employ-vampire').click(() => {
-
+    employEvent('vampire', '🧛‍♀️', '🧛‍♂️');
+})
+$('#dismiss-vampire').click(() => {
+    dismissEvent('vampire', '🧛‍♀️', '🧛‍♂️');
 })
 
 
@@ -57,7 +64,7 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
         if ( propertyItem !== undefined ) {// 已有这个商品
             propertyItem.amount++;
         } else { // 没有这个商品，创建这个商品
-            propertyList[buyId] = {amount: 1, maintainStatus: 5, maintainDecrChance: 0.2};
+            propertyList[buyId] = {amount: 1, maintainStatus: 5, maintainDecrChance: 0.2, inUse: 0};
         }
         $(`#${buyId} .icon`).html( $(`#${buyId} .icon`).html()+buyIcon );
         $(`#${buyId}`).removeClass('hidden'); // 去除隐藏
@@ -95,5 +102,43 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
     }
     // console.log(propertyList)
     updateShop();
+    updateDisplay();
+}
+
+function employEvent(empId, iconF, iconM) {
+    employItem = employList['employ-'+empId];
+    employeeItem = employeeList[empId];
+    empSalary = employItem.salary;
+    if ( employeeItem !== undefined ) {// 已有这个商品
+        employeeItem.amount++;
+    } else { // 没有这个商品，创建这个商品
+        employeeList[empId] = {amount: 1, inWork: 0, maintainStatus: 5, maintainDecrChance: 0.2};
+    }
+    gender = Math.random() > 0.5 ? 'F' : 'M';
+    employeeGStack.push(gender);
+    empIcon = gender === 'F' ? iconF : iconM;
+    $(`#${empId} .icon`).html( $(`#${empId} .icon`).html()+empIcon );
+    $(`#${empId}`).removeClass('hidden'); // 去除隐藏
+
+    updateDisplay();
+}
+
+function dismissEvent(empId, iconF, iconM) {
+    employeeItem = employeeList[empId];
+    if (employeeItem.amount > 1) { // 劳动力数量-1
+        employeeItem.amount--;
+    } else { // 劳动力数量不足1，直接移除
+        delete employeeList[empId];
+        $(`#${empId}`).addClass('hidden');
+    }
+    icon = $(`#${empId} .icon`);
+    iconToDelete = employeeGStack.pop() === 'F' ? iconF : iconM;
+    // 以下四行是为了实现删除最后一个emoji而不是第一个emoji的效果
+    reversedHtml = icon.html().split('').reverse().join('');
+    revIconToDelete = iconToDelete.split('').reverse().join('');
+    reversedHtml = reversedHtml.replace(revIconToDelete, "");
+    reversedHtml = reversedHtml.split('').reverse().join('');
+    icon.html( reversedHtml );
+
     updateDisplay();
 }

@@ -34,11 +34,18 @@ $('#excavator [type=checkbox]').on('change', () => {
  *      workingProperty
  */
 function checkBoxEvent(propertyName) {
-    workingProperty = propertyName;
-    thisName = `#${workingProperty} [type=checkbox]`;
-    if ($(thisName).is(':checked')) {
-        $('#model-display [type=checkbox]').not(thisName).prop('checked', false);
-    } else {
+    // console.log(propertyList[propertyName])
+    thisName = `#${propertyName} [type=checkbox]`;
+    if ($(thisName).is(':checked')) { // 此勾选盒勾选的情况
+        $('#model-display [type=checkbox]').not(thisName).prop('checked', false); // 选中所有其他勾选盒，取消勾选
+        // 根据尚未被改变的workingProperty，判断上一个被使用的资产是什么
+        if (propertyList[workingProperty] !== undefined) {
+            propertyList[workingProperty].inUse--;
+        }
+        propertyList[propertyName].inUse++;
+        workingProperty = propertyName; // workingProperty更新
+    } else { // 此勾选盒不勾选的情况
+        propertyList[propertyName].inUse--;
         workingProperty = ''
     }
 }
