@@ -205,14 +205,14 @@ $('#game-pause').click(() => {
  * HTML更新：
  */
 function updateShop() {
-    marketList.forEach( marketItem => {
-        limitPrice = dividePay ? marketItem.dividedPrice : marketItem.price;
+    for (let id in marketList) {
+        limitPrice = dividePay ? marketList[id].dividedPrice : marketList[id].price;
         if ( coinCount >= limitPrice) {
-            $(`#${marketItem.id}`).prop('disabled', false);
+            $(`#${id}`).prop('disabled', false);
         } else {
-            $(`#${marketItem.id}`).prop('disabled', true);
+            $(`#${id}`).prop('disabled', true);
         }
-    })
+    }
     // 得病无法工作也借用此处
     ableToWork = health < 0 ? true : false;
     $("#click-button").prop('disabled', ableToWork)

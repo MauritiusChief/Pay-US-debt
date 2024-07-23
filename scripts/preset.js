@@ -22,16 +22,17 @@ let dividePay = false;
 /** 商品及职业列表
  ***************/
 // 加商品和职业可以很方便地在这里加
-const marketList = [ // 可分期商品列表（目前包括 载具 和 地产）
-    {id:'buy-mini-truck', price:genPrice(7190,11700,10), dividedMonth:12, step:10},
-    {id:'buy-semi-truck', price:genPrice(138500,183500,100), dividedMonth:24, step:50},
-    {id:'buy-excavator', price:genPrice(20000,61000,50), dividedMonth:12, step:50},
+const marketList = { // 可分期商品列表（目前包括 载具 和 地产）
+    'buy-mini-truck': {price:genPrice(7190,11700,10), dividedMonth:12, step:10},
+    'buy-semi-truck': {price:genPrice(138500,183500,100), dividedMonth:24, step:50},
+    'buy-excavator': {price:genPrice(20000,61000,50), dividedMonth:12, step:50},
 
-    {id:'buy-logistic-station', price:genPrice(3000,5000,50), dividedMonth:3, step:100}
-]
-marketList.forEach( marketItem => {
-    marketItem.dividedPrice = genDividedPrice(marketItem.price,1.1,marketItem.dividedMonth,marketItem.step)
-})
+    'buy-logistic-station': {price:genPrice(3000,5000,50), dividedMonth:3, step:100}
+}
+for (let id in marketList) {
+    item = marketList[id];
+    item.dividedPrice = genDividedPrice(item.price,1.1,item.dividedMonth,item.step)
+}
 //示例：{id:'buy-mini-truck', price:3500, dividedPrice:640, dividedMonth:6, step:10},
 const shopList = [ // 不可分期商品列表
     {id:'buy-health-elixir', price:50},
@@ -52,7 +53,8 @@ let resourceList = {
     'construct': {produce: 0, consume: 0, stock: 0, price: 0.75}
 };
 let selfResourceList = {
-    'transport': {produce:25}
+    'transport': {produce:0},
+    'construct': {produce:0}
 };
 
 /**根据资产更新资源产出和收入
@@ -67,10 +69,12 @@ let selfResourceList = {
  */
 function updateResource() {
     actuIncomePerH = 0;
+    estiIncomePerH = 0;
     const produceMapping = {
         'transport': {
             'semi-truck': 85,
             'mini-truck': 45,
+            'excavator': 10,
             'default': 25
         },
         'construct': {
@@ -102,7 +106,7 @@ function updateResource() {
         // 点击生产的资源
         if (selfResourceList[id] !== undefined) {
             resourceList[id].produce += selfResourceList[id].produce * workStat; // workStat 0 代表不上班，1代表上班
-            estiIncomePerH = selfResourceList[id].produce * resourceList[id].price;
+            estiIncomePerH += selfResourceList[id].produce * resourceList[id].price;
         }
         actuIncomePerH += ((resourceList[id].produce - resourceList[id].consume) * resourceList[id].price); // 此处已将点击生产和自动生产的资源都计入
     }
@@ -182,14 +186,14 @@ function updateDisplay() {
     })
 
     // 更新商店按钮
-    marketList.forEach( marketItem => {
-        shopButton = $('button#'+marketItem.id);
+    for (let id in marketList) {
+        shopButton = $('button#'+id);
         if (!dividePay) {
             shopButton.html( shopButton.html().replace('分期买', '购买') );
         } else {
             shopButton.html( shopButton.html().replace('购买', '分期买') );
         }
-    })
+    }
 
     // 根据资产更新职业
     updateDisplayJob();

@@ -39,7 +39,7 @@ $('#buy-logistic-station').click(() => {
  *      dividedBuyList（分期付款时，加上分期付款记录）
  */
 function buyEvent(buyId, buyIcon, buyPayCountDown) {
-    marketItem = marketList.find(marketItem => marketItem.id === ('buy-'+buyId) )
+    marketItem = marketList['buy-'+buyId];
     buyDividedPrice = marketItem.dividedPrice; // 改为直接用marketItem数据
     buyDividedMonth = marketItem.dividedMonth; // 改为直接用marketItem数据
     if (!dividePay) { // 进入全款流程

@@ -5,25 +5,25 @@ const buttonVehicleData = [
     {
         id: "buy-mini-truck",
         label: "购买小货车",
-        price: marketList.find(item => item.id === ("buy-mini-truck") ).price.toLocaleString()+" $",
+        price: marketList["buy-mini-truck"].price.toLocaleString()+" $",
         installment: 
-            marketList.find(item => item.id === ("buy-mini-truck") ).dividedPrice.toLocaleString()+" $ * " + marketList.find(item => item.id === ("buy-mini-truck") ).dividedMonth+"月"
+            marketList["buy-mini-truck"].dividedPrice.toLocaleString()+" $ * " + marketList["buy-mini-truck"].dividedMonth+"月"
     },
     {
         id: "buy-semi-truck",
         label: "购买半挂车",
-        price: marketList.find(item => item.id === ("buy-semi-truck") ).price.toLocaleString()+" $",
+        price: marketList["buy-semi-truck"].price.toLocaleString()+" $",
         installment: 
-            marketList.find(item => item.id === ("buy-semi-truck") ).dividedPrice.toLocaleString()+" $ * " + 
-            marketList.find(item => item.id === ("buy-semi-truck") ).dividedMonth+"月"
+            marketList["buy-semi-truck"].dividedPrice.toLocaleString()+" $ * " + 
+            marketList["buy-semi-truck"].dividedMonth+"月"
     },
     {
         id: "buy-excavator",
         label: "购买挖掘机",
-        price: marketList.find(item => item.id === ("buy-excavator") ).price.toLocaleString()+" $",
+        price: marketList["buy-excavator"].price.toLocaleString()+" $",
         installment: 
-            marketList.find(item => item.id === ("buy-excavator") ).dividedPrice.toLocaleString()+" $ * " + 
-            marketList.find(item => item.id === ("buy-excavator") ).dividedMonth+"月"
+            marketList["buy-excavator"].dividedPrice.toLocaleString()+" $ * " + 
+            marketList["buy-excavator"].dividedMonth+"月"
     }
 ];
 const buttonVehicleSource = document.getElementById("buy-vehicle-template").innerHTML;
@@ -36,10 +36,10 @@ const buttonFieldData = [
     {
         id: "buy-logistic-station",
         label: "购买仓库",
-        price: marketList.find(item => item.id === ("buy-logistic-station") ).price.toLocaleString()+" $",
+        price: marketList["buy-logistic-station"].price.toLocaleString()+" $",
         installment: 
-            marketList.find(item => item.id === ("buy-logistic-station") ).dividedPrice.toLocaleString()+" $ * " + 
-            marketList.find(item => item.id === ("buy-logistic-station") ).dividedMonth+"月"
+            marketList["buy-logistic-station"].dividedPrice.toLocaleString()+" $ * " + 
+            marketList["buy-logistic-station"].dividedMonth+"月"
     }
 ];
 const buttonFieldSource = document.getElementById("buy-field-template").innerHTML;
