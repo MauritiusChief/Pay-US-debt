@@ -27,7 +27,7 @@ const marketList = { // 可分期商品列表（目前包括 载具 和 地产�
     'buy-semi-truck': {price:genPrice(138500,183500,100), dividedMonth:24, step:50},
     'buy-excavator': {price:genPrice(20000,61000,50), dividedMonth:12, step:50},
 
-    'buy-logistic-station': {price:genPrice(3000,5000,50), dividedMonth:3, step:100}
+    'buy-warehouse': {price:genPrice(3000,5000,50), dividedMonth:3, step:100}
 }
 for (let id in marketList) {
     item = marketList[id];
@@ -37,16 +37,17 @@ for (let id in marketList) {
 const shopList = { // 不可分期商品列表
     'buy-health-elixir': {price:50},
 }
-const employList = [ // 雇员列表
-    {id:'employ-zombie-worker', salary:3000},
-    {id:'employ-vampire-expert', salary:7500}
-]
+const employList = { // 雇员列表
+    'employ-zombie-worker': {salary:3000},
+    'employ-vampire-expert': {salary:7500}
+}
 let dividedBuyList = {};
 //示例dividedBuyList:{ 'property-name': {icon:'🎈', dividedPrice:10, dividedMonth:6, payCountDown:30} }
 let propertyList = {};
 //示例propertyList:{ 'property-name': {amount:1, maintainStatus:5, maintainDecrChance:0.5} }
-let employeeList = [];
-//示例employeeList:[ {id:'employee-name', amount:1, maintainStatus:5, maintainDecrChance:0.5} ]
+let employeeList = {};
+//示例employeeList:{ employee-name': {amount:1, maintainStatus:5, maintainDecrChance:0.5} }
+let employeeGStack = []; // F 代表女，M 代表男
 let resourceList = {
     'transport': {produce: 0, consume: 0, stock: 0, price: 0.5},
     'construct': {produce: 0, consume: 0, stock: 0, price: 0.75}
@@ -98,7 +99,7 @@ function updateResource() {
         switch (id) {
             case 'transport':
                 for (let id in propertyList) {
-                    id === 'logistic-station' ? resourceList['transport'].produce += 5*propertyList[id].amount : {};
+                    id === 'warehouse' ? resourceList['transport'].produce += 5*propertyList[id].amount : {};
                 }
                 break;
         }

@@ -15,14 +15,21 @@ $('#buy-semi-truck').click(() => {
 $('#buy-excavator').click(() => {
     buyEvent('excavator', '<img src="icons/excavator.svg" alt="🚜" class="svg-icon">', 30);
 })
-$('#buy-logistic-station').click(() => {
-    buyEvent('logistic-station', '📦', 30);
+$('#buy-warehouse').click(() => {
+    buyEvent('warehouse', '<img src="icons/warehouse.svg" alt="📦" class="svg-icon">', 30);
 })
 
 $('#buy-health-elixir').click(() => {
     shopItem = shopList['buy-health-elixir']
     coinCount -= shopItem.price;
     health += 20;
+})
+
+$('#employ-zombie').click(() => {
+
+})
+$('#employ-vampire').click(() => {
+
 })
 
 

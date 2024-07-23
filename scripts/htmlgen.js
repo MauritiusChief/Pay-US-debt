@@ -34,12 +34,12 @@ $("#buy-vehicle-container").html( buttonVehicleHtml );
 // 买地产模板
 const buttonFieldData = [
     {
-        id: "buy-logistic-station",
+        id: "buy-warehouse",
         label: "购买仓库",
-        price: marketList["buy-logistic-station"].price.toLocaleString()+" $",
+        price: marketList["buy-warehouse"].price.toLocaleString()+" $",
         installment: 
-            marketList["buy-logistic-station"].dividedPrice.toLocaleString()+" $ * " + 
-            marketList["buy-logistic-station"].dividedMonth+"月"
+            marketList["buy-warehouse"].dividedPrice.toLocaleString()+" $ * " + 
+            marketList["buy-warehouse"].dividedMonth+"月"
     }
 ];
 const buttonFieldSource = $("#buy-field-template").html();
@@ -73,7 +73,7 @@ $("#vehicle-container").html( vehicleHtml );
 // 地产展示模板
 const fieldData = [
     {
-        id: "logistic-station",
+        id: "warehouse",
         label: "仓库"
     }
 ];
