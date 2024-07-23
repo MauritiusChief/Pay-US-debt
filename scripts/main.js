@@ -87,7 +87,7 @@ function everyHourEvent() {
 /**实际的步进时间事件
  * 需要变量：
  *      coinCount
- *      coinsPerClick
+ *      actuIncomePerH
  * 使用函数：
  *      updateResource()
  * HTML更新
@@ -117,7 +117,7 @@ function incrementTime() {
     // 无论时间流逝是定时触发还是点击触发都需执行的内容
     updateShop();
     updateResource();
-    coinCount += coinsPerClick;
+    coinCount += actuIncomePerH;
 
     checkGoal()
 }

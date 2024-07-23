@@ -18,6 +18,15 @@ $('#semi-truck [type=incr]').click(() => {
 $('#semi-truck [type=checkbox]').on('change', () => {
     checkBoxEvent('semi-truck');
 })
+$('#excavator [type=decr]').click(() => {
+    
+})
+$('#excavator [type=incr]').click(() => {
+    
+})
+$('#excavator [type=checkbox]').on('change', () => {
+    checkBoxEvent('excavator');
+})
 
 /**勾选盒变更事件，小人自己只能在一个地方工作
  * HTML更新

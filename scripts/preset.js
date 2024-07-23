@@ -1,13 +1,13 @@
 console.log('preset.js')
 // 最基础的数据
 let coinCount = 0;
-let coinsPerClick = 0;
+let actuIncomePerH = 0;
 
 // 人物相关数据
 let health = 100.00;
 let effectList = []
 let workStat = 0; // 上班与否标记，用在资源列表更新中，0代表不上班1代表上班，以后可能会改一个方式
-let estiCoinsPerClick = 12.5;
+let estiIncomePerH = 12.5;
 let workingProperty = ''
 
 // 游戏机制数据
@@ -47,67 +47,65 @@ let propertyList = [];
 //示例propertyList:[ {id:'property-name', amount:1, maintainStatus:5, maintainDecrChance:0.5} ]
 let employeeList = [];
 //示例employeeList:[ {id:'employee-name', amount:1, maintainStatus:5, maintainDecrChance:0.5} ]
-let resourceList = [
-    {id:'transport', produce:0, consume:0, stock:0, price:0.5},
-    {id:'construct', produce:0, consume:0, stock:0, price:0.75}
-]
-let selfResourceList = [
-    {id:'transport', produce:25}
-]
+let resourceList = {
+    'transport': {produce: 0, consume: 0, stock: 0, price: 0.5},
+    'construct': {produce: 0, consume: 0, stock: 0, price: 0.75}
+};
+let selfResourceList = {
+    'transport': {produce:25}
+};
 
 /**根据资产更新资源产出和收入
  * 需要变量：
  *      workingProperty
- *      selfResourceList（必须先处理，因为后续更新estiCoinsPerClick需要）
+ *      selfResourceList（必须先处理，因为后续更新estiIncomePerH需要）
  *      workStat
  *      resourceList
  * 更新变量：
- *      coinsPerClick
- *      estiCoinsPerClick
+ *      actuIncomePerH
+ *      estiIncomePerH
  */
 function updateResource() {
-    coinsPerClick = 0;
-    // 先根据当前工作使用的资产处理小人自己的资源产出
-    selfResourceList.forEach( selfResourceType => {
-        switch (selfResourceType.id) {
-            case 'transport': // 运力
-                switch (workingProperty) {
-                    case 'semi-truck':
-                        selfResourceType.produce = 85;
-                        break;
-                    case 'mini-truck':
-                        selfResourceType.produce = 45;
-                        break;
-                    default:
-                        selfResourceType.produce = 25;
-                        break;
-                }
-                break;
-            case 'construct': // 建造力
-                switch (workingProperty) {
-
-                }
-                break;
+    actuIncomePerH = 0;
+    const produceMapping = {
+        'transport': {
+            'semi-truck': 85,
+            'mini-truck': 45,
+            'default': 25
+        },
+        'construct': {
+            'excavator': 15,
+            'default': 0
         }
-    });
-    resourceList.forEach( resourceType => {
-        resourceType.produce = 0;
+    };
+    // 帮助函数，根据 资源类型 和 在工作的资产，决定小人这个资源类型的产量
+    const getProduceValue = (resourceType, workingProperty) => { 
+        if (produceMapping[resourceType] && produceMapping[resourceType][workingProperty]) {
+            return produceMapping[resourceType][workingProperty];
+        }
+        return produceMapping[resourceType] ? produceMapping[resourceType]['default'] : 0;
+    };
+    // 根据当前工作使用的资产处理小人自己的资源产出
+    for (let id in selfResourceList) {
+        selfResourceList[id].produce = getProduceValue(id, workingProperty);
+    }
+    for (let id in resourceList) {
+        resourceList[id].produce = 0;
         // 自动生产的资源
-        switch (resourceType.id) {
+        switch (id) {
             case 'transport':
                 propertyList.forEach( propertyItem => {
-                    propertyItem.id === 'logistic-station' ? resourceType.produce += 5*propertyItem.amount : {};
+                    propertyItem.id === 'logistic-station' ? resourceList[id].produce += 5*propertyItem.amount : {};
                 })
                 break;
         }
         // 点击生产的资源
-        selfResourceType = selfResourceList.find(type => type.id === resourceType.id );
-        if (selfResourceType !== undefined) {
-            resourceType.produce += selfResourceType.produce * workStat; // workStat 0 代表不上班，1代表上班
-            estiCoinsPerClick = selfResourceType.produce * resourceType.price;
+        if (selfResourceList[id] !== undefined) {
+            resourceList[id].produce += selfResourceList[id].produce * workStat; // workStat 0 代表不上班，1代表上班
+            estiIncomePerH = selfResourceList[id].produce * resourceList[id].price;
         }
-        coinsPerClick += ((resourceType.produce - resourceType.consume) * resourceType.price); // 由于在这里自动和点击生产的资源都计入了此处，
-    })
+        actuIncomePerH += ((resourceList[id].produce - resourceList[id].consume) * resourceList[id].price); // 此处已将点击生产和自动生产的资源都计入
+    }
 }
 /**根据资产更新职业
  * 需要变量：
@@ -123,6 +121,9 @@ function updateDisplayJob() {
         case 'mini-truck':
             currentJobText = '小货车司机';
             break;
+        case 'excavator':
+            currentJobText = '挖掘机司机';
+            break;
         default:
             currentJobText = '搬运工';
             break;
@@ -135,7 +136,7 @@ function updateDisplayJob() {
 function updateDisplay() {
     // 基本文本更新
     $('#coin-count').text( `${coinCount.toLocaleString()} $` );
-    $('#coins-per-click').text( `${estiCoinsPerClick.toLocaleString()} $` );
+    $('#coins-per-click').text( `${estiIncomePerH.toLocaleString()} $` );
     $('#goal-remain').text( `${(goal - coinCount)>0 ? (goal - coinCount).toLocaleString() : 0} $` );
     $('#current-date').text( `${currDate.getFullYear()}年${(currDate.getMonth()+1)}月${currDate.getDate()}日${currDate.getHours()}点` );
     $('#health').text( health );
@@ -198,14 +199,14 @@ function updateDisplay() {
      *      resourceList
      * HTML更新：
      */
-    resourceList.forEach( resourceType => {
-        tableRow = $(`#${resourceType.id}`);
-        tableRow.find(".net-produce .num").html( (resourceType.produce - resourceType.consume) );
-        tableRow.find(".net-produce .produce").html( resourceType.produce );
-        tableRow.find(".net-produce .consume").html( resourceType.consume );
-        tableRow.find(".income .num").html( (resourceType.produce - resourceType.consume)*resourceType.price );
-        tableRow.find(".income .price").html( resourceType.price );
-    })
+    for (let id in resourceList) {
+        tableRow = $(`#${id}`);
+        tableRow.find(".net-produce .num").html( (resourceList[id].produce - resourceList[id].consume) );
+        tableRow.find(".net-produce .produce").html( resourceList[id].produce );
+        tableRow.find(".net-produce .consume").html( resourceList[id].consume );
+        tableRow.find(".income .num").html( (resourceList[id].produce - resourceList[id].consume)*resourceList[id].price );
+        tableRow.find(".income .price").html( resourceList[id].price );
+    }
 }
 
 function genPrice(min, max, step) {
