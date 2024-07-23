@@ -34,18 +34,17 @@ for (let id in marketList) {
     item.dividedPrice = genDividedPrice(item.price,1.1,item.dividedMonth,item.step)
 }
 //示例：{id:'buy-mini-truck', price:3500, dividedPrice:640, dividedMonth:6, step:10},
-const shopList = [ // 不可分期商品列表
-    {id:'buy-health-elixir', price:50},
-
-]
+const shopList = { // 不可分期商品列表
+    'buy-health-elixir': {price:50},
+}
 const employList = [ // 雇员列表
     {id:'employ-zombie-worker', salary:3000},
     {id:'employ-vampire-expert', salary:7500}
 ]
-let dividedBuyList = [];
-//示例dividedBuyList:[ {id:'property-name', icon:'🎈', dividedPrice:10, dividedMonth:6, payCountDown:30} ]
-let propertyList = [];
-//示例propertyList:[ {id:'property-name', amount:1, maintainStatus:5, maintainDecrChance:0.5} ]
+let dividedBuyList = {};
+//示例dividedBuyList:{ 'property-name': {icon:'🎈', dividedPrice:10, dividedMonth:6, payCountDown:30} }
+let propertyList = {};
+//示例propertyList:{ 'property-name': {amount:1, maintainStatus:5, maintainDecrChance:0.5} }
 let employeeList = [];
 //示例employeeList:[ {id:'employee-name', amount:1, maintainStatus:5, maintainDecrChance:0.5} ]
 let resourceList = {
@@ -98,9 +97,9 @@ function updateResource() {
         // 自动生产的资源
         switch (id) {
             case 'transport':
-                propertyList.forEach( propertyItem => {
-                    propertyItem.id === 'logistic-station' ? resourceList[id].produce += 5*propertyItem.amount : {};
-                })
+                for (let id in propertyList) {
+                    id === 'logistic-station' ? resourceList['transport'].produce += 5*propertyList[id].amount : {};
+                }
                 break;
         }
         // 点击生产的资源
@@ -166,24 +165,24 @@ function updateDisplay() {
      *      dividedBuyList
      * HTML更新：
      */
-    propertyList.forEach( propertyItem => {
+    for (let id in propertyList) {
         // 分期付款期间 以及 偿清贷款 的情况
-        dividedBuyItem = dividedBuyList.find(item => item.id === propertyItem.id);
+        dividedBuyItem = dividedBuyList[id];
         if ( dividedBuyItem !== undefined ) { // 已有分期付款，只需更新数字
             // console.log('已有分期付款，只需更新数字')
-            currDividedMonth = $(`#${propertyItem.id} .divided-month`);
+            currDividedMonth = $(`#${id} .divided-month`);
             currDividedMonth.text( currDividedMonth.text().replace(/\d+/, dividedBuyItem.dividedMonth) );
-            currPayCountDown = $(`#${propertyItem.id} .pay-count-down`);
+            currPayCountDown = $(`#${id} .pay-count-down`);
             currPayCountDown.text( currPayCountDown.text().replace(/\d+/, dividedBuyItem.payCountDown) );
-        } else if ( $(`#${propertyItem.id}:has(.divided-month)`).length > 0 ) { // 没有分期付款，去掉分期付款显示（注意：这部分如果到期不还款资产被收回则不会执行）
-            $(`#${propertyItem.id} .divided-month`).html( '' );
-            $(`#${propertyItem.id} .pay-count-down`).html( '' );
+        } else if ( $(`#${id}:has(.divided-month)`).length > 0 ) { // 没有分期付款，去掉分期付款显示（注意：这部分如果到期不还款资产被收回则不会执行）
+            $(`#${id} .divided-month`).html( '' );
+            $(`#${id} .pay-count-down`).html( '' );
         } // 到期不还款的情况在 updateDividedPay()
 
         // 更新劳动力分配面板
-        propertyItem.id === workingProperty ? selfWork = 1 : selfWork = 0;
-        $(`#${propertyItem.id} .work-force-limit`).text( propertyItem.amount-selfWork );
-    })
+        id === workingProperty ? selfWork = 1 : selfWork = 0;
+        $(`#${id} .work-force-limit`).text( propertyList[id].amount-selfWork );
+    }
 
     // 更新商店按钮
     for (let id in marketList) {

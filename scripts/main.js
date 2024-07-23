@@ -228,34 +228,28 @@ function updateShop() {
  *      workingProperty
  */
 function updateDividedPay() {
-    dividedBuyList.forEach( dividedBuyItem => {
-        dividedBuyItem.payCountDown--;
-        if (dividedBuyItem.payCountDown === 0) {
+    for (let id in dividedBuyList) {
+        dividedBuyList[id].payCountDown--;
+        if (dividedBuyList[id].payCountDown === 0) {
             // 移除这个资产
-            propertyItem = propertyList.find(item => {
-                return item.id === dividedBuyItem.id
-            })
+            propertyItem = propertyList[id];
             if (propertyItem.amount > 1) { // 资产数量-1
                 propertyItem.amount--;
             } else { // 资产数量不足1，直接移除
-                propertyList = propertyList.filter( item => { 
-                    return item.id !== dividedBuyItem.id;
-                });
+                delete propertyList[id];
                 // 更新勾选盒以及workingProperty
-                $('#model-display [type=checkbox]').not(dividedBuyItem.id).prop('checked', false);
-                $(`#${dividedBuyItem.id}`).addClass('hidden');
-                workingProperty === dividedBuyItem.id ? workingProperty = '' : {};
+                $('#model-display [type=checkbox]').not(id).prop('checked', false);
+                $(`#${id}`).addClass('hidden');
+                workingProperty === id ? workingProperty = '' : {};
             }
-            icon = $(`#${dividedBuyItem.id} .icon`);
-            icon.html( icon.html().replace(dividedBuyItem.icon, "") );
-            $(`#${dividedBuyItem.id} .divided-month`).text( '' );
-            $(`#${dividedBuyItem.id} .pay-count-down`).text( '' );
+            icon = $(`#${id} .icon`);
+            icon.html( icon.html().replace(dividedBuyList[id].icon, "") );
+            $(`#${id} .divided-month`).text( '' );
+            $(`#${id} .pay-count-down`).text( '' );
 
-            dividedBuyList = dividedBuyList.filter( item => { // 移除这个分期付款
-                return item.id !== dividedBuyItem.id;
-            });
+            delete dividedBuyList[id]; // 移除这个分期付款
         }
-    })
+    }
 }
 
 function checkGoal() {
