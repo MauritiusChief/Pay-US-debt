@@ -48,9 +48,9 @@ function everyHourEvent() {
     workStat = 0;
     // 不上班则回复健康
     if (currDate.getHours() < 9 ) { // 0-8点
-        health < 0 ? {} : health += 2;
+        health < 0 ? health += 0.1 : health += 2;
     } else { // 9点之后整天
-        health < 0 ? {} : health += 1;
+        health < 0 ? health += 0.05 : health += 1;
     }
     health > 100 ? health = 100 : {};
     // 消除（加班中）标记

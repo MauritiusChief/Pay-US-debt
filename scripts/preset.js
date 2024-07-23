@@ -142,7 +142,7 @@ function updateDisplay() {
     $('#coins-per-click').text( `${estiIncomePerH.toLocaleString()} $` );
     $('#goal-remain').text( `${(goal - coinCount)>0 ? (goal - coinCount).toLocaleString() : 0} $` );
     $('#current-date').text( `${currDate.getFullYear()}年${(currDate.getMonth()+1)}月${currDate.getDate()}日${currDate.getHours()}点` );
-    $('#health').text( health );
+    $('#health').text( Math.round(health*100)/100 ); // 避免 1.099999999 这样的数字出现
 
     /**健康值相关的图标跟新
      * 需要变量：
