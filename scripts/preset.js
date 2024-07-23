@@ -125,7 +125,7 @@ function updateDisplayJob() {
             currentJobText = '小货车司机';
             break;
         case 'excavator':
-            currentJobText = '挖掘机司机';
+            currentJobText = '挖掘机操作员';
             break;
         default:
             currentJobText = '搬运工';

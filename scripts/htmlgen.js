@@ -26,10 +26,10 @@ const buttonVehicleData = [
             marketList["buy-excavator"].dividedMonth+"月"
     }
 ];
-const buttonVehicleSource = document.getElementById("buy-vehicle-template").innerHTML;
+const buttonVehicleSource = $("#buy-vehicle-template").html();
 const buttonVehicleTemplate = Handlebars.compile(buttonVehicleSource);
 const buttonVehicleHtml = buttonVehicleTemplate(buttonVehicleData);
-document.getElementById("buy-vehicle-container").innerHTML = buttonVehicleHtml;
+$("#buy-vehicle-container").html( buttonVehicleHtml );
 
 // 买地产模板
 const buttonFieldData = [
@@ -42,10 +42,10 @@ const buttonFieldData = [
             marketList["buy-logistic-station"].dividedMonth+"月"
     }
 ];
-const buttonFieldSource = document.getElementById("buy-field-template").innerHTML;
+const buttonFieldSource = $("#buy-field-template").html();
 const buttonFieldTemplate = Handlebars.compile(buttonFieldSource);
 const buttonFieldHtml = buttonFieldTemplate(buttonFieldData);
-document.getElementById("buy-field-container").innerHTML = buttonFieldHtml;
+$("#buy-field-container").html( buttonFieldHtml );
 
 // 载具展示模板
 const vehicleData = [
@@ -65,10 +65,10 @@ const vehicleData = [
         prompt: "开挖掘机"
     }
 ];
-const vehicleSource = document.getElementById("vehicle-template").innerHTML;
+const vehicleSource = $("#vehicle-template").html();
 const vehicleTemplate = Handlebars.compile(vehicleSource);
 const vehicleHtml = vehicleTemplate(vehicleData);
-document.getElementById("vehicle-container").innerHTML = vehicleHtml;
+$("#vehicle-container").html( vehicleHtml );
 
 // 地产展示模板
 const fieldData = [
@@ -77,10 +77,10 @@ const fieldData = [
         label: "仓库"
     }
 ];
-const fieldSource = document.getElementById("field-template").innerHTML;
+const fieldSource = $("#field-template").html();
 const fieldTemplate = Handlebars.compile(fieldSource);
 const fieldHtml = fieldTemplate(fieldData);
-document.getElementById("field-container").innerHTML = fieldHtml;
+$("#field-container").html( fieldHtml );
 
 // 资源列表模板
 const tableData = [
@@ -93,7 +93,7 @@ const tableData = [
         label: "🚧建造力"
     }
 ];
-const tableSource = document.getElementById("resource-template").innerHTML;
+const tableSource = $("#resource-template").html();
 const tableTemplate = Handlebars.compile(tableSource);
 const tableHtml = tableTemplate(tableData);
-document.getElementById("resource-container").innerHTML = tableHtml;
+$("#resource-container").html( tableHtml );

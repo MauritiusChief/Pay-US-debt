@@ -15,6 +15,9 @@ $('#buy-semi-truck').click(() => {
 $('#buy-excavator').click(() => {
     buyEvent('excavator', '<img src="icons/excavator.svg" alt="🚜" class="svg-icon">', 30);
 })
+$('#buy-logistic-station').click(() => {
+    buyEvent('logistic-station', '📦', 30);
+})
 
 $('#buy-health-elixir').click(() => {
     shopItem = shopList['buy-health-elixir']
@@ -22,9 +25,6 @@ $('#buy-health-elixir').click(() => {
     health += 20;
 })
 
-$('#buy-logistic-station').click(() => {
-    buyEvent('logistic-station', '📦', 0);
-})
 
 /**购买事件，根据钱数全款购买或者分期付款购买
  * 需要变量：
