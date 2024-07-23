@@ -22,7 +22,7 @@ let dividePay = false;
 /** 商品及职业列表
  ***************/
 // 加商品和职业可以很方便地在这里加
-const marketList = [ // 可分期商品列表
+const marketList = [ // 可分期商品列表（目前包括 载具 和 地产）
     {id:'buy-mini-truck', price:genPrice(7190,11700,10), dividedMonth:12, step:10},
     {id:'buy-semi-truck', price:genPrice(138500,183500,100), dividedMonth:24, step:50},
     {id:'buy-excavator', price:genPrice(20000,61000,50), dividedMonth:12, step:50},
@@ -32,7 +32,7 @@ const marketList = [ // 可分期商品列表
 marketList.forEach( marketItem => {
     marketItem.dividedPrice = genDividedPrice(marketItem.price,1.1,marketItem.dividedMonth,marketItem.step)
 })
-//示例：{id:'buy-mini-truck', price:3500, dividedPrice:640, dividedMonth:6},
+//示例：{id:'buy-mini-truck', price:3500, dividedPrice:640, dividedMonth:6, step:10},
 const shopList = [ // 不可分期商品列表
     {id:'buy-health-elixir', price:50},
 

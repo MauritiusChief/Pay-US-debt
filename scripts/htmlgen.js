@@ -1,5 +1,6 @@
 console.log('htmlgen.js')
 
+// 买载具模板
 const buttonVehicleData = [
     {
         id: "buy-mini-truck",
@@ -25,12 +26,12 @@ const buttonVehicleData = [
             marketList.find(item => item.id === ("buy-excavator") ).dividedMonth+"月"
     }
 ];
-// 买资产模板
 const buttonVehicleSource = document.getElementById("buy-vehicle-template").innerHTML;
 const buttonVehicleTemplate = Handlebars.compile(buttonVehicleSource);
 const buttonVehicleHtml = buttonVehicleTemplate(buttonVehicleData);
 document.getElementById("buy-vehicle-container").innerHTML = buttonVehicleHtml;
 
+// 买地产模板
 const buttonFieldData = [
     {
         id: "buy-logistic-station",
@@ -41,13 +42,13 @@ const buttonFieldData = [
             marketList.find(item => item.id === ("buy-logistic-station") ).dividedMonth+"月"
     }
 ];
-// 买资产模板
 const buttonFieldSource = document.getElementById("buy-field-template").innerHTML;
 const buttonFieldTemplate = Handlebars.compile(buttonFieldSource);
 const buttonFieldHtml = buttonFieldTemplate(buttonFieldData);
 document.getElementById("buy-field-container").innerHTML = buttonFieldHtml;
 
-const propertyData = [
+// 载具展示模板
+const vehicleData = [
     {
         id: "mini-truck",
         label: "小货车",
@@ -64,24 +65,24 @@ const propertyData = [
         prompt: "开挖掘机"
     }
 ];
-// 资产模板
-const propertySource = document.getElementById("property-template").innerHTML;
-const propertyTemplate = Handlebars.compile(propertySource);
-const propertyHtml = propertyTemplate(propertyData);
-document.getElementById("property-container").innerHTML = propertyHtml;
+const vehicleSource = document.getElementById("vehicle-template").innerHTML;
+const vehicleTemplate = Handlebars.compile(vehicleSource);
+const vehicleHtml = vehicleTemplate(vehicleData);
+document.getElementById("vehicle-container").innerHTML = vehicleHtml;
 
+// 地产展示模板
 const fieldData = [
     {
         id: "logistic-station",
         label: "仓库"
     }
 ];
-// 地矿资产模板
 const fieldSource = document.getElementById("field-template").innerHTML;
 const fieldTemplate = Handlebars.compile(fieldSource);
 const fieldHtml = fieldTemplate(fieldData);
 document.getElementById("field-container").innerHTML = fieldHtml;
 
+// 资源列表模板
 const tableData = [
     {
         id: "transport",
@@ -92,7 +93,6 @@ const tableData = [
         label: "🚧建造力"
     }
 ];
-// 资源模板
 const tableSource = document.getElementById("resource-template").innerHTML;
 const tableTemplate = Handlebars.compile(tableSource);
 const tableHtml = tableTemplate(tableData);
