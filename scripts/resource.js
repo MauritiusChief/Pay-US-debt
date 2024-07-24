@@ -40,12 +40,14 @@ function checkBoxEvent(propertyName) {
         $('#model-display [type=checkbox]').not(thisName).prop('checked', false); // 选中所有其他勾选盒，取消勾选
         // 根据尚未被改变的workingProperty，判断上一个被使用的资产是什么
         if (propertyList[workingProperty] !== undefined) {
-            propertyList[workingProperty].inUse--;
+            propertyList[workingProperty].amountUsed--;
         }
-        propertyList[propertyName].inUse++;
+        propertyList[propertyName].amountUsed++;
         workingProperty = propertyName; // workingProperty更新
+        // console.log(propertyList[propertyName])
     } else { // 此勾选盒不勾选的情况
-        propertyList[propertyName].inUse--;
+        propertyList[propertyName].amountUsed--;
         workingProperty = ''
+        // console.log(propertyList[propertyName])
     }
 }

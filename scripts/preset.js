@@ -47,7 +47,7 @@ const employList = { // 雇员列表
 let dividedBuyList = {};
 //示例dividedBuyList:{ 'property-name': {icon:'🎈', dividedPrice:10, dividedMonth:6, payCountDown:30} }
 let propertyList = {};
-//示例propertyList:{ 'property-name': {amount:1, amtInUse:0, maintainStatus:5, maintainDecrChance:0.5} }
+//示例propertyList:{ 'property-name': {amount:1, amountUsed:0, maintainStatus:5, maintainDecrChance:0.5} }
 let employeeList = {};
 //示例employeeList:{ employee-name': {amount:1, inWork:0, maintainStatus:5, maintainDecrChance:0.5} }
 let employeeGStack = []; // F 代表女，M 代表男
@@ -185,7 +185,7 @@ function updateDisplay() {
 
         // 更新劳动力分配面板
         $(`#${id} .work-force-limit`).text( propertyList[id].amount );
-        $(`#${id} .work-force-input`).text( propertyList[id].inUse );
+        $(`#${id} .work-force-input`).text( propertyList[id].amountUsed );
 
     }
 

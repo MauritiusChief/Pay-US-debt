@@ -64,7 +64,7 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
         if ( propertyItem !== undefined ) {// 已有这个商品
             propertyItem.amount++;
         } else { // 没有这个商品，创建这个商品
-            propertyList[buyId] = {amount: 1, maintainStatus: 5, maintainDecrChance: 0.2, inUse: 0};
+            propertyList[buyId] = {amount: 1, amountUsed: 0, maintainStatus: 5, maintainDecrChance: 0.2};
         }
         $(`#${buyId} .icon`).html( $(`#${buyId} .icon`).html()+buyIcon );
         $(`#${buyId}`).removeClass('hidden'); // 去除隐藏
@@ -92,7 +92,7 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
             if ( propertyItem !== undefined ) {// 已有这个商品
                 propertyItem.amount++;
             } else { // 没有这个商品，创建这个商品
-                propertyList[buyId] = {amount: 1, maintainStatus: 5, maintainDecrChance: 0.2};
+                propertyList[buyId] = {amount: 1, amountUsed: 0, maintainStatus: 5, maintainDecrChance: 0.2};
             }
             $(`#${buyId} .icon`).html( $(`#${buyId} .icon`).html()+buyIcon );
             $(`#${buyId} .divided-month`).html( ` 分期${buyDividedMonth}月 ` );
