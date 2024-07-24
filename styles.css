@@ -3,7 +3,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     background-color: #f0f0f0;
     transition: background-color 0.5s ease, color 0.1s ease;
 }
@@ -39,6 +38,50 @@ body div {
     padding: 20px 30px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 1200px) {
+    .grid-container {
+        grid-template-areas:
+            'header main right'
+            'header footer right'
+            'menu menu2 right';
+    }
+    .grid-container .grid-panel {
+        padding: 10px 15px;
+    }
+}
+
+@media (max-width: 992px) {
+    .grid-container {
+        grid-template-areas:
+            'menu header'
+            'menu main'
+            'menu footer'
+            'menu2 right';
+    }
+
+    .grid-container .grid-panel {
+        padding: 5px 5px;
+    }
+}
+
+@media (max-width: 576px) {
+    .grid-container {
+        grid-template-areas:
+            'header'
+            'main'
+            'right'
+            'footer'
+            'menu'
+            'menu2';
+        gap: 10px;
+        padding: 5px;
+    }
+
+    .grid-container .grid-panel {
+        padding: 5px 5px;
+    }
 }
 
 
