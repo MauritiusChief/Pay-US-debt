@@ -8,5 +8,11 @@
 
 ## 如何开始
 
-点击[这里](https://mauritiuschief.github.io/Pay-US-debt/StartGame)
+### 网页
+
+点击[这里](https://mauritiuschief.github.io/Pay-US-debt/StartGame)  
 或访问 `../StartGame`
+
+### 下载
+
+下载压缩包后点击 StartGame.html
