@@ -54,7 +54,7 @@ const employData = [
         label: "脏比工人",
         icon: "🧟",
         salary: "3,000.00 $ /月",
-        lore: "大脑有点不太好使"
+        lore: "勤奋但脑子不太好"
     },
     {
         id: "vampire",
@@ -109,7 +109,7 @@ const workForceData = [
     {
         id: "zombie",
         type: "undead",
-        lore: "正担心胆固醇过高问题"
+        lore: "正在担心胆固醇过高"
     },
     {
         id: "vampire",

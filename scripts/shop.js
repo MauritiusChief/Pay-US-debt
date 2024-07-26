@@ -112,7 +112,7 @@ function employEvent(empId, iconF, iconM) {
     if ( employeeItem !== undefined ) {// 已有这个商品
         employeeItem.amount++;
     } else { // 没有这个商品，创建这个商品
-        employeeList[empId] = {amount: 1, inWork: 0, maintainStatus: 5, maintainDecrChance: 0.2};
+        employeeList[empId] = {amount: 1, amountWorking: 0, maintainStatus: 5, maintainDecrChance: 0.2};
     }
     gender = Math.random() > 0.5 ? 'F' : 'M';
     employeeGStack.push(gender);
@@ -120,6 +120,12 @@ function employEvent(empId, iconF, iconM) {
     $(`#${empId} .icon`).html( $(`#${empId} .icon`).html()+empIcon );
     $(`#${empId}`).removeClass('hidden'); // 去除隐藏
 
+    // 解锁解雇按钮
+    if (employeeList[empId].amountWorking < employeeList[empId].amount) {
+        $(`#dismiss-${empId}`).prop('disabled', false);
+    }
+
+    updateResource();
     updateDisplay();
 }
 
@@ -127,6 +133,10 @@ function dismissEvent(empId, iconF, iconM) {
     employeeItem = employeeList[empId];
     if (employeeItem.amount > 1) { // 劳动力数量-1
         employeeItem.amount--;
+        // 锁定按钮，避免人被解雇了其工作的资产还在运转
+        if (employeeItem.amountWorking >= employeeItem.amount) {
+            $(`#dismiss-${empId}`).prop('disabled', true);
+        }
     } else { // 劳动力数量不足1，直接移除
         delete employeeList[empId];
         $(`#${empId}`).addClass('hidden');
@@ -138,7 +148,11 @@ function dismissEvent(empId, iconF, iconM) {
     revIconToDelete = iconToDelete.split('').reverse().join('');
     reversedHtml = reversedHtml.replace(revIconToDelete, "");
     reversedHtml = reversedHtml.split('').reverse().join('');
+
     icon.html( reversedHtml );
 
+    
+
+    updateResource();
     updateDisplay();
 }

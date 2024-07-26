@@ -139,7 +139,8 @@ function everyMonthEvent() {
  *      gamePaused（false，解除暂停）
  * HTML更新
  */ 
-$('#click-button').click(() => {
+$('#click-button').click(clickButton);
+function clickButton() {
 
     // 触发上班的效果
     workStat = 1;
@@ -171,9 +172,10 @@ $('#click-button').click(() => {
     
     incrementTime();
     updateDisplay();
-});
+};
 
-$('#game-pause').click(() => {
+$('#game-pause').click(gamePause);
+function gamePause() {
     if (gamePaused) { // 已暂停
         currentTimer = setInterval(everyHourEvent, 1000);
         $('#game-pause').text( '暂停' );
@@ -183,7 +185,7 @@ $('#game-pause').click(() => {
         $('#game-pause').text( '继续' );
         gamePaused = true;
     }
-})
+}
 
 $('#change-gender').click(() => {
     oldGIdx = GIdx;
@@ -262,13 +264,18 @@ function checkGoal() {
     }
 }
 
-/** 作弊 */
+/** 键盘输入 */
 let userKeyInput = ''
 $(document).on('keydown', function(event) {
     const key = event.key;
 
     // Add the pressed key to the userInput string
     userKeyInput += key;
+
+    if (userKeyInput.includes(' ')) { // 空格暂停
+        gamePause();
+        userKeyInput = '';
+    }
 
     // Check if the current input matches the cheat code
     if (userKeyInput.toLowerCase().includes('paxamericana')) {
@@ -298,6 +305,21 @@ $(document).on('keydown', function(event) {
     if (userKeyInput.toLowerCase().includes('tictoc')) { // 快速过1天
         clearInterval(currentTimer);
         Array(24).fill().forEach(() => everyHourEvent());
+        if (!gamePaused) {
+            currentTimer = setInterval(everyHourEvent, 1000);
+        }
+        userKeyInput = '';
+    }
+    if (userKeyInput.toLowerCase().includes('workhard')) { // 标准模板工作5天
+        clearInterval(currentTimer);
+        Array(5*24).fill().forEach(() => {
+            if (currDate.getHours() > 8) {
+                clickButton();
+                clearInterval(currentTimer);
+            } else {
+                everyHourEvent();
+            }
+        });
         if (!gamePaused) {
             currentTimer = setInterval(everyHourEvent, 1000);
         }
