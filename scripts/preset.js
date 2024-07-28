@@ -76,7 +76,7 @@ let selfResourceList = {
 function updateResource() {
     actuIncomePerH = 0;
     estiIncomePerH = 0;
-    const produceMapping = {
+    const produceAddMapping = {
         'transport': {
             'semi-truck': 85,
             'mini-truck': 45,
@@ -88,12 +88,24 @@ function updateResource() {
             'default': 0
         }
     };
-    // 帮助函数，根据 资源类型 和 在工作的资产，决定小人这个资源类型的产量
-    const getProduceValue = (resourceType, workingProperty) => { 
-        if (produceMapping[resourceType] && produceMapping[resourceType][workingProperty] !== undefined ) {
-            return produceMapping[resourceType][workingProperty];
+    const produceMultMapping = {
+        'transport': {
+            'warehouse': 5,
+            'default': 0
         }
-        return produceMapping[resourceType] ? produceMapping[resourceType]['default'] : 0;
+    };
+    // 帮助函数，根据 资源类型 和 资产，决定这个资源类型的产量
+    const getProduceValue = (resourceType, propertyName) => { 
+        if (produceAddMapping[resourceType] && produceAddMapping[resourceType][propertyName] !== undefined ) {
+            return produceAddMapping[resourceType][propertyName];
+        }
+        return produceAddMapping[resourceType] ? produceAddMapping[resourceType]['default'] : 0;
+    };
+    const getProduceMultipe = (resourceType, propertyName) => { 
+        if (produceMultMapping[resourceType] && produceMultMapping[resourceType][propertyName] !== undefined ) {
+            return produceMultMapping[resourceType][propertyName];
+        }
+        return produceMultMapping[resourceType] ? produceMultMapping[resourceType]['default'] : 0;
     };
     // 根据当前工作使用的资产处理小人自己的资源产出
     for (let id in selfResourceList) {
@@ -101,14 +113,6 @@ function updateResource() {
     }
     for (let id in resourceList) {
         resourceList[id].produce = 0;
-        // 自动生产的资源
-        switch (id) {
-            case 'transport':
-                for (let id in propertyList) {
-                    id === 'warehouse' ? resourceList['transport'].produce += 5*propertyList[id].amount : {};
-                }
-                break;
-        }
         // 点击生产的资源
         if (selfResourceList[id] !== undefined) {
             resourceList[id].produce += selfResourceList[id].produce * workStat; // workStat 0 代表不上班，1代表上班
@@ -116,15 +120,19 @@ function updateResource() {
             estiIncomePerH += selfResourceList[id].produce * resourceList[id].price * priceMulti;
         }
         // 自动生产的资源
+        propertyMultProduce = 0;
         for (propId in propertyList) {
             // console.log(propertyList[propId])
             propertyUsed = propertyList[propId].amountUsed;
-            propertyProduce = getProduceValue(id, propId);
+            propertyAmount = propertyList[propId].amount;
+            propertyAddProduce = getProduceValue(id, propId); // 数值加成
+            propertyMultProduce += getProduceMultipe(id, propId) * propertyAmount; // 百分比加成
             if (propId === workingProperty) {// 减去小人自己使用的资产
                 propertyUsed--;
             }
-            resourceList[id].produce += propertyProduce*propertyUsed
+            resourceList[id].produce += propertyAddProduce*propertyUsed
         }
+        resourceList[id].produce *= (1 + propertyMultProduce/100); // 对资源产量进行百分比加成
         // console.log(propertyUsed)
         // 计算总资源
         netProduct = resourceList[id].produce - resourceList[id].consume;
@@ -160,7 +168,7 @@ function updateDisplayJob() {
  *********************************/
 function updateDisplay() {
     // 基本文本更新
-    $('#coin-count').text( `${coinCount.toLocaleString()} $` );
+    $('#coin-count').text( `${coinCount.toFixed(2).toLocaleString()} $` );
     $('#coins-per-click').text( `${estiIncomePerH.toLocaleString()} $` );
     $('#goal-remain').text( `${(goal - coinCount)>0 ? (goal - coinCount).toLocaleString() : 0} $` );
     $('#current-date').text( `${currDate.getFullYear()}年${(currDate.getMonth()+1)}月${currDate.getDate()}日${currDate.getHours()}点` );
@@ -228,13 +236,13 @@ function updateDisplay() {
      */
     for (let id in resourceList) {
         tableRow = $(`#${id}`);
-        tableRow.find(".net-produce .num").html( (resourceList[id].produce - resourceList[id].consume) );
-        tableRow.find(".net-produce .produce").html( resourceList[id].produce );
-        tableRow.find(".net-produce .consume").html( resourceList[id].consume );
+        tableRow.find(".net-produce .num").html( (resourceList[id].produce - resourceList[id].consume).toFixed(2) );
+        tableRow.find(".net-produce .produce").html( resourceList[id].produce.toFixed(2) );
+        tableRow.find(".net-produce .consume").html( resourceList[id].consume.toFixed(2) );
         netProduct = resourceList[id].produce - resourceList[id].consume;
         priceMulti = netProduct < 0 ? 1.2 : 1;
-        tableRow.find(".income .num").html( netProduct*resourceList[id].price*priceMulti );
-        tableRow.find(".income .price").html( netProduct < 0 ? -resourceList[id].price*priceMulti : resourceList[id].price );
+        tableRow.find(".income .num").html( (netProduct*resourceList[id].price*priceMulti).toFixed(2) );
+        tableRow.find(".income .price").html( netProduct < 0 ? -(resourceList[id].price*priceMulti).toFixed(2).toLocaleString() : resourceList[id].price.toFixed(2).toLocaleString() );
     }
 }
 
