@@ -54,7 +54,9 @@ let employeeList = {};
 let employeeGStack = []; // F 代表女，M 代表男
 let resourceList = {
     'transport': {produce: 0, consume: 0, stock: 0, price: 0.5},
-    'construct': {produce: 0, consume: 0, stock: 0, price: 1.5}
+    'construct': {produce: 0, consume: 0, stock: 0, price: 1.5},
+    'gear': {produce: 0, consume: 0, stock: 0, price: 0.56},
+    'nut-bolt': {produce: 0, consume: 0, stock: 0, price: 0.16}
 };
 let selfResourceList = {
     'transport': {produce:0},

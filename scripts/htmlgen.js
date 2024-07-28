@@ -131,6 +131,14 @@ const tableData = [
     {
         id: "construct",
         label: "🚧建造力"
+    },
+    {
+        id: "gear",
+        label: "⚙️机械零件"
+    },
+    {
+        id: "nut-bolt",
+        label: "🔩小型零件"
     }
 ];
 const tableSource = $("#resource-template").html();
