@@ -56,7 +56,8 @@ let resourceList = {
     'transport': {produce: 0, consume: 0, stock: 0, price: 0.5},
     'construct': {produce: 0, consume: 0, stock: 0, price: 1.5},
     'gear': {produce: 0, consume: 0, stock: 0, price: 0.56},
-    'nut-bolt': {produce: 0, consume: 0, stock: 0, price: 0.16}
+    'nut-bolt': {produce: 0, consume: 0, stock: 0, price: 0.16},
+    'steel': {produce: 0, consume: 0, stock: 0, price: 0.37}
 };
 let selfResourceList = {
     'transport': {produce:0},

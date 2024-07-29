@@ -126,19 +126,28 @@ $("#work-force-container").html( workForceHtml );
 const tableData = [
     {
         id: "transport",
-        label: "📦运力"
+        label: "📦运力",
+        unit: "kg"
     },
     {
         id: "construct",
-        label: "🚧建造力"
+        label: "🚧建造力",
+        unit: "㎡"
     },
     {
         id: "gear",
-        label: "⚙️机械零件"
+        label: "⚙️传动零件",
+        unit: "kg"
     },
     {
         id: "nut-bolt",
-        label: "🔩小型零件"
+        label: "🔩连接零件",
+        unit: "kg"
+    },
+    {
+        id: "steel",
+        label: "⬜钢材",
+        unit: "kg"
     }
 ];
 const tableSource = $("#resource-template").html();

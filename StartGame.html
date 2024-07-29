@@ -129,14 +129,14 @@
             <tr id="{{id}}">
                 <td>{{label}}</td>
                 <td class="net-produce hastooltip">
-                    <span class="num">0</span>/小时
+                    <span class="num">0</span> {{unit}}/小时
                     <span class="tooltiptext">
-                        生产<span class="produce">0</span>/小时<br>消耗<span class="consume">0</span>/小时
+                        生产<span class="produce">0</span> {{unit}}/小时<br>消耗<span class="consume">0</span> {{unit}}/小时
                     </span>
                 </td>
                 <td class="income hastooltip">
                     <span class="num">0</span> $
-                    <span class="tooltiptext">单价 <span class="price">1</span> $</span>
+                    <span class="tooltiptext">单价 <span class="price">1</span> $/{{unit}}</span>
                 </td>
             </tr>
             {{/each}}
