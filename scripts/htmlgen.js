@@ -137,12 +137,12 @@ const tableData = [
     {
         id: "gear",
         label: "⚙️传动零件",
-        unit: "kg"
+        unit: "组"
     },
     {
         id: "nut-bolt",
         label: "🔩连接零件",
-        unit: "kg"
+        unit: "组"
     },
     {
         id: "steel",
