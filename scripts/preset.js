@@ -194,6 +194,7 @@ function updateDisplayJob() {
 function updateDisplay() {
     // 基本文本更新
     $('#coin-count').text( `${coinCount.toFixed(2).toLocaleString()} $` );
+    $('#coin-per-hour').text( `${actuIncomePerH.toFixed(2).toLocaleString()} $` );
     $('#coins-per-click').text( `${estiIncomePerH.toLocaleString()} $` );
     $('#goal-remain').text( `${(goal - coinCount)>0 ? (goal - coinCount).toLocaleString() : 0} $` );
     $('#current-date').text( `${currDate.getFullYear()}年${(currDate.getMonth()+1)}月${currDate.getDate()}日${currDate.getHours()}点` );
