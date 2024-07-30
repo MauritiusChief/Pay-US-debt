@@ -94,11 +94,13 @@ function updateResource() {
             'semi-truck': 0.02,
             'mini-truck': 0.04,
             'excavator': 0.05,
+            'default': 0
         },
         'nut-bolt': {
             'semi-truck': 0.4,
             'mini-truck': 0.8,
             'excavator': 1.0,
+            'default': 0
         }
     }
     const produceMultMapping = {
