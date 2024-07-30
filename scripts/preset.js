@@ -89,6 +89,18 @@ function updateResource() {
             'default': 0
         }
     };
+    const consumeAddMapping = {
+        'gear': {
+            'semi-truck': 0.02,
+            'mini-truck': 0.04,
+            'excavator': 0.05,
+        },
+        'nut-bolt': {
+            'semi-truck': 0.4,
+            'mini-truck': 0.8,
+            'excavator': 1.0,
+        }
+    }
     const produceMultMapping = {
         'transport': {
             'warehouse': 5,
@@ -102,6 +114,14 @@ function updateResource() {
         }
         return produceAddMapping[resourceType] ? produceAddMapping[resourceType]['default'] : 0;
     };
+    // 类似的读取资源消耗的函数
+    const getConsumeValue = (resourceType, propertyName) => { 
+        if (consumeAddMapping[resourceType] && consumeAddMapping[resourceType][propertyName] !== undefined ) {
+            return consumeAddMapping[resourceType][propertyName];
+        }
+        return consumeAddMapping[resourceType] ? consumeAddMapping[resourceType]['default'] : 0;
+    };
+    // 百分比加成函数
     const getProduceMultipe = (resourceType, propertyName) => { 
         if (produceMultMapping[resourceType] && produceMultMapping[resourceType][propertyName] !== undefined ) {
             return produceMultMapping[resourceType][propertyName];
@@ -114,6 +134,7 @@ function updateResource() {
     }
     for (let id in resourceList) {
         resourceList[id].produce = 0;
+        resourceList[id].consume = 0;
         // 点击生产的资源
         if (selfResourceList[id] !== undefined) {
             resourceList[id].produce += selfResourceList[id].produce * workStat; // workStat 0 代表不上班，1代表上班
@@ -127,7 +148,10 @@ function updateResource() {
             propertyUsed = propertyList[propId].amountUsed;
             propertyAmount = propertyList[propId].amount;
             propertyAddProduce = getProduceValue(id, propId); // 数值加成
+            propertyAddConsume = getConsumeValue(id, propId); // 数值消耗
             propertyMultProduce += getProduceMultipe(id, propId) * propertyAmount; // 百分比加成
+
+            resourceList[id].consume += propertyAddConsume*propertyUsed // 此处故意不减去小人自己使用的资产
             if (propId === workingProperty) {// 减去小人自己使用的资产
                 propertyUsed--;
             }
