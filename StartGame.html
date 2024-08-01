@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>美帝还债记</title>
+    <title i18n-key="title">美帝还债记</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
@@ -11,19 +11,19 @@
 <body>
     <div class="grid-container">
         <div id="total-display" class="grid-panel">
-            <h1 id="total-h">挣钱帮美帝还债</h1>
-            <p id="total-debt">美债总额: <span id="goal">加载中……</span></p>
-            <p id="total-debt-time">美债记录时间: <span id="goal-date">加载中……</span></p>
-            <h4 id="total-income-ph">每小时收入: <span id="coin-per-hour">0 $</span></h4>
-            <h3 id="total-earned">已赚美元: <span id="coin-count">0 $</span></h3>
-            <h3 id="total-to-goal">距离目标: <span id="goal-remain">加载中……</span></h3>
-            <button id="game-pause">暂停</button>
+            <h1 i18n-key="disp-h">挣钱帮美帝还债</h1>
+            <p><span i18n-key="disp-debt">美债总额: </span><span id="goal" i18n-key-int="disp-load">加载中……</span></p>
+            <p><span i18n-key="disp-debt-time">美债记录时间: </span><span id="goal-date" i18n-key-int="disp-load">加载中……</span></p>
+            <h4><span i18n-key="disp-income-ph">每小时收入: </span><span id="coin-per-hour">0 $</span></h4>
+            <h3><span i18n-key="disp-earned">已赚美元: </span><span id="coin-count">0 $</span></h3>
+            <h3><span i18n-key="disp-to-goal">距离目标: </span><span id="goal-remain" i18n-key-int="disp-load">加载中……</span></h3>
+            <button id="game-pause" i18n-key="disp-pause-inti">开始</button>
         </div>
         <div id="clicker" class="grid-panel">
-            <p>当前工作：<span id="current-job">搬运工</span><span id="overtime"></span></p>    
-            <p>当前时间：<span id="current-date">加载中...</span></p>
-            <p>工作时薪: <span id="coins-per-click">12.5 $</span></p>
-            <button id="click-button">努力赚美刀</button>
+            <p><span i18n-key="click-job">当前工作：</span><span id="current-job" i18n-key="click-job-porter">搬运工</span><span id="overtime"></span></p>    
+            <p><span i18n-key="click-date">当前时间：</span><span id="current-date" i18n-key-int="disp-load">加载中...</span></p>
+            <p><span i18n-key="click-wage">工作时薪: </span><span id="coins-per-click">12.5 $</span></p>
+            <button id="click-button" i18n-key="click-button">努力赚美刀</button>
         </div>
         <div id="shop" class="grid-panel">
             <h2>市场</h2>
@@ -61,7 +61,8 @@
         <div id="notice" class="grid-panel">
             <h4>通知</h4>
             <p></p>
-            <select id="languageSelect">
+            <select id="language-select">
+                <option value="">文/A</option>
                 <option value="en">English</option>
                 <option value="zh">中文</option>
             </select>
@@ -148,9 +149,9 @@
         </table>
     </script>
     
+    <script src="scripts/localization.js"></script>
     <script src="scripts/preset.js"></script>
     <script src="scripts/htmlgen.js"></script>
-    <script src="scripts/localization.js"></script>
     <script src="scripts/main.js"></script>
     <script src="scripts/shop.js"></script>
     <script src="scripts/resource.js"></script>

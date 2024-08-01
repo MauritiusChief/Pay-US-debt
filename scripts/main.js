@@ -18,7 +18,8 @@ fetch('https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accoun
     $('#goal-date').text( acquireDate );
     let acquireDateArray = acquireDate.split("-");
     dateArray.splice(0, 3, ...acquireDateArray);
-    $('#current-date').text( `${dateArray[0]}年${dateArray[1].replace(0,'')}月${dateArray[2].replace(0,'')}日${dateArray[3]}点` );
+    $('#current-date').html( `${dateArray[0]}-${dateArray[1]}-${dateArray[2]},  ${dateArray[3]}<span i18n-key="o-clock"></span>` );
+    $("[i18n-key]").each(translateElement);
     dateArray[1]--;
     currDate = new Date(...dateArray);
 })
@@ -54,7 +55,8 @@ function everyHourEvent() {
     }
     health > 100 ? health = 100 : {};
     // 消除（加班中）标记
-    $('#overtime').text( '' );
+    $('#overtime').removeAttr("i18n-key");
+    $('#overtime').text("");
     // 小人不加班时的图标
     $("[type=person]").each(function(index, personTag) {
         let $personTag = $(personTag);
@@ -149,11 +151,11 @@ function clickButton() {
         let selfElement = $("#self");
         selfElement.html( selfElement.html().replace('🛌', GIcon[GIdx]) );
         selfElement.html( selfElement.html().replace('🛀', GIcon[GIdx]) );
-        if (!$('#overtime').text().includes("（加班中）")) {
-            $('#overtime').text( "（加班中）" );
-        }
+        // 加班标记
+        $('#overtime').attr("i18n-key", "work-overtime");
     } else {
-        $('#overtime').text( '' );
+        $('#overtime').removeAttr("i18n-key");
+        $('#overtime').text("");
     }
     // 上班与加班时减少健康
     if (currDate.getHours() < 9 ) { // 0-8点
@@ -168,7 +170,7 @@ function clickButton() {
     clearInterval(currentTimer);
     currentTimer = setInterval(everyHourEvent, 1000);
     gamePaused = false;
-    $('#game-pause').text( '暂停' );
+    $('#game-pause').attr("i18n-key", "game-pause");
     
     incrementTime();
     updateDisplay();
@@ -178,13 +180,14 @@ $('#game-pause').click(gamePause);
 function gamePause() {
     if (gamePaused) { // 已暂停
         currentTimer = setInterval(everyHourEvent, 1000);
-        $('#game-pause').text( '暂停' );
+        $('#game-pause').attr("i18n-key", "game-pause");
         gamePaused = false;
     } else { // 没暂停
         clearInterval(currentTimer);
-        $('#game-pause').text( '继续' );
+        $('#game-pause').attr("i18n-key", "game-continue");
         gamePaused = true;
     }
+    $("[i18n-key]").each(translateElement); // 更新文本翻译
 }
 
 $('#change-gender').click(() => {
@@ -198,6 +201,19 @@ $('#change-gender').click(() => {
     selfGButton.html( selfGButton.html().replace(GTxt[oldGIdx],GTxt[GIdx]) );
     // updateDisplay();
 })
+
+$('#language-select').on('change', (e) => {
+    let selectedValue = e.target.value;
+    
+    if (selectedValue === "") {
+        locale = supportedLocale.includes(navLocal) ? navLocal : defaultLocale;
+    } else {
+        locale = selectedValue;
+    }
+
+    $("[i18n-key]").each(translateElement);
+})
+
 
 
 /** 更新函数

@@ -15,7 +15,7 @@ const GTxt = ['?','♂','♀']
 
 // 游戏机制数据
 let goal = 1000000;
-let dateArray = [1000, 0, 1, 8]
+let dateArray = [1000, 0, 1, 9]
 let currDate = new Date(...dateArray);
 let gameFinished = false;
 let currentTimer;
@@ -199,7 +199,7 @@ function updateDisplay() {
     $('#coin-per-hour').text( `${actuIncomePerH.toFixed(2).toLocaleString()} $` );
     $('#coins-per-click').text( `${estiIncomePerH.toLocaleString()} $` );
     $('#goal-remain').text( `${(goal - coinCount)>0 ? (goal - coinCount).toLocaleString() : 0} $` );
-    $('#current-date').text( `${currDate.getFullYear()}年${(currDate.getMonth()+1)}月${currDate.getDate()}日${currDate.getHours()}点` );
+    $('#current-date').html( `${currDate.getFullYear()}-${(currDate.getMonth()+1).toString().padStart(2, '0')}-${currDate.getDate().toString().padStart(2, '0')},  ${currDate.getHours()}<span i18n-key="o-clock"></span>` );
     $('#health').text( Math.round(health*100)/100 ); // 避免 1.099999999 这样的数字出现
 
     /**健康值相关的图标跟新
@@ -271,6 +271,8 @@ function updateDisplay() {
         tableRow.find(".income .num").html( (netProduct*resourceList[id].price*priceMulti).toFixed(2) );
         tableRow.find(".income .price").html( netProduct < 0 ? -(resourceList[id].price*priceMulti).toFixed(2).toLocaleString() : resourceList[id].price.toFixed(2).toLocaleString() );
     }
+
+    $("[i18n-key]").each(translateElement); // 更新文本翻译
 }
 
 function genPrice(min, max, step) {
