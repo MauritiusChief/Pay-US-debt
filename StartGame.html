@@ -101,19 +101,19 @@
     <!-- 载具 展示模板 -->
     <script id="vehicle-template" type="text/x-handlebars-template">
         {{#each this}}
-            <p id="{{id}}" class="hastooltip hidden">
-                <span id="install-{{id}}" class="hidden">
+            <div id="{{id}}" class="hastooltip hidden"><p>
+                <div id="install-{{id}}" class="hidden">
                     <span i18n-key="mkt-install"></span><span class="install-month"></span><span i18n-key="mkt-month"></span>
                     <span i18n-key="mkt-pay-ctd"></span><span class="pay-count-down"></span><span i18n-key="mkt-day"></span>
-                </span>
-                <br><span class="icon"></span><span class="tooltiptext"><span i18n-key="mkt-{{id}}">载具名称占位</span></span><br>
+                </div>
+                <span class="icon"></span><span class="tooltiptext"><span i18n-key="mkt-{{id}}">载具名称占位</span></span><br>
                 <span class="work-force use-worker hidden">
                     <button type="decr">-</button>
                     <span class="work-force-input">0</span>/<span class="work-force-limit">0</span>
                     <button type="incr">+</button>
                 </span>
                 <span class="work-here"><input type="checkbox"><span i18n-key="mkt-{{id}}-prompt">在此工作占位</span></span>
-            </p>
+            </p></div>
         {{/each}}
     </script>
     <!-- 地产 展示模板 -->
