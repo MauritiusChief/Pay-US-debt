@@ -26,40 +26,40 @@
             <button id="click-button" i18n-key="click-button">努力赚美刀</button>
         </div>
         <div id="shop" class="grid-panel">
-            <h2>市场</h2>
-            <span id="install-pay"><input type="checkbox">分期付款</span>
+            <h2 i18n-key="market">市场</h2>
+            <span id="install-pay"><input type="checkbox"><span i18n-key="installment">分期付款</span></span>
 
-            <h3>车辆市场</h3>
+            <h3 i18n-key="vehicle-market">车辆市场</h3>
             <div id="buy-vehicle-container"></div><!-- 买载具按钮 -->
 
-            <h3>地产市场</h3>
+            <h3 i18n-key="field-market">地产市场</h3>
             <div id="buy-field-container"></div><!-- 买地产按钮 -->
 
-            <h2>商店</h2>
+            <h2 i18n-key="shop">商店</h2>
             <button id="buy-health-elixir" class="shop-goods hastooltip">健康药水<span class="tooltiptext">50.00 $</span></span></button>
 
-            <h2>雇佣</h2>
+            <h2 i18n-key="employ">雇佣</h2>
             <div id="employ-container"></div><!-- 雇佣按钮 -->
 
         </div>
         <div id="build" class="grid-panel">
-            <h2>建造</h2>
+            <h2 i18n-key="build">建造</h2>
         </div>
         <div id="model-display" class="grid-panel">
-            <h2>资产</h2>
+            <h2 i18n-key="property">资产</h2>
             <button id="change-gender">?</button>
-            <span id="self" type="person" class="hastooltip">🧍<span class="tooltiptext">这是你自己</span><span>健康:</span><span id="health"></span></span>
+            <span id="self" type="person" class="hastooltip">🧍<span class="tooltiptext" i18n-key="prop-self">这是你自己</span><span i18n-key="prop-health">健康:</span><span id="health"></span></span>
 
             <div id="work-force-container"></div><!-- 劳动力列表 -->
 
             <div id="vehicle-container"></div><!-- 资产列表 -->
             <div id="field-container"></div><!-- 地产列表 -->
 
-            <h2>资源</h2>
+            <h2 i18n-key="resource">资源</h2>
             <div id="resource-container"></div><!-- 资源列表 -->
         </div>
         <div id="notice" class="grid-panel">
-            <h4>通知</h4>
+            <h4 i18n-key="notice">通知</h4>
             <p></p>
             <select id="language-select">
                 <option value="">文/A</option>
@@ -72,41 +72,51 @@
     <!-- 载具市场 按钮模板 -->
     <script id="buy-vehicle-template" type="text/x-handlebars-template">
         {{#each this}}
-            <button id="{{id}}" class="vehicle-goods hastooltip"><span class="buy-or-install">购买</span>{{label}}
-                <span class="tooltiptext">{{price}}<br>分期 {{installment}}</span>
+            <button id="buy-{{id}}" class="vehicle-goods hastooltip">
+                <span class="buy-or-install" i18n-key="mkt-buy">购买</span><span i18n-key="mkt-{{id}}">载具名称占位</span>
+                <span class="tooltiptext">{{price}}<br><span i18n-key="mkt-install">分期</span> {{{installment}}}</span>
             </button>
         {{/each}}
     </script>
     <!-- 地产市场 按钮模板 -->
     <script id="buy-field-template" type="text/x-handlebars-template">
         {{#each this}}
-            <button id="{{id}}" class="field-goods hastooltip"><span class="buy-or-install">购买</span>{{label}}
-                <span class="tooltiptext">{{price}}<br>分期 {{installment}}</span>
+            <button id="buy-{{id}}" class="field-goods hastooltip">
+                <span class="buy-or-install" i18n-key="mkt-buy">>购买</span><span i18n-key="mkt-{{id}}">地产名称占位</span>
+                <span class="tooltiptext">{{price}}<br><span i18n-key="mkt-install">分期</span> {{{installment}}}</span>
             </button>
         {{/each}}
     </script>
     <!-- 雇佣 按钮模板 -->
     <script id="employ-template" type="text/x-handlebars-template">
         {{#each this}}
-        <button id="employ-{{id}}" class="shop-employee hastooltip">雇佣{{label}}{{icon}}<span class="tooltiptext">{{salary}}<br>{{lore}}</span></span></button>
+        <button id="employ-{{id}}" class="shop-employee hastooltip">
+            <span i18n-key="mkt-hire">雇用</span><span i18n-key="mkt-{{id}}">劳动力名称占位</span>{{icon}}<span class="tooltiptext">{{{salary}}}<br>
+            <span i18n-key="mkt-{{id}}-lore">有趣文案占位</span>
+        </button>
         {{/each}}
     </script>
     
-    <!-- 资产 模板 -->
+
+    <!-- 载具 展示模板 -->
     <script id="vehicle-template" type="text/x-handlebars-template">
         {{#each this}}
             <p id="{{id}}" class="hastooltip hidden">
-                <span class="icon"></span><span class="tooltiptext">{{label}}</span><span class="install-month"></span><span class="pay-count-down"></span><br>
+                <span id="install-{{id}}" class="hidden">
+                    <span i18n-key="mkt-install"></span><span class="install-month"></span><span i18n-key="mkt-month"></span>
+                    <span i18n-key="mkt-pay-ctd"></span><span class="pay-count-down"></span><span i18n-key="mkt-day"></span>
+                </span>
+                <br><span class="icon"></span><span class="tooltiptext"><span i18n-key="mkt-{{id}}">载具名称占位</span></span><br>
                 <span class="work-force use-worker hidden">
                     <button type="decr">-</button>
                     <span class="work-force-input">0</span>/<span class="work-force-limit">0</span>
                     <button type="incr">+</button>
                 </span>
-                <span class="work-here"><input type="checkbox">{{prompt}}</span>
+                <span class="work-here"><input type="checkbox"><span i18n-key="mkt-{{id}}-prompt">在此工作占位</span></span>
             </p>
         {{/each}}
     </script>
-    <!-- 地产 模板 -->
+    <!-- 地产 展示模板 -->
     <script id="field-template" type="text/x-handlebars-template">
         {{#each this}}
             <p id="{{id}}" class="hastooltip hidden">
@@ -114,12 +124,12 @@
             </p>
         {{/each}}
     </script>
-    <!-- 劳动力 模板 -->
+    <!-- 劳动力 展示模板 -->
     <script id="work-force-template" type="text/x-handlebars-template">
         {{#each this}}
             <p id="{{id}}" type="{{type}}" class="hastooltip hidden">
-                <span class="icon"></span><span class="tooltiptext">{{lore}}</span><br>
-                <button id="dismiss-{{id}}">解雇</button>
+                <span class="icon"></span><span class="tooltiptext" i18n-key="prop-{{id}}-lore">有趣文案占位</span><br>
+                <button id="dismiss-{{id}}" i18n-key="dismiss-button">解雇</button>
             </p>
         {{/each}}
     </script>
@@ -127,22 +137,23 @@
     <script id="resource-template" type="text/x-handlebars-template">
         <table>
             <tr>
-                <th>名称</th>
-                <th>产出</th>
-                <th>收入</th>
+                <th i18n-key="resource-name">名称</th>
+                <th i18n-key="resource-produce">产出</th>
+                <th i18n-key="resource-income">收入</th>
             </tr>
             {{#each this}}
             <tr id="{{id}}">
-                <td>{{label}}</td>
+                <td>{{icon}}<span i18n-key="reso-{{id}}">资源名称占位</span></td>
                 <td class="net-produce hastooltip">
-                    <span class="num">0</span> {{unit}}/小时
+                    <span class="num">0</span> {{{unit}}}/<span i18n-key="reso-h">小时</span>
                     <span class="tooltiptext">
-                        生产<span class="produce">0</span> {{unit}}/小时<br>消耗<span class="consume">0</span> {{unit}}/小时
+                        <span i18n-key="reso-produce">生产</span><span class="produce">0</span> {{{unit}}}/<span i18n-key="reso-h">小时</span><br>
+                        <span i18n-key="reso-consume">消耗</span><span class="consume">0</span> {{{unit}}}/<span i18n-key="reso-h">小时</span>
                     </span>
                 </td>
                 <td class="income hastooltip">
                     <span class="num">0</span> $
-                    <span class="tooltiptext">单价 <span class="price">1</span> $/{{unit}}</span>
+                    <span class="tooltiptext"><span i18n-key="reso-unit-price">单价</span> <span class="price">1</span> $/{{{unit}}}</span>
                 </td>
             </tr>
             {{/each}}

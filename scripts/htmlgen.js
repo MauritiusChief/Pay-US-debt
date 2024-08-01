@@ -3,28 +3,28 @@ console.log('htmlgen.js')
 // 买载具模板
 const buttonVehicleData = [
     {
-        id: "buy-mini-truck",
+        id: "mini-truck",
         label: "小货车",
         price: marketList["buy-mini-truck"].price.toLocaleString()+" $",
         installment: 
             marketList["buy-mini-truck"].installPrice.toLocaleString()+" $ * " + 
-            marketList["buy-mini-truck"].installMonth+"月"
+            marketList["buy-mini-truck"].installMonth+"<span i18n-key=\"mkt-month\">月</span>"
     },
     {
-        id: "buy-semi-truck",
+        id: "semi-truck",
         label: "半挂车",
         price: marketList["buy-semi-truck"].price.toLocaleString()+" $",
         installment: 
             marketList["buy-semi-truck"].installPrice.toLocaleString()+" $ * " + 
-            marketList["buy-semi-truck"].installMonth+"月"
+            marketList["buy-semi-truck"].installMonth+"<span i18n-key=\"mkt-month\">月</span>"
     },
     {
-        id: "buy-excavator",
+        id: "excavator",
         label: "挖掘机",
         price: marketList["buy-excavator"].price.toLocaleString()+" $",
         installment: 
             marketList["buy-excavator"].installPrice.toLocaleString()+" $ * " + 
-            marketList["buy-excavator"].installMonth+"月"
+            marketList["buy-excavator"].installMonth+"<span i18n-key=\"mkt-month\">月</span>"
     }
 ];
 const buttonVehicleSource = $("#buy-vehicle-template").html();
@@ -35,12 +35,12 @@ $("#buy-vehicle-container").html( buttonVehicleHtml );
 // 买地产模板
 const buttonFieldData = [
     {
-        id: "buy-warehouse",
+        id: "warehouse",
         label: "仓库",
         price: marketList["buy-warehouse"].price.toLocaleString()+" $",
         installment: 
             marketList["buy-warehouse"].installPrice.toLocaleString()+" $ * " + 
-            marketList["buy-warehouse"].installMonth+"月"
+            marketList["buy-warehouse"].installMonth+"<span i18n-key=\"mkt-month\">月</span>"
     }
 ];
 const buttonFieldSource = $("#buy-field-template").html();
@@ -54,14 +54,14 @@ const employData = [
         id: "zombie",
         label: "脏比工人",
         icon: "🧟",
-        salary: "3,000.00 $ /月",
+        salary: "3,000.00 $ /<span i18n-key=\"mkt-month\">月</span>",
         lore: "勤奋但脑子不太好"
     },
     {
         id: "vampire",
         label: "白脸专家",
         icon: "🧛",
-        salary: "7,500.00 $ /月",
+        salary: "7,500.00 $ /<span i18n-key=\"mkt-month\">月</span>",
         lore: "毕业于德古拉堡大学"
     }
 ];
@@ -127,27 +127,32 @@ $("#work-force-container").html( workForceHtml );
 const tableData = [
     {
         id: "transport",
-        label: "📦运力",
+        label: "运力",
+        icon: "📦",
         unit: "kg"
     },
     {
         id: "construct",
-        label: "🚧建造力",
+        label: "建造力",
+        icon: "🚧",
         unit: "㎡"
     },
     {
         id: "gear",
-        label: "⚙️传动零件",
-        unit: "组"
+        label: "传动零件",
+        icon: "⚙️",
+        unit: "<span i18n-key=\"reso-set\">组</span>"
     },
     {
         id: "nut-bolt",
-        label: "🔩连接零件",
-        unit: "组"
+        label: "连接零件",
+        icon: "🔩",
+        unit: "<span i18n-key=\"reso-set\">组</span>"
     },
     {
         id: "steel",
-        label: "⬜钢材",
+        label: "钢材",
+        icon: "⬜",
         unit: "kg"
     }
 ];

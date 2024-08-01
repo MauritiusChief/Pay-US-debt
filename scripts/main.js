@@ -18,7 +18,7 @@ fetch('https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accoun
     $('#goal-date').text( acquireDate );
     let acquireDateArray = acquireDate.split("-");
     dateArray.splice(0, 3, ...acquireDateArray);
-    $('#current-date').html( `${dateArray[0]}-${dateArray[1]}-${dateArray[2]},  ${dateArray[3]}<span i18n-key="o-clock"></span>` );
+    $('#current-date').html( `${dateArray[0]}-${dateArray[1]}-${dateArray[2]},  ${dateArray[3]}<span i18n-key="o-clock" ></span>` );
     $("[i18n-key]").each(translateElement);
     dateArray[1]--;
     currDate = new Date(...dateArray);
@@ -265,8 +265,7 @@ function updateDividedPay() {
             }
             icon = $(`#${id} .icon`);
             icon.html( icon.html().replace(installmentList[id].icon, "") );
-            $(`#${id} .install-month`).text( '' );
-            $(`#${id} .pay-count-down`).text( '' );
+            $(`#install-${id}`).addClass('hidden');
 
             delete installmentList[id]; // 移除这个分期付款
         }

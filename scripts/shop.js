@@ -99,9 +99,11 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
             }
             
             $(`#${buyId} .icon`).html( $(`#${buyId} .icon`).html()+buyIcon );
-            $(`#${buyId} .install-month`).html( ` 分期${buyInstallMonth}月 ` );
-            $(`#${buyId} .pay-count-down`).html( ` 支付倒计时${buyPayCountDown}天` );
+            $(`#${buyId} .install-month`).html( buyInstallMonth );
+            $(`#${buyId} .pay-count-down`).html( buyPayCountDown );
+            $(`#install-${buyId}`).removeClass('hidden'); // 去除分期的隐藏
             $(`#${buyId}`).removeClass('hidden'); // 去除隐藏
+            $("[i18n-key]").each(translateElement);
         }
     }
     // console.log(propertyList)

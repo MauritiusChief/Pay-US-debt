@@ -173,22 +173,22 @@ function updateResource() {
  * HTML更新
  */
 function updateDisplayJob() {
-    var currentJobText = '';
+    var currentJobKey = '';
     switch (workingProperty) {
         case 'semi-truck':
-            currentJobText = '半挂车司机';
+            currentJobKey = "click-job-semi-truck-driver";
             break;
         case 'mini-truck':
-            currentJobText = '小货车司机';
+            currentJobKey = "click-job-mini-truck-driver";
             break;
         case 'excavator':
-            currentJobText = '挖掘机操作员';
+            currentJobKey = "click-job-excavator-operator";
             break;
         default:
-            currentJobText = '搬运工';
+            currentJobKey = "click-job-porter";
             break;
     }
-    $('#current-job').text( currentJobText );
+    $('#current-job').attr("i18n-key", currentJobKey );
 }
 
 /** 更新显示（不是所有显示都在此更新）
@@ -233,8 +233,7 @@ function updateDisplay() {
             currPayCountDown = $(`#${id} .pay-count-down`);
             currPayCountDown.text( currPayCountDown.text().replace(/\d+/, installmentItem.payCountDown) );
         } else if ( $(`#${id}:has(.install-month)`).length > 0 ) { // 没有分期付款，去掉分期付款显示（注意：这部分如果到期不还款资产被收回则不会执行）
-            $(`#${id} .install-month`).html( '' );
-            $(`#${id} .pay-count-down`).html( '' );
+            $(`#install-${id}`).addClass('hidden')
         } // 到期不还款的情况在 updateDividedPay()
 
         // 更新劳动力分配面板
@@ -246,11 +245,11 @@ function updateDisplay() {
 
     // 更新商店按钮
 
-    installText = $('.buy-or-install');
+    installTag = $('.buy-or-install');
     if (!installPay) {
-        installText.html( '购买' );
+        installTag.attr('i18n-key', 'mkt-buy' );
     } else {
-        installText.html( '分期' );
+        installTag.attr('i18n-key', 'mkt-install' );
     }
 
     // 根据资产更新职业
