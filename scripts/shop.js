@@ -56,6 +56,7 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
     marketItem = marketList['buy-'+buyId];
     buyDividedPrice = marketItem.dividedPrice; // 改为直接用marketItem数据
     buyDividedMonth = marketItem.dividedMonth; // 改为直接用marketItem数据
+
     if (!dividePay) { // 进入全款流程
         // console.log("进入全款流程")
         coinCount -= marketItem.price;
@@ -66,8 +67,10 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
         } else { // 没有这个商品，创建这个商品
             propertyList[buyId] = {amount: 1, amountUsed: 0, maintainStatus: 5, maintainDecrChance: 0.2};
         }
+
         $(`#${buyId} .icon`).html( $(`#${buyId} .icon`).html()+buyIcon );
         $(`#${buyId}`).removeClass('hidden'); // 去除隐藏
+
     } else if ( buyPayCountDown > 0 && dividePay) { // 进入分期付款流程
         // console.log("进入分期付款流程")
         // 这部分代码只有运行分期付款的商品才执行
@@ -94,6 +97,7 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
             } else { // 没有这个商品，创建这个商品
                 propertyList[buyId] = {amount: 1, amountUsed: 0, maintainStatus: 5, maintainDecrChance: 0.2};
             }
+            
             $(`#${buyId} .icon`).html( $(`#${buyId} .icon`).html()+buyIcon );
             $(`#${buyId} .divided-month`).html( ` 分期${buyDividedMonth}月 ` );
             $(`#${buyId} .pay-count-down`).html( ` 支付倒计时${buyPayCountDown}天` );

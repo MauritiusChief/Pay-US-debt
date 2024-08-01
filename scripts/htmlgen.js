@@ -4,14 +4,15 @@ console.log('htmlgen.js')
 const buttonVehicleData = [
     {
         id: "buy-mini-truck",
-        label: "购买小货车",
+        label: "小货车",
         price: marketList["buy-mini-truck"].price.toLocaleString()+" $",
         installment: 
-            marketList["buy-mini-truck"].dividedPrice.toLocaleString()+" $ * " + marketList["buy-mini-truck"].dividedMonth+"月"
+            marketList["buy-mini-truck"].dividedPrice.toLocaleString()+" $ * " + 
+            marketList["buy-mini-truck"].dividedMonth+"月"
     },
     {
         id: "buy-semi-truck",
-        label: "购买半挂车",
+        label: "半挂车",
         price: marketList["buy-semi-truck"].price.toLocaleString()+" $",
         installment: 
             marketList["buy-semi-truck"].dividedPrice.toLocaleString()+" $ * " + 
@@ -19,7 +20,7 @@ const buttonVehicleData = [
     },
     {
         id: "buy-excavator",
-        label: "购买挖掘机",
+        label: "挖掘机",
         price: marketList["buy-excavator"].price.toLocaleString()+" $",
         installment: 
             marketList["buy-excavator"].dividedPrice.toLocaleString()+" $ * " + 
@@ -35,7 +36,7 @@ $("#buy-vehicle-container").html( buttonVehicleHtml );
 const buttonFieldData = [
     {
         id: "buy-warehouse",
-        label: "购买仓库",
+        label: "仓库",
         price: marketList["buy-warehouse"].price.toLocaleString()+" $",
         installment: 
             marketList["buy-warehouse"].dividedPrice.toLocaleString()+" $ * " + 

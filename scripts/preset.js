@@ -245,13 +245,12 @@ function updateDisplay() {
 
 
     // 更新商店按钮
-    for (let id in marketList) {
-        shopButton = $('button#'+id);
-        if (!dividePay) {
-            shopButton.html( shopButton.html().replace('分期买', '购买') );
-        } else {
-            shopButton.html( shopButton.html().replace('购买', '分期买') );
-        }
+
+    installText = $('.buy-or-install');
+    if (!dividePay) {
+        installText.html( '购买' );
+    } else {
+        installText.html( '分期' );
     }
 
     // 根据资产更新职业

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,12 +11,12 @@
 <body>
     <div class="grid-container">
         <div id="total-display" class="grid-panel">
-            <h1>挣钱帮美帝还债</h1>
-            <p>美债总额: <span id="goal">加载中...</span></p>
-            <p>美债记录时间: <span id="goal-date">加载中...</span></p>
-            <h4>每小时收入: <span id="coin-per-hour">0 $</span></h4>
-            <h3>已赚美元: <span id="coin-count">0 $</span></h3>
-            <h3>距离目标: <span id="goal-remain">加载中...</span></h3>
+            <h1 id="total-h">挣钱帮美帝还债</h1>
+            <p id="total-debt">美债总额: <span id="goal">加载中……</span></p>
+            <p id="total-debt-time">美债记录时间: <span id="goal-date">加载中……</span></p>
+            <h4 id="total-income-ph">每小时收入: <span id="coin-per-hour">0 $</span></h4>
+            <h3 id="total-earned">已赚美元: <span id="coin-count">0 $</span></h3>
+            <h3 id="total-to-goal">距离目标: <span id="goal-remain">加载中……</span></h3>
             <button id="game-pause">暂停</button>
         </div>
         <div id="clicker" class="grid-panel">
@@ -61,13 +61,17 @@
         <div id="notice" class="grid-panel">
             <h4>通知</h4>
             <p></p>
+            <select id="languageSelect">
+                <option value="en">English</option>
+                <option value="zh">中文</option>
+            </select>
         </div>
     </div>
 
     <!-- 载具市场 按钮模板 -->
     <script id="buy-vehicle-template" type="text/x-handlebars-template">
         {{#each this}}
-            <button id="{{id}}" class="vehicle-goods hastooltip">{{label}}
+            <button id="{{id}}" class="vehicle-goods hastooltip"><span class="buy-or-install">购买</span>{{label}}
                 <span class="tooltiptext">{{price}}<br>分期 {{installment}}</span>
             </button>
         {{/each}}
@@ -75,7 +79,7 @@
     <!-- 地产市场 按钮模板 -->
     <script id="buy-field-template" type="text/x-handlebars-template">
         {{#each this}}
-            <button id="{{id}}" class="field-goods hastooltip">{{label}}
+            <button id="{{id}}" class="field-goods hastooltip"><span class="buy-or-install">购买</span>{{label}}
                 <span class="tooltiptext">{{price}}<br>分期 {{installment}}</span>
             </button>
         {{/each}}
@@ -146,6 +150,7 @@
     
     <script src="scripts/preset.js"></script>
     <script src="scripts/htmlgen.js"></script>
+    <script src="scripts/localization.js"></script>
     <script src="scripts/main.js"></script>
     <script src="scripts/shop.js"></script>
     <script src="scripts/resource.js"></script>
