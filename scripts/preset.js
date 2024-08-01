@@ -20,24 +20,24 @@ let currDate = new Date(...dateArray);
 let gameFinished = false;
 let currentTimer;
 let gamePaused = true;
-let dividePay = false;
+let installPay = false;
 let cheatWork = false;
 
 /** 商品及职业列表
  ***************/
 // 加商品和职业可以很方便地在这里加
 const marketList = { // 可分期商品列表（目前包括 载具 和 地产）
-    'buy-mini-truck': {price:genPrice(7190,10700,10), dividedMonth:12, step:10},
-    'buy-semi-truck': {price:genPrice(138500,183500,100), dividedMonth:24, step:50},
-    'buy-excavator': {price:genPrice(40000,61000,50), dividedMonth:12, step:50},
+    'buy-mini-truck': {price:genPrice(7190,10700,10), installMonth:12, step:10},
+    'buy-semi-truck': {price:genPrice(138500,183500,100), installMonth:24, step:50},
+    'buy-excavator': {price:genPrice(40000,61000,50), installMonth:12, step:50},
 
-    'buy-warehouse': {price:genPrice(3000,5000,50), dividedMonth:3, step:100}
+    'buy-warehouse': {price:genPrice(3000,5000,50), installMonth:3, step:100}
 }
 for (let id in marketList) {
     item = marketList[id];
-    item.dividedPrice = genDividedPrice(item.price,1.1,item.dividedMonth,item.step)
+    item.installPrice = genDividedPrice(item.price,1.1,item.installMonth,item.step)
 }
-//示例：{id:'buy-mini-truck', price:3500, dividedPrice:640, dividedMonth:6, step:10},
+//示例：{id:'buy-mini-truck', price:3500, installPrice:640, installMonth:6, step:10},
 const shopList = { // 不可分期商品列表
     'buy-health-elixir': {price:50},
 }
@@ -45,8 +45,8 @@ const employList = { // 雇员列表
     'employ-zombie': {salary:3000},
     'employ-vampire': {salary:7500}
 }
-let dividedBuyList = {};
-//示例dividedBuyList:{ 'property-name': {icon:'🎈', dividedPrice:10, dividedMonth:6, payCountDown:30} }
+let installmentList = {};
+//示例installmentList:{ 'property-name': {icon:'🎈', installPrice:10, installMonth:6, payCountDown:30} }
 let propertyList = {};
 //示例propertyList:{ 'property-name': {amount:1, amountUsed:0, maintainStatus:5, maintainDecrChance:0.5} }
 let employeeList = {};
@@ -220,20 +220,20 @@ function updateDisplay() {
     /**根据资产列表以及分期付款列表，更新分期付款文本的剩余分期月、剩余还款倒计时天数等
      * 需要变量：
      *      propertyList
-     *      dividedBuyList
+     *      installmentList
      * HTML更新：
      */
     for (let id in propertyList) {
         // 分期付款期间 以及 偿清贷款 的情况
-        dividedBuyItem = dividedBuyList[id];
-        if ( dividedBuyItem !== undefined ) { // 已有分期付款，只需更新数字
+        installmentItem = installmentList[id];
+        if ( installmentItem !== undefined ) { // 已有分期付款，只需更新数字
             // console.log('已有分期付款，只需更新数字')
-            currDividedMonth = $(`#${id} .divided-month`);
-            currDividedMonth.text( currDividedMonth.text().replace(/\d+/, dividedBuyItem.dividedMonth) );
+            currDividedMonth = $(`#${id} .install-month`);
+            currDividedMonth.text( currDividedMonth.text().replace(/\d+/, installmentItem.installMonth) );
             currPayCountDown = $(`#${id} .pay-count-down`);
-            currPayCountDown.text( currPayCountDown.text().replace(/\d+/, dividedBuyItem.payCountDown) );
-        } else if ( $(`#${id}:has(.divided-month)`).length > 0 ) { // 没有分期付款，去掉分期付款显示（注意：这部分如果到期不还款资产被收回则不会执行）
-            $(`#${id} .divided-month`).html( '' );
+            currPayCountDown.text( currPayCountDown.text().replace(/\d+/, installmentItem.payCountDown) );
+        } else if ( $(`#${id}:has(.install-month)`).length > 0 ) { // 没有分期付款，去掉分期付款显示（注意：这部分如果到期不还款资产被收回则不会执行）
+            $(`#${id} .install-month`).html( '' );
             $(`#${id} .pay-count-down`).html( '' );
         } // 到期不还款的情况在 updateDividedPay()
 
@@ -247,7 +247,7 @@ function updateDisplay() {
     // 更新商店按钮
 
     installText = $('.buy-or-install');
-    if (!dividePay) {
+    if (!installPay) {
         installText.html( '购买' );
     } else {
         installText.html( '分期' );

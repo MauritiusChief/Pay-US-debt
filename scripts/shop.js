@@ -1,8 +1,8 @@
 console.log('shop.js')
 
-$('#divide-pay [type=checkbox]').on('change', () => {
-    dividePay = !dividePay;
-    // console.log(dividePay)
+$('#install-pay [type=checkbox]').on('change', () => {
+    installPay = !installPay;
+    // console.log(installPay)
     updateShop();
     updateDisplay();
 })
@@ -42,7 +42,7 @@ $('#dismiss-vampire').click(() => {
 
 /**购买事件，根据钱数全款购买或者分期付款购买
  * 需要变量：
- *      dividePay
+ *      installPay
  *      marketList
  *      coinCount
  * HTML更新：
@@ -50,14 +50,14 @@ $('#dismiss-vampire').click(() => {
  *      劳动力面板去除隐藏
  * 更新变量：
  *      propertyList（商品入库）
- *      dividedBuyList（分期付款时，加上分期付款记录）
+ *      installmentList（分期付款时，加上分期付款记录）
  */
 function buyEvent(buyId, buyIcon, buyPayCountDown) {
     marketItem = marketList['buy-'+buyId];
-    buyDividedPrice = marketItem.dividedPrice; // 改为直接用marketItem数据
-    buyDividedMonth = marketItem.dividedMonth; // 改为直接用marketItem数据
+    buyInstallPrice = marketItem.installPrice; // 改为直接用marketItem数据
+    buyInstallMonth = marketItem.installMonth; // 改为直接用marketItem数据
 
-    if (!dividePay) { // 进入全款流程
+    if (!installPay) { // 进入全款流程
         // console.log("进入全款流程")
         coinCount -= marketItem.price;
         // 资产列表添加商品
@@ -71,25 +71,25 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
         $(`#${buyId} .icon`).html( $(`#${buyId} .icon`).html()+buyIcon );
         $(`#${buyId}`).removeClass('hidden'); // 去除隐藏
 
-    } else if ( buyPayCountDown > 0 && dividePay) { // 进入分期付款流程
+    } else if ( buyPayCountDown > 0 && installPay) { // 进入分期付款流程
         // console.log("进入分期付款流程")
         // 这部分代码只有运行分期付款的商品才执行
-        coinCount -= marketItem.dividedPrice;
+        coinCount -= marketItem.installPrice;
 
-        dividedBuyItem = dividedBuyList[buyId];
-        if ( dividedBuyItem !== undefined ) { // 已有分期付款
+        installmentItem = installmentList[buyId];
+        if ( installmentItem !== undefined ) { // 已有分期付款
             // console.log('已有分期付款')
-            if (dividedBuyItem.dividedMonth > 1) { // 还有1期以上
+            if (installmentItem.installMonth > 1) { // 还有1期以上
                 // console.log('还有1期以上')
-                dividedBuyItem.dividedMonth--;
-                dividedBuyItem.payCountDown = 30;
+                installmentItem.installMonth--;
+                installmentItem.payCountDown = 30;
             }  else { // 只剩1期，移除该分期付款
                 // console.log('只剩1期，移除该分期付款')
-                delete dividedBuyList[buyId]
+                delete installmentList[buyId]
             }
         } else { // 没有分期付款，创建新分期付款
             // console.log('没有分期付款，创建新分期付款')
-            dividedBuyList[buyId] = {icon: buyIcon, dividedPrice: buyDividedPrice, dividedMonth: buyDividedMonth, payCountDown: buyPayCountDown};
+            installmentList[buyId] = {icon: buyIcon, installPrice: buyInstallPrice, installMonth: buyInstallMonth, payCountDown: buyPayCountDown};
             // 添加商品以及分期付款标识
             propertyItem = propertyList[buyId];
             if ( propertyItem !== undefined ) {// 已有这个商品
@@ -99,7 +99,7 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
             }
             
             $(`#${buyId} .icon`).html( $(`#${buyId} .icon`).html()+buyIcon );
-            $(`#${buyId} .divided-month`).html( ` 分期${buyDividedMonth}月 ` );
+            $(`#${buyId} .install-month`).html( ` 分期${buyInstallMonth}月 ` );
             $(`#${buyId} .pay-count-down`).html( ` 支付倒计时${buyPayCountDown}天` );
             $(`#${buyId}`).removeClass('hidden'); // 去除隐藏
         }

@@ -27,7 +27,7 @@
         </div>
         <div id="shop" class="grid-panel">
             <h2>市场</h2>
-            <span id="divide-pay"><input type="checkbox">分期付款</span>
+            <span id="install-pay"><input type="checkbox">分期付款</span>
 
             <h3>车辆市场</h3>
             <div id="buy-vehicle-container"></div><!-- 买载具按钮 -->
@@ -95,7 +95,7 @@
     <script id="vehicle-template" type="text/x-handlebars-template">
         {{#each this}}
             <p id="{{id}}" class="hastooltip hidden">
-                <span class="icon"></span><span class="tooltiptext">{{label}}</span><span class="divided-month"></span><span class="pay-count-down"></span><br>
+                <span class="icon"></span><span class="tooltiptext">{{label}}</span><span class="install-month"></span><span class="pay-count-down"></span><br>
                 <span class="work-force use-worker hidden">
                     <button type="decr">-</button>
                     <span class="work-force-input">0</span>/<span class="work-force-limit">0</span>
@@ -109,7 +109,7 @@
     <script id="field-template" type="text/x-handlebars-template">
         {{#each this}}
             <p id="{{id}}" class="hastooltip hidden">
-                <span class="icon"></span><span class="tooltiptext">{{label}}</span><span class="divided-month"></span><span class="pay-count-down"></span>
+                <span class="icon"></span><span class="tooltiptext">{{label}}</span><span class="install-month"></span><span class="pay-count-down"></span>
             </p>
         {{/each}}
     </script>

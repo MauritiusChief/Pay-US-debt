@@ -7,24 +7,24 @@ const buttonVehicleData = [
         label: "小货车",
         price: marketList["buy-mini-truck"].price.toLocaleString()+" $",
         installment: 
-            marketList["buy-mini-truck"].dividedPrice.toLocaleString()+" $ * " + 
-            marketList["buy-mini-truck"].dividedMonth+"月"
+            marketList["buy-mini-truck"].installPrice.toLocaleString()+" $ * " + 
+            marketList["buy-mini-truck"].installMonth+"月"
     },
     {
         id: "buy-semi-truck",
         label: "半挂车",
         price: marketList["buy-semi-truck"].price.toLocaleString()+" $",
         installment: 
-            marketList["buy-semi-truck"].dividedPrice.toLocaleString()+" $ * " + 
-            marketList["buy-semi-truck"].dividedMonth+"月"
+            marketList["buy-semi-truck"].installPrice.toLocaleString()+" $ * " + 
+            marketList["buy-semi-truck"].installMonth+"月"
     },
     {
         id: "buy-excavator",
         label: "挖掘机",
         price: marketList["buy-excavator"].price.toLocaleString()+" $",
         installment: 
-            marketList["buy-excavator"].dividedPrice.toLocaleString()+" $ * " + 
-            marketList["buy-excavator"].dividedMonth+"月"
+            marketList["buy-excavator"].installPrice.toLocaleString()+" $ * " + 
+            marketList["buy-excavator"].installMonth+"月"
     }
 ];
 const buttonVehicleSource = $("#buy-vehicle-template").html();
@@ -39,8 +39,8 @@ const buttonFieldData = [
         label: "仓库",
         price: marketList["buy-warehouse"].price.toLocaleString()+" $",
         installment: 
-            marketList["buy-warehouse"].dividedPrice.toLocaleString()+" $ * " + 
-            marketList["buy-warehouse"].dividedMonth+"月"
+            marketList["buy-warehouse"].installPrice.toLocaleString()+" $ * " + 
+            marketList["buy-warehouse"].installMonth+"月"
     }
 ];
 const buttonFieldSource = $("#buy-field-template").html();

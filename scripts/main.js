@@ -73,7 +73,7 @@ function everyHourEvent() {
     
 
     // console.log(propertyList)
-    // console.log(dividedBuyList)
+    // console.log(installmentList)
 }
 /**实际的步进时间事件
  * 需要变量：
@@ -211,7 +211,7 @@ $('#change-gender').click(() => {
  */
 function updateShop() {
     for (let id in marketList) {
-        limitPrice = dividePay ? marketList[id].dividedPrice : marketList[id].price;
+        limitPrice = installPay ? marketList[id].installPrice : marketList[id].price;
         if ( coinCount >= limitPrice) {
             $(`#${id}`).prop('disabled', false);
         } else {
@@ -228,14 +228,14 @@ function updateShop() {
  *      删除分期付款文本的分期月、还款倒计时天数
  *      勾选盒取消勾选；劳动力面板隐藏
  * 更新变量：
- *      dividedBuyList
- *      propertyList（需保证dividedBuyList.item必须在propertyList中有对应）
+ *      installmentList
+ *      propertyList（需保证installmentList.item必须在propertyList中有对应）
  *      workingProperty
  */
 function updateDividedPay() {
-    for (let id in dividedBuyList) {
-        dividedBuyList[id].payCountDown--;
-        if (dividedBuyList[id].payCountDown === 0) {
+    for (let id in installmentList) {
+        installmentList[id].payCountDown--;
+        if (installmentList[id].payCountDown === 0) {
             // 移除这个资产
             propertyItem = propertyList[id];
             if (propertyItem.amount > 1) { // 资产数量-1
@@ -248,11 +248,11 @@ function updateDividedPay() {
                 workingProperty === id ? workingProperty = '' : {};
             }
             icon = $(`#${id} .icon`);
-            icon.html( icon.html().replace(dividedBuyList[id].icon, "") );
-            $(`#${id} .divided-month`).text( '' );
+            icon.html( icon.html().replace(installmentList[id].icon, "") );
+            $(`#${id} .install-month`).text( '' );
             $(`#${id} .pay-count-down`).text( '' );
 
-            delete dividedBuyList[id]; // 移除这个分期付款
+            delete installmentList[id]; // 移除这个分期付款
         }
     }
 }
