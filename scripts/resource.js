@@ -51,6 +51,7 @@ function changeWorkForce(increaseWorkForce, propertyName, workForceName) {
     }
     
     updateResource();
+    updateDisplay();
     // console.log(employeeItem)
     // console.log(propertyItem)
 }

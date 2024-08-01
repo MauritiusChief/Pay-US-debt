@@ -147,10 +147,10 @@ function clickButton() {
     // 触发上班的效果
     workStat = 1;
     // 变更上班与加班时的图标
+    let selfElement = $("#self");
+    selfElement.html( selfElement.html().replace('🛌', GIcon[GIdx]) );
+    selfElement.html( selfElement.html().replace('🛀', GIcon[GIdx]) );
     if (currDate.getHours() < 9 || currDate.getHours() > 16) {
-        let selfElement = $("#self");
-        selfElement.html( selfElement.html().replace('🛌', GIcon[GIdx]) );
-        selfElement.html( selfElement.html().replace('🛀', GIcon[GIdx]) );
         // 加班标记
         $('#overtime').attr("i18n-key", "work-overtime");
     } else {

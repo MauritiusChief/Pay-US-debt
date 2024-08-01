@@ -92,7 +92,7 @@
         {{#each this}}
         <button id="employ-{{id}}" class="shop-employee hastooltip">
             <span i18n-key="mkt-hire">雇用</span><span i18n-key="mkt-{{id}}">劳动力名称占位</span>{{icon}}<span class="tooltiptext">{{{salary}}}<br>
-            <span i18n-key="mkt-{{id}}-lore">有趣文案占位</span>
+            <em><span i18n-key="mkt-{{id}}-lore">有趣文案占位</span></em>
         </button>
         {{/each}}
     </script>
@@ -128,7 +128,7 @@
     <script id="work-force-template" type="text/x-handlebars-template">
         {{#each this}}
             <p id="{{id}}" type="{{type}}" class="hastooltip hidden">
-                <span class="icon"></span><span class="tooltiptext" i18n-key="prop-{{id}}-lore">有趣文案占位</span><br>
+                <span class="icon"></span><em><span class="tooltiptext" i18n-key="prop-{{id}}-lore">有趣文案占位</span></em><br>
                 <button id="dismiss-{{id}}" i18n-key="dismiss-button">解雇</button>
             </p>
         {{/each}}
