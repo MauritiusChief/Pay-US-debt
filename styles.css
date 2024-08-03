@@ -109,6 +109,7 @@ button {
 
 td {
     padding: 5px 10px;
+    width: 60px;
 }
 
 .hastooltip .tooltiptext {

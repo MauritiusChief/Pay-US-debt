@@ -31,6 +31,7 @@ const translations = {
         "click-button": "努力赚美刀",
 
         "work-overtime": "（加班中）",
+        "work-resting": "（休息中）",
         "click-job-mini-truck-driver": "小货车司机",
         "click-job-semi-truck-driver": "半挂车司机",
         "click-job-excavator-operator": "挖掘机操作员",
@@ -110,6 +111,7 @@ const translations = {
         "click-button": "Work Hard to Earn $",
 
         "work-overtime": " (overtime)",
+        "work-resting": " (resting)",
         "click-job-mini-truck-driver": "Mini Truck Driver",
         "click-job-semi-truck-driver": "Semi-trailer Truck Driver",
         "click-job-excavator-operator": "Excavator Operator",

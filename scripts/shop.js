@@ -8,12 +8,19 @@ $('#install-pay [type=checkbox]').on('change', () => {
 })
 $('#buy-mini-truck').click(() => {
     buyEvent('mini-truck', '🚚', 30);
+    $("#gear").removeClass("hidden");
+    $("#nut-bolt").removeClass("hidden");
 })
 $('#buy-semi-truck').click(() => {
     buyEvent('semi-truck', '🚛', 30);
+    $("#gear").removeClass("hidden");
+    $("#nut-bolt").removeClass("hidden");
 })
 $('#buy-excavator').click(() => {
     buyEvent('excavator', '<img src="icons/excavator.svg" alt="🚜" class="svg-icon">', 30);
+    $("#construct").removeClass("hidden");
+    $("#gear").removeClass("hidden");
+    $("#nut-bolt").removeClass("hidden");
 })
 $('#buy-warehouse').click(() => {
     buyEvent('warehouse', '<img src="icons/warehouse.svg" alt="📦" class="svg-icon">', 30);

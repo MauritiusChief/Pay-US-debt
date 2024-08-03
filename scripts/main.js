@@ -55,8 +55,7 @@ function everyHourEvent() {
     }
     health > 100 ? health = 100 : {};
     // 消除（加班中）标记
-    $('#overtime').removeAttr("i18n-key");
-    $('#overtime').text("");
+    $('#overtime').attr("i18n-key", "work-resting");
     // 小人不加班时的图标
     $("[type=person]").each(function(index, personTag) {
         let $personTag = $(personTag);
@@ -118,14 +117,18 @@ function incrementTime() {
  */ 
 function everyDayEvent() {
     updateDividedPay()
-    if (currDate.getDate === 1) {
+    if (currDate.getDate() === 1) {
         everyMonthEvent();
     }
 }
 /**每月事件
  */
 function everyMonthEvent() {
-
+    for (id in employeeList) {
+        console.log(employList[`employ-${id}`].salary)
+        coinCount -= employList[`employ-${id}`].salary * employeeList[id].amount;
+    }
+    
 }
 
 /**点击挣钱按钮（工作点击触发的时间流逝）
@@ -228,6 +231,14 @@ $('#language-select').on('change', (e) => {
 function updateShop() {
     for (let id in marketList) {
         limitPrice = installPay ? marketList[id].installPrice : marketList[id].price;
+        if ( coinCount >= limitPrice) {
+            $(`#${id}`).prop('disabled', false);
+        } else {
+            $(`#${id}`).prop('disabled', true);
+        }
+    }
+    for (let id in employList) {
+        limitPrice = employList[id].salary;
         if ( coinCount >= limitPrice) {
             $(`#${id}`).prop('disabled', false);
         } else {
