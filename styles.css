@@ -21,13 +21,15 @@ body div {
 #clicker { grid-area: main; }
 #model-display { grid-area: right; }
 #notice { grid-area: footer; }
+#setting { grid-area: side; }
 
 .grid-container {
     display: grid;
     grid-template-areas:
     'menu menu2 header right'
     'menu menu2 main right'
-    'menu menu2 footer right';
+    'menu menu2 footer right'
+    'menu menu2 side right';
     gap: 20px;
     padding: 10px;
 }
@@ -45,8 +47,8 @@ body div {
         grid-template-areas:
             'menu header right'
             'menu main right'
-            'menu footer right'
-            'menu2 menu2 menu2';
+            'menu2 footer right'
+            'menu2 side right';
     }
     .grid-container .grid-panel {
         padding: 10px 15px;
@@ -59,7 +61,8 @@ body div {
             'header right'
             'main right'
             'footer right'
-            'menu menu2';
+            'menu menu2'
+            'side side';
     }
 
     .grid-container .grid-panel {
@@ -75,7 +78,8 @@ body div {
             'right'
             'footer'
             'menu'
-            'menu2';
+            'menu2'
+            'side';
         gap: 10px;
         padding: 5px;
     }

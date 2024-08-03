@@ -68,7 +68,7 @@ const translations = {
         "reso-unit-price": "单价",
         "reso-produce": "生产",
         "reso-consume": "消耗",
-        "reso-h": "小时",
+        "reso-h": "h",
         "reso-set": "组",
         "reso-transport": "运力",
         "reso-construct": "建造力",
@@ -86,6 +86,8 @@ const translations = {
         "notice": "通知",
 
         "build": "建造",
+
+        "setting": "设置",
     },
     "en": {
         "title": "Pay US debt All",
@@ -163,6 +165,8 @@ const translations = {
         "notice": "Notice",
 
         "build": "Building",
+
+        "setting": "Setting",
     },
 }
 

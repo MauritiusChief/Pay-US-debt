@@ -4,7 +4,6 @@ console.log('htmlgen.js')
 const buttonVehicleData = [
     {
         id: "mini-truck",
-        label: "小货车",
         price: marketList["buy-mini-truck"].price.toLocaleString()+" $",
         installment: 
             marketList["buy-mini-truck"].installPrice.toLocaleString()+" $ * " + 
@@ -12,7 +11,6 @@ const buttonVehicleData = [
     },
     {
         id: "semi-truck",
-        label: "半挂车",
         price: marketList["buy-semi-truck"].price.toLocaleString()+" $",
         installment: 
             marketList["buy-semi-truck"].installPrice.toLocaleString()+" $ * " + 
@@ -20,7 +18,6 @@ const buttonVehicleData = [
     },
     {
         id: "excavator",
-        label: "挖掘机",
         price: marketList["buy-excavator"].price.toLocaleString()+" $",
         installment: 
             marketList["buy-excavator"].installPrice.toLocaleString()+" $ * " + 
@@ -36,7 +33,6 @@ $("#buy-vehicle-container").html( buttonVehicleHtml );
 const buttonFieldData = [
     {
         id: "warehouse",
-        label: "仓库",
         price: marketList["buy-warehouse"].price.toLocaleString()+" $",
         installment: 
             marketList["buy-warehouse"].installPrice.toLocaleString()+" $ * " + 
@@ -52,17 +48,13 @@ $("#buy-field-container").html( buttonFieldHtml );
 const employData = [
     {
         id: "zombie",
-        label: "脏比工人",
         icon: "🧟",
         salary: "3,000.00 $ /<span i18n-key=\"mkt-month\">月</span>",
-        lore: "勤奋但脑子不太好"
     },
     {
         id: "vampire",
-        label: "白脸专家",
         icon: "🧛",
         salary: "7,500.00 $ /<span i18n-key=\"mkt-month\">月</span>",
-        lore: "毕业于德古拉堡大学"
     }
 ];
 const employSource = $("#employ-template").html();
@@ -74,18 +66,15 @@ $("#employ-container").html( employHtml );
 const vehicleData = [
     {
         id: "mini-truck",
-        label: "小货车",
-        prompt: "开小货车"
+        label: "小货车"
     },
     {
         id: "semi-truck",
-        label: "半挂车",
-        prompt: "开半挂车"
+        label: "半挂车"
     },
     {
         id: "excavator",
-        label: "挖掘机",
-        prompt: "开挖掘机"
+        label: "挖掘机"
     }
 ];
 const vehicleSource = $("#vehicle-template").html();
@@ -96,8 +85,7 @@ $("#vehicle-container").html( vehicleHtml );
 // 地产展示模板
 const fieldData = [
     {
-        id: "warehouse",
-        label: "仓库"
+        id: "warehouse"
     }
 ];
 const fieldSource = $("#field-template").html();
@@ -109,13 +97,11 @@ $("#field-container").html( fieldHtml );
 const workForceData = [
     {
         id: "zombie",
-        type: "undead",
-        lore: "正在担心胆固醇过高"
+        type: "undead"
     },
     {
         id: "vampire",
-        type: "undead",
-        lore: "喜欢收集遮阳伞和防晒霜"
+        type: "undead"
     }
 ]
 const workForceSource = $("#work-force-template").html();
@@ -127,31 +113,26 @@ $("#work-force-container").html( workForceHtml );
 const tableData = [
     {
         id: "transport",
-        label: "运力",
         icon: "📦",
         unit: "kg"
     },
     {
         id: "construct",
-        label: "建造力",
         icon: "🚧",
         unit: "㎡"
     },
     {
         id: "gear",
-        label: "传动零件",
         icon: "⚙️",
         unit: "<span i18n-key=\"reso-set\">组</span>"
     },
     {
         id: "nut-bolt",
-        label: "连接零件",
         icon: "🔩",
         unit: "<span i18n-key=\"reso-set\">组</span>"
     },
     {
         id: "steel",
-        label: "钢材",
         icon: "⬜",
         unit: "kg"
     }
@@ -160,3 +141,5 @@ const tableSource = $("#resource-template").html();
 const tableTemplate = Handlebars.compile(tableSource);
 const tableHtml = tableTemplate(tableData);
 $("#resource-container").html( tableHtml );
+// 解锁最基础的运力资源
+$("#transport").removeClass('hidden');
