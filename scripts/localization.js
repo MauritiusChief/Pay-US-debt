@@ -89,6 +89,15 @@ const translations = {
         "build": "建造",
 
         "setting": "设置",
+        "setting-get-debt": "更新国债",
+        "setting-get-debt-alert": "更新国债通常将导致游戏目标大幅增加，你确定吗？",
+        "setting-save": "存储数据",
+        "setting-load": "读取数据",
+        "setting-saved": "数据存储成功！",
+        "setting-loaded": "数据读取成功！",
+        "setting-load-not-complete": "存在数据读取失败",
+        "setting-reset": "清除数据",
+        "setting-reset-alert": "你确定要清除已储存数据吗？",
     },
     "en": {
         "title": "Pay US debt All",
@@ -169,6 +178,15 @@ const translations = {
         "build": "Building",
 
         "setting": "Setting",
+        "setting-get-debt": "Update Debt",
+        "setting-get-debt-alert": "Updating U.S. debt will very likely increase the goal significantly, are you sure?",
+        "setting-save": "Save data",
+        "setting-load": "Load data",
+        "setting-saved": "Data saved!",
+        "setting-loaded": "Data loaded!",
+        "setting-load-not-complete": "Exist data not loaded",
+        "setting-reset": "Clear data",
+        "setting-reset-alert": "Are you sure you want to clear all data saved?",
     },
 }
 

@@ -6,66 +6,45 @@ console.log('main.js')
 updateShop();
 updateDisplay();
 
-// Fetch the current national debt
-fetch('https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny?sort=-record_date&format=json&page[number]=1&page[size]=1')
-.then(response => response.json())
-.then(data => {
-    const totalDebt = data.data[0].tot_pub_debt_out_amt;
-    const acquireDate = data.data[0].record_date
-    goal = parseFloat(totalDebt);
-    $('#goal').text( goal.toLocaleString() + " $" );
-    $('#goal-remain').text( (goal - coinCount).toLocaleString() + " $" );
-    $('#goal-date').text( acquireDate );
-    let acquireDateArray = acquireDate.split("-");
-    dateArray.splice(0, 3, ...acquireDateArray);
-    $('#current-date').html( `${dateArray[0]}-${dateArray[1]}-${dateArray[2]},  ${dateArray[3]}<span i18n-key="o-clock" ></span>` );
-    $("[i18n-key]").each(translateElement);
-    dateArray[1]--;
-    currDate = new Date(...dateArray);
-})
-.catch(error => {
-    console.error('获取美债数据出错:', error);
-    $('#goal').text( '数据获取失败' );
-    $('#goal-date').text( '数据获取失败' );
-});
+// 获取美国国债数据以及日期
+updateUSDebt();
 
 /** 游戏机制 
  ***********/
 /**每小时事件（特指不工作时定时触发的时间流逝）
  * 需要变量：
- *      currDate
+ *      gameData.currDate
  * 使用函数：
  *      incrementTime()
  *      updateShop()
  *      updateDisplay()
  * 更新变量：
- *      workStat（0，没上班）
- *      health
+ *      gameData.workStat（0，没上班）
+ *      gameData.health
  * HTML更新
  */ 
 function everyHourEvent() {
 
     // 触发不上班效果 TODO:可以做成分开的函数
-    workStat = 0;
+    gameData.workStat = 0;
     // 不上班则回复健康
-    if (currDate.getHours() < 9 ) { // 0-8点
-        health < 0 ? health += 0.1 : health += 2;
+    if (gameData.currDate.getHours() < 9 ) { // 0-8点
+        gameData.health < 0 ? gameData.health += 0.1 : gameData.health += 2;
     } else { // 9点之后整天
-        health < 0 ? health += 0.05 : health += 1;
+        gameData.health < 0 ? gameData.health += 0.05 : gameData.health += 1;
     }
-    health > 100 ? health = 100 : {};
+    gameData.health > 100 ? gameData.health = 100 : {};
     // 消除（加班中）标记
     $('#overtime').attr("i18n-key", "work-resting");
     // 小人不加班时的图标
-    $("[type=person]").each(function(index, personTag) {
+    $("[type=person] .icon").each(function(index, personTag) {
         let $personTag = $(personTag);
-        if (currDate.getHours() < 9 ) { // 0-8点
-            $personTag.html( $personTag.html().replace(GIcon[GIdx],'🛌') );
-            $personTag.html( $personTag.html().replace('🛀','🛌') );
-        } else if (currDate.getHours() > 16) { // 17-23点
-            $personTag.html( $personTag.html().replace(GIcon[GIdx],'🛀') );
+        if (gameData.currDate.getHours() < 9 ) { // 0-8点
+            $personTag.html( '🛌' );
+        } else if (gameData.currDate.getHours() > 16) { // 17-23点
+            $personTag.html('🛀' );
         } else {
-            $personTag.html( $personTag.html().replace('🛌',GIcon[GIdx]) );
+            $personTag.html( GIcon[gameData.GIdx] );
         }
     })
     
@@ -73,43 +52,39 @@ function everyHourEvent() {
     updateDisplay();
     
 
-    // console.log(propertyList)
-    // console.log(installmentList)
+    // console.log(gameData.propertyList)
+    // console.log(gameData.installmentList)
 }
 /**实际的步进时间事件
  * 需要变量：
- *      coinCount
+ *      gameData.coinCount
  *      actuIncomePerH
  * 使用函数：
  *      updateResource()
  * HTML更新
  */ 
 function incrementTime() {
-    currDate.setHours(currDate.getHours() + 1);
-    switch (currDate.getHours()) {
-        case 17:
-        case 6:
-            $('body').removeClass("dark-mode");
-            $('body').addClass("dawn-mode");
-            break;
-        case 0:
-            $('body').removeClass("dawn-mode");
-            $('body').addClass("dark-mode");
-            break;
-        case 9:
-            $('body').removeClass("dawn-mode");
-            break;
-        default:
-            break;
+    gameData.currDate.setHours(gameData.currDate.getHours() + 1);
+    // 直观时间变化
+    if (gameData.currDate.getHours() <= 6) { // 0-6点
+        $('body').removeClass("dawn-mode");
+        $('body').addClass("dark-mode");
+    } else if (gameData.currDate.getHours() <= 9 || gameData.currDate.getHours() > 16) { // 7-9点 & 17-23点
+        $('body').removeClass("dark-mode");
+        $('body').addClass("dawn-mode");
+    } else {
+        $('body').removeClass("dark-mode");
+        $('body').removeClass("dawn-mode");
     }
-    if (currDate.getHours() === 10) {
+
+    if (gameData.currDate.getHours() === 10) {
         everyDayEvent();
     }
 
     // 无论时间流逝是定时触发还是点击触发都需执行的内容
     updateShop();
     updateResource();
-    coinCount += actuIncomePerH;
+    gameData.coinCount += actuIncomePerH;
 
     checkGoal()
 }
@@ -117,30 +92,30 @@ function incrementTime() {
  */ 
 function everyDayEvent() {
     updateDividedPay()
-    if (currDate.getDate() === 1) {
+    if (gameData.currDate.getDate() === 1) {
         everyMonthEvent();
     }
 }
 /**每月事件
  */
 function everyMonthEvent() {
-    for (id in employeeList) {
-        console.log(employList[`employ-${id}`].salary)
-        coinCount -= employList[`employ-${id}`].salary * employeeList[id].amount;
+    for (id in gameData.employeeList) {
+        // console.log(employList[`employ-${id}`].salary)
+        gameData.coinCount -= employList[`employ-${id}`].salary * gameData.employeeList[id].amount;
     }
     
 }
 
 /**点击挣钱按钮（工作点击触发的时间流逝）
  * 需要变量：
- *      currDate
+ *      gameData.currDate
  * 使用函数：
  *      incrementTime()
  *      updateShop()
  *      updateDisplay()
  * 更新变量：
- *      workStat（1，上班）
- *      health
+ *      gameData.workStat（1，上班）
+ *      gameData.health
  *      gamePaused（false，解除暂停）
  * HTML更新
  */ 
@@ -148,12 +123,11 @@ $('#click-button').click(clickButton);
 function clickButton() {
 
     // 触发上班的效果
-    workStat = 1;
+    gameData.workStat = 1;
     // 变更上班与加班时的图标
-    let selfElement = $("#self");
-    selfElement.html( selfElement.html().replace('🛌', GIcon[GIdx]) );
-    selfElement.html( selfElement.html().replace('🛀', GIcon[GIdx]) );
-    if (currDate.getHours() < 9 || currDate.getHours() > 16) {
+    let selfElement = $("#self .icon");
+    selfElement.html( GIcon[gameData.GIdx] );
+    if (gameData.currDate.getHours() < 9 || gameData.currDate.getHours() > 16) {
         // 加班标记
         $('#overtime').attr("i18n-key", "work-overtime");
     } else {
@@ -161,12 +135,12 @@ function clickButton() {
         $('#overtime').text("");
     }
     // 上班与加班时减少健康
-    if (currDate.getHours() < 9 ) { // 0-8点
-        health -= 2;
-    } else if ( currDate.getHours() > 16 ) { // 17点-23点
-        health -= 1.5;
+    if (gameData.currDate.getHours() < 9 ) { // 0-8点
+        gameData.health -= 2;
+    } else if ( gameData.currDate.getHours() > 16 ) { // 17点-23点
+        gameData.health -= 1.5;
     } else {
-        health -= 1;
+        gameData.health -= 1;
     }
     
     // 每次点击则重置计时，避免时间跳动
@@ -194,14 +168,19 @@ function gamePause() {
 }
 
 $('#change-gender').click(() => {
-    oldGIdx = GIdx;
-    GIdx = (GIdx+1) % 3;
+    gameData.GIdx = (gameData.GIdx+1) % 3;
     // console.log(oldGIdx+'=>'+GIdx)
-    // console.log(GIcon[oldGIdx]+'=>'+GIcon[GIdx])
-    let selfElement = $("#self");
-    selfElement.html( selfElement.html().replace(GIcon[oldGIdx],GIcon[GIdx]) );
+    // console.log(GIcon[oldGIdx]+'=>'+GIcon[gameData.GIdx])
+    let selfElement = $("#self .icon");
+    if (gameData.currDate.getHours() < 9 ) { // 0-8点
+        selfElement.html( '🛌' );
+    } else if (gameData.currDate.getHours() > 16) { // 17-23点
+        selfElement.html('🛀' );
+    } else {
+        selfElement.html( GIcon[gameData.GIdx] );
+    }
     let selfGButton = $("#change-gender")
-    selfGButton.html( selfGButton.html().replace(GTxt[oldGIdx],GTxt[GIdx]) );
+    selfGButton.html( GTxt[gameData.GIdx] );
     // updateDisplay();
 })
 
@@ -217,6 +196,24 @@ $('#language-select').on('change', (e) => {
     $("[i18n-key]").each(translateElement);
 })
 
+$('#update-us-debt').click(() => {
+    // 这里不知道如何用attribute修改，故只能这样
+    const conferMsg = translations[locale]["setting-get-debt-alert"]
+    if (confirm(conferMsg)) {
+        updateUSDebt();
+    }
+});
+
+$('#game-save').click(() => {
+    saveGame()
+});
+$('#game-load').click(() => {
+    loadGame()
+});
+$('#game-reset').click(() => {
+    resetGame()
+});
+
 
 
 /** 更新函数
@@ -224,29 +221,33 @@ $('#language-select').on('change', (e) => {
 /**商店按钮锁定与解锁；点击挣钱按钮锁定与解锁
  * 需要变量：
  *      marketList
- *      coinCount
- *      health
+ *      gameData.coinCount
+ *      gameData.health
  * HTML更新：
  */
 function updateShop() {
     for (let id in marketList) {
-        limitPrice = installPay ? marketList[id].installPrice : marketList[id].price;
-        if ( coinCount >= limitPrice) {
+        limitPrice = gameData.installPay ? marketList[id].installPrice : marketList[id].price;
+        if ( gameData.coinCount >= limitPrice) {
             $(`#${id}`).prop('disabled', false);
+            delete gameData.disabledButton[`#${id}`];
         } else {
             $(`#${id}`).prop('disabled', true);
+            gameData.disabledButton[`#${id}`] = 1;
         }
     }
     for (let id in employList) {
         limitPrice = employList[id].salary;
-        if ( coinCount >= limitPrice) {
+        if ( gameData.coinCount >= limitPrice) {
             $(`#${id}`).prop('disabled', false);
+            delete gameData.disabledButton[`#${id}`];
         } else {
             $(`#${id}`).prop('disabled', true);
+            gameData.disabledButton[`#${id}`] = 1;
         }
     }
     // 得病无法工作也借用此处
-    ableToWork = health < 0 ? true : false;
+    ableToWork = gameData.health < 0 ? true : false;
     $("#click-button").prop('disabled', ableToWork)
 }
 
@@ -255,37 +256,43 @@ function updateShop() {
  *      删除分期付款文本的分期月、还款倒计时天数
  *      勾选盒取消勾选；劳动力面板隐藏
  * 更新变量：
- *      installmentList
- *      propertyList（需保证installmentList.item必须在propertyList中有对应）
- *      workingProperty
+ *      gameData.installmentList
+ *      gameData.propertyList（需保证gameData.installmentList.item必须在gameData.propertyList中有对应）
+ *      gameData.workingProperty
  */
 function updateDividedPay() {
-    for (let id in installmentList) {
-        installmentList[id].payCountDown--;
-        if (installmentList[id].payCountDown === 0) {
+    for (let id in gameData.installmentList) {
+        gameData.installmentList[id].payCountDown--;
+        if (gameData.installmentList[id].payCountDown === 0) {
             // 移除这个资产
-            propertyItem = propertyList[id];
+            propertyItem = gameData.propertyList[id];
+            // 移除这个资产前，先把在此资产工作的劳动力解放
+            changeWorkForce(false, id, 'zombie') // 用的resource.js中的函数
+            // TODO：目前只有僵尸作为劳动力，所以硬编码写死成僵尸
             if (propertyItem.amount > 1) { // 资产数量-1
                 propertyItem.amount--;
             } else { // 资产数量不足1，直接移除
-                delete propertyList[id];
-                // 更新勾选盒以及workingProperty
+                delete gameData.propertyList[id];
+                // 更新勾选盒以及gameData.workingProperty
                 $('#model-display [type=checkbox]').not(id).prop('checked', false);
                 $(`#${id}`).addClass('hidden');
-                workingProperty === id ? workingProperty = '' : {};
+                delete gameData.removeHidden[`#${id}`];
+                gameData.workingProperty === id ? gameData.workingProperty = '' : {};
             }
+            
             icon = $(`#${id} .icon`);
-            icon.html( icon.html().replace(installmentList[id].icon, "") );
+            icon.html( icon.html().replace(gameData.installmentList[id].icon, "") );
+            gameData.iconStore[`#${id} .icon`] = icon.html();
             $(`#install-${id}`).addClass('hidden');
-
-            delete installmentList[id]; // 移除这个分期付款
+            delete gameData.removeHidden[`#install-${id}`];
+            delete gameData.installmentList[id]; // 移除这个分期付款
         }
     }
 }
 
 function checkGoal() {
-    if (coinCount >= goal && !gameFinished) {
-        gameFinished = true;
+    if (gameData.coinCount >= gameData.goal && !gameData.gameFinished) {
+        gameData.gameFinished = true;
         alert("恭喜你！你帮美帝还清了全部美债！星条旗永不落！");
     }
 }
@@ -305,19 +312,19 @@ $(document).on('keydown', function(event) {
 
     // Check if the current input matches the cheat code
     if (userKeyInput.toLowerCase().includes('paxamericana')) {
-        coinCount += 20000000000000
+        gameData.coinCount += 20000000000000
         userKeyInput = '';
     }
     if (userKeyInput.toLowerCase().includes('gold')) {
-        coinCount += 50000
+        gameData.coinCount += 50000
         userKeyInput = '';
     }
     if (userKeyInput.toLowerCase().includes('money')) {
-        coinCount += 6000
+        gameData.coinCount += 6000
         userKeyInput = '';
     }
     if (userKeyInput.toLowerCase().includes('coin')) {
-        coinCount += 500
+        gameData.coinCount += 500
         userKeyInput = '';
     }
     if (userKeyInput.toLowerCase().includes('timefly')) { // 快速过5天
@@ -339,7 +346,7 @@ $(document).on('keydown', function(event) {
     if (userKeyInput.toLowerCase().includes('workhard')) { // 标准模板工作5天
         clearInterval(currentTimer);
         Array(5*24).fill().forEach(() => {
-            if (currDate.getHours() > 8) {
+            if (gameData.currDate.getHours() > 8) {
                 clickButton();
                 clearInterval(currentTimer);
             } else {
@@ -357,3 +364,4 @@ $(document).on('keydown', function(event) {
         userKeyInput = userKeyInput.substring(1);
     }
 });
+
