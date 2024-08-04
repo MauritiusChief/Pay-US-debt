@@ -42,10 +42,10 @@ function loadGame() {
         clearInterval(currentTimer);
         gamePaused = true;
         // 直观时间变化
-        if (gameData.currDate.getHours() <= 6 || gameData.currDate.getHours() > 16) { // 0-6点 & 17-23点
+        if (gameData.currDate.getHours() <= 6) { // 0-6点
             $('body').removeClass("dawn-mode");
             $('body').addClass("dark-mode");
-        } else if (gameData.currDate.getHours() <= 9) { // 7-9点
+        } else if (gameData.currDate.getHours() <= 9 || gameData.currDate.getHours() > 16) { // 7-9点 & 17-23点
             $('body').removeClass("dark-mode");
             $('body').addClass("dawn-mode");
         } else {
