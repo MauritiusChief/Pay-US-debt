@@ -96,8 +96,8 @@ const translations = {
         "setting-saved": "数据存储成功！",
         "setting-loaded": "数据读取成功！",
         "setting-load-not-complete": "存在数据读取失败",
-        "setting-reset": "重置数据",
-        "setting-reset-alert": "你确定要重置所有数据吗？",
+        "setting-reset": "清除数据",
+        "setting-reset-alert": "你确定要清除已储存数据吗？",
     },
     "en": {
         "title": "Pay US debt All",
@@ -185,8 +185,8 @@ const translations = {
         "setting-saved": "Data saved!",
         "setting-loaded": "Data loaded!",
         "setting-load-not-complete": "Exist data not loaded",
-        "setting-reset": "Reset data",
-        "setting-reset-alert": "Are you sure you want to reset all the data?",
+        "setting-reset": "Clear data",
+        "setting-reset-alert": "Are you sure you want to clear all data saved?",
     },
 }
 
