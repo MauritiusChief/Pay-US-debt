@@ -21,9 +21,8 @@ function loadGame() {
         for (let icon in gameData.iconStore) { // 写入存储的图标
             $(icon).html( gameData.iconStore[icon] );
         }
-        if (gameData.workingProperty !== '') {
-            $(`#${gameData.workingProperty} [type=checkbox]`).prop('checked', true); // 根据workingProperty复原勾选盒
-        }
+        gameData.workingProperty !== '' ? $(`#${gameData.workingProperty} [type=checkbox]`).prop('checked', true) : {}; // 根据workingProperty复原勾选盒
+        $('#install-pay [type=checkbox]').prop('checked', gameData.installPay);
         for (let button in gameData.disabledButton) { // 禁用不能点的按钮，可能会有启用不了的bug？
             $(button).prop('disabled', true);
         }
