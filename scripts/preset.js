@@ -1,27 +1,33 @@
 console.log('preset.js')
+
+/* 存储所有游戏数据的变量 */
+// 实在想不到还有什么别的方法可以快速实现存储数据了
+let gameData = {}
+
 // 最基础的数据
-let coinCount = 0;
+gameData.coinCount = 0;
 let actuIncomePerH = 0;
 
 // 人物相关数据
-let health = 100.00;
-let effectList = []
-let workStat = 0; // 上班与否标记，用在资源列表更新中，0代表不上班1代表上班，以后可能会改一个方式
+gameData.health = 100.00;
+gameData.effectList = []
+gameData.workStat = 0; // 上班与否标记，用在资源列表更新中，0代表不上班1代表上班，以后可能会改一个方式
 let estiIncomePerH = 12.5;
-let workingProperty = ''
-var GIdx = 0
+gameData.workingProperty = ''
+gameData.GIdx = 0
 const GIcon = ['🧍','🧍‍♂️','🧍‍♀️']
 const GTxt = ['?','♂','♀']
 
 // 游戏机制数据
-let goal = 1000000;
+gameData.goal = 1000000;
 let dateArray = [1000, 0, 1, 9]
-let currDate = new Date(...dateArray);
-let gameFinished = false;
-let currentTimer;
-let gamePaused = true;
-let installPay = false;
-let cheatWork = false;
+gameData.currDate = new Date(...dateArray);
+gameData.gameFinished = false;
+gameData.currentTimer;
+gameData.gamePaused = true;
+gameData.installPay = false;
+gameData.removeHidden = {};
+gameData.iconStore = {};
 
 /** 商品及职业列表
  ***************/
@@ -45,31 +51,33 @@ const employList = { // 雇员列表
     'employ-zombie': {salary:3000},
     'employ-vampire': {salary:7500}
 }
-let installmentList = {};
+gameData.installmentList = {};
 //示例installmentList:{ 'property-name': {icon:'🎈', installPrice:10, installMonth:6, payCountDown:30} }
-let propertyList = {};
+gameData.propertyList = {};
 //示例propertyList:{ 'property-name': {amount:1, amountUsed:0, maintainStatus:5, maintainDecrChance:0.5} }
-let employeeList = {};
+gameData.employeeList = {};
 //示例employeeList:{ employee-name': {amount:1, amountWorking:0, maintainStatus:5, maintainDecrChance:0.5} }
-let employeeGStack = []; // F 代表女，M 代表男
-let resourceList = {
+gameData.employeeGStack = []; // F 代表女，M 代表男
+initialResourceList = {
     'transport': {produce: 0, consume: 0, stock: 0, price: 0.5},
     'construct': {produce: 0, consume: 0, stock: 0, price: 1.5},
     'gear': {produce: 0, consume: 0, stock: 0, price: 0.56},
     'nut-bolt': {produce: 0, consume: 0, stock: 0, price: 0.16},
     'steel': {produce: 0, consume: 0, stock: 0, price: 0.37}
 };
-let selfResourceList = {
+gameData.resourceList = initialResourceList;
+initialSelfResourceList = {
     'transport': {produce:0},
     'construct': {produce:0}
 };
+gameData.selfResourceList = initialSelfResourceList;
 
 /**根据资产更新资源产出和收入
  * 需要变量：
- *      workingProperty
- *      selfResourceList（必须先处理，因为后续更新estiIncomePerH需要）
- *      workStat
- *      resourceList
+ *      gameData.workingProperty
+ *      gameData.selfResourceList（必须先处理，因为后续更新estiIncomePerH需要）
+ *      gameData.
+ *      gameData.resourceList
  * 更新变量：
  *      actuIncomePerH
  *      estiIncomePerH
@@ -131,50 +139,50 @@ function updateResource() {
         return produceMultMapping[resourceType] ? produceMultMapping[resourceType]['default'] : 0;
     };
     // 根据当前工作使用的资产处理小人自己的资源产出
-    for (let id in selfResourceList) {
-        selfResourceList[id].produce = getProduceValue(id, workingProperty);
+    for (let id in gameData.selfResourceList) {
+        gameData.selfResourceList[id].produce = getProduceValue(id, gameData.workingProperty);
     }
-    for (let id in resourceList) {
-        resourceList[id].produce = 0;
-        resourceList[id].consume = 0;
+    for (let id in gameData.resourceList) {
+        gameData.resourceList[id].produce = 0;
+        gameData.resourceList[id].consume = 0;
         // 点击生产的资源
-        if (selfResourceList[id] !== undefined) {
-            resourceList[id].produce += selfResourceList[id].produce * workStat; // workStat 0 代表不上班，1代表上班
-            priceMulti = selfResourceList[id].produce < 0 ? 1.2 : 1.0; // priceMulti 价格乘数 1.2是买时的价格，1.0是卖时的价格
-            estiIncomePerH += selfResourceList[id].produce * resourceList[id].price * priceMulti;
+        if (gameData.selfResourceList[id] !== undefined) {
+            gameData.resourceList[id].produce += gameData.selfResourceList[id].produce * gameData.workStat; // gameData.workStat 0 代表不上班，1代表上班
+            priceMulti = gameData.selfResourceList[id].produce < 0 ? 1.2 : 1.0; // priceMulti 价格乘数 1.2是买时的价格，1.0是卖时的价格
+            estiIncomePerH += gameData.selfResourceList[id].produce * gameData.resourceList[id].price * priceMulti;
         }
         // 自动生产的资源
         propertyMultProduce = 0;
-        for (propId in propertyList) {
-            // console.log(propertyList[propId])
-            propertyUsed = propertyList[propId].amountUsed;
-            propertyAmount = propertyList[propId].amount;
+        for (propId in gameData.propertyList) {
+            // console.log(gameData.propertyList[propId])
+            propertyUsed = gameData.propertyList[propId].amountUsed;
+            propertyAmount = gameData.propertyList[propId].amount;
             propertyAddProduce = getProduceValue(id, propId); // 数值加成
             propertyAddConsume = getConsumeValue(id, propId); // 数值消耗
             propertyMultProduce += getProduceMultipe(id, propId) * propertyAmount; // 百分比加成
 
-            resourceList[id].consume += propertyAddConsume*propertyUsed // 此处故意不减去小人自己使用的资产
-            if (propId === workingProperty) {// 减去小人自己使用的资产
+            gameData.resourceList[id].consume += propertyAddConsume*propertyUsed // 此处故意不减去小人自己使用的资产
+            if (propId === gameData.workingProperty) {// 减去小人自己使用的资产
                 propertyUsed--;
             }
-            resourceList[id].produce += propertyAddProduce*propertyUsed
+            gameData.resourceList[id].produce += propertyAddProduce*propertyUsed
         }
-        resourceList[id].produce *= (1 + propertyMultProduce/100); // 对资源产量进行百分比加成
+        gameData.resourceList[id].produce *= (1 + propertyMultProduce/100); // 对资源产量进行百分比加成
         // console.log(propertyUsed)
         // 计算总资源
-        netProduct = resourceList[id].produce - resourceList[id].consume;
+        netProduct = gameData.resourceList[id].produce - gameData.resourceList[id].consume;
         priceMulti = netProduct < 0 ? 1.2 : 1; // priceMulti 价格乘数 1.2是买时的价格，1.0是卖时的价格
-        actuIncomePerH += (netProduct * resourceList[id].price * priceMulti); // 此处已将点击生产和自动生产的资源都计入
+        actuIncomePerH += (netProduct * gameData.resourceList[id].price * priceMulti); // 此处已将点击生产和自动生产的资源都计入
     }
 }
 /**根据资产更新职业
  * 需要变量：
- *      workingProperty
+ *      gameData.workingProperty
  * HTML更新
  */
 function updateDisplayJob() {
     var currentJobKey = '';
-    switch (workingProperty) {
+    switch (gameData.workingProperty) {
         case 'semi-truck':
             currentJobKey = "click-job-semi-truck-driver";
             break;
@@ -195,37 +203,39 @@ function updateDisplayJob() {
  *********************************/
 function updateDisplay() {
     // 基本文本更新
-    $('#coin-count').text( `${coinCount.toFixed(2).toLocaleString()} $` );
+    $('#coin-count').text( `${gameData.coinCount.toFixed(2).toLocaleString()} $` );
     $('#coin-per-hour').text( `${actuIncomePerH.toFixed(2).toLocaleString()} $` );
     $('#coins-per-click').text( `${estiIncomePerH.toLocaleString()} $` );
-    $('#goal-remain').text( `${(goal - coinCount)>0 ? (goal - coinCount).toLocaleString() : 0} $` );
-    $('#current-date').html( `${currDate.getFullYear()}-${(currDate.getMonth()+1).toString().padStart(2, '0')}-${currDate.getDate().toString().padStart(2, '0')},  ${currDate.getHours()}<span i18n-key="o-clock"></span>` );
-    $('#health').text( Math.round(health*100)/100 ); // 避免 1.099999999 这样的数字出现
+    $('#goal-remain').text( `${(gameData.goal - gameData.coinCount)>0 ? (gameData.goal - gameData.coinCount).toLocaleString() : 0} $` );
+    $('#current-date').html( `${gameData.currDate.getFullYear()}-${(gameData.currDate.getMonth()+1).toString().padStart(2, '0')}-${gameData.currDate.getDate().toString().padStart(2, '0')};  ${genClockIcon(gameData.currDate.getHours())}${gameData.currDate.getHours()}<span i18n-key="o-clock"></span>` );
+    $('#health').text( Math.round(gameData.health*100)/100 ); // 避免 1.099999999 这样的数字出现
 
     /**健康值相关的图标跟新
      * 需要变量：
-     *      health
+     *      gameData.health
      * HTML更新：
      */
     let selfElement = $("#self");
     let medicinElement = $('#buy-health-elixir');
-    if (health >= 0) {
+    if (gameData.health >= 0) {
         medicinElement.addClass('hidden');
-        selfElement.html( selfElement.html().replace('🚑', GIcon[GIdx]) );
+        delete gameData.removeHidden["#buy-health-elixir"];
+        selfElement.html( selfElement.html().replace('🚑', GIcon[gameData.GIdx]) );
     } else {
         medicinElement.removeClass('hidden');
-        selfElement.html( selfElement.html().replace(GIcon[GIdx], '🚑') );
+        gameData.removeHidden["#buy-health-elixir"] = 1;
+        selfElement.html( selfElement.html().replace(GIcon[gameData.GIdx], '🚑') );
     }
 
     /**根据资产列表以及分期付款列表，更新分期付款文本的剩余分期月、剩余还款倒计时天数等
      * 需要变量：
-     *      propertyList
-     *      installmentList
+     *      gameData.propertyList
+     *      gameData.installmentList
      * HTML更新：
      */
-    for (let id in propertyList) {
+    for (let id in gameData.propertyList) {
         // 分期付款期间 以及 偿清贷款 的情况
-        installmentItem = installmentList[id];
+        installmentItem = gameData.installmentList[id];
         if ( installmentItem !== undefined ) { // 已有分期付款，只需更新数字
             // console.log('已有分期付款，只需更新数字')
             currDividedMonth = $(`#${id} .install-month`);
@@ -234,19 +244,20 @@ function updateDisplay() {
             currPayCountDown.text( currPayCountDown.text().replace(/\d+/, installmentItem.payCountDown) );
         } else if ( $(`#${id}:has(.install-month)`).length > 0 ) { // 没有分期付款，去掉分期付款显示（注意：这部分如果到期不还款资产被收回则不会执行）
             $(`#install-${id}`).addClass('hidden')
+            delete gameData.removeHidden[`#install-${id}`];
         } // 到期不还款的情况在 updateDividedPay()
 
         // 更新劳动力分配面板
-        $(`#${id} .work-force-limit`).text( propertyList[id].amount );
-        $(`#${id} .work-force-input`).text( propertyList[id].amountUsed );
-
+        $(`#${id} .work-force-limit`).text( gameData.propertyList[id].amount );
+        $(`#${id} .work-force-input`).text( gameData.propertyList[id].amountUsed );
+        // console.log(gameData.propertyList[id].amountUsed)
     }
 
 
     // 更新商店按钮
 
     installTag = $('.buy-or-install');
-    if (!installPay) {
+    if (!gameData.installPay) {
         installTag.attr('i18n-key', 'mkt-buy' );
     } else {
         installTag.attr('i18n-key', 'mkt-install' );
@@ -257,23 +268,52 @@ function updateDisplay() {
 
     /**更新资源列表的产量、收入等数字
      * 需要变量：
-     *      resourceList
+     *      gameData.resourceList
      * HTML更新：
      */
-    for (let id in resourceList) {
+    for (let id in gameData.resourceList) {
         tableRow = $(`#${id}`);
-        tableRow.find(".net-produce .num").html( (resourceList[id].produce - resourceList[id].consume).toFixed(2) );
-        tableRow.find(".net-produce .produce").html( resourceList[id].produce.toFixed(2) );
-        tableRow.find(".net-produce .consume").html( resourceList[id].consume.toFixed(2) );
-        netProduct = resourceList[id].produce - resourceList[id].consume;
+        tableRow.find(".net-produce .num").html( (gameData.resourceList[id].produce - gameData.resourceList[id].consume).toFixed(2) );
+        tableRow.find(".net-produce .produce").html( gameData.resourceList[id].produce.toFixed(2) );
+        tableRow.find(".net-produce .consume").html( gameData.resourceList[id].consume.toFixed(2) );
+        netProduct = gameData.resourceList[id].produce - gameData.resourceList[id].consume;
         priceMulti = netProduct < 0 ? 1.2 : 1;
-        tableRow.find(".income .num").html( (netProduct*resourceList[id].price*priceMulti).toFixed(2) );
-        tableRow.find(".income .price").html( netProduct < 0 ? -(resourceList[id].price*priceMulti).toFixed(2).toLocaleString() : resourceList[id].price.toFixed(2).toLocaleString() );
+        tableRow.find(".income .num").html( (netProduct*gameData.resourceList[id].price*priceMulti).toFixed(2) );
+        tableRow.find(".income .price").html( netProduct < 0 ? -(gameData.resourceList[id].price*priceMulti).toFixed(2).toLocaleString() : gameData.resourceList[id].price.toFixed(2).toLocaleString() );
     }
 
     $("[i18n-key]").each(translateElement); // 更新文本翻译
 }
 
+function genClockIcon(time) {
+    time = time % 12;
+    switch (time) {
+        case 1:
+            return '🕐';
+        case 2:
+            return '🕑';
+        case 3:
+            return '🕒';
+        case 4:
+            return '🕓';
+        case 5:
+            return '🕔';
+        case 6:
+            return '🕕';
+        case 7:
+            return '🕖';
+        case 8:
+            return '🕗';
+        case 9:
+            return '🕘';
+        case 10:
+            return '🕙';
+        case 11:
+            return '🕚';
+        case 0:
+            return '🕛';
+    }
+}
 function genPrice(min, max, step) {
     const range = Math.floor((max - min) / step) + 1;
     const randomStep = Math.floor(Math.random() * range);

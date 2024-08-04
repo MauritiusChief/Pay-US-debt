@@ -20,7 +20,7 @@
             <button id="game-pause" i18n-key="disp-pause-inti">开始</button>
         </div>
         <div id="clicker" class="grid-panel">
-            <p><span i18n-key="click-job">当前工作：</span><span id="current-job" i18n-key="click-job-porter">搬运工</span><span id="overtime">（休息中）</span></p>    
+            <p><span i18n-key="click-job">当前工作：</span><span id="current-job" i18n-key="click-job-porter">搬运工</span><span id="overtime" i18n-key="work-resting">（休息中）</span></p>    
             <p><span i18n-key="click-date">当前时间：</span><span id="current-date" i18n-key-int="disp-load">加载中...</span></p>
             <p><span i18n-key="click-wage">工作时薪: </span><span id="coins-per-click">12.5 $</span></p>
             <button id="click-button" i18n-key="click-button">努力赚美刀</button>
@@ -68,7 +68,11 @@
                 <option value="">文/A</option>
                 <option value="en">English</option>
                 <option value="zh">中文</option>
-            </select>
+            </select><br>
+            <button id="update-us-debt" i18n-key="setting-get-debt">更新国债</button>
+            <button id="game-save" i18n-key="setting-save">读取数据</button><br>
+            <button id="game-load" i18n-key="setting-load">存储数据</button>
+            <button id="game-reset" i18n-key="setting-reset">重置数据</button>
         </div>
     </div>
 
@@ -104,13 +108,13 @@
     <!-- 载具 展示模板 -->
     <script id="vehicle-template" type="text/x-handlebars-template">
         {{#each this}}
-            <div id="{{id}}" class="hastooltip hidden"><p>
-                <div id="install-{{id}}" class="hidden">
+            <div id="{{id}}" class="hastooltip can-hide hidden"><p>
+                <div id="install-{{id}}" class="can-hide hidden">
                     <span i18n-key="mkt-install"></span><span class="install-month"></span><span i18n-key="mkt-month"></span>
                     <span i18n-key="mkt-pay-ctd"></span><span class="pay-count-down"></span><span i18n-key="mkt-day"></span>
                 </div>
                 <span class="icon"></span><span class="tooltiptext"><span i18n-key="mkt-{{id}}">载具名称占位</span></span><br>
-                <span class="work-force use-worker hidden">
+                <span class="work-force use-worker can-hide hidden">
                     <button type="decr">-</button>
                     <span class="work-force-input">0</span>/<span class="work-force-limit">0</span>
                     <button type="incr">+</button>
@@ -122,8 +126,8 @@
     <!-- 地产 展示模板 -->
     <script id="field-template" type="text/x-handlebars-template">
         {{#each this}}
-            <div id="{{id}}" class="hastooltip hidden"><p>
-                <div id="install-{{id}}" class="hidden">
+            <div id="{{id}}" class="hastooltip can-hide hidden"><p>
+                <div id="install-{{id}}" class="can-hide hidden">
                     <span i18n-key="mkt-install"></span><span class="install-month"></span><span i18n-key="mkt-month"></span>
                     <span i18n-key="mkt-pay-ctd"></span><span class="pay-count-down"></span><span i18n-key="mkt-day"></span>
                 </div>
@@ -134,7 +138,7 @@
     <!-- 劳动力 展示模板 -->
     <script id="work-force-template" type="text/x-handlebars-template">
         {{#each this}}
-            <p id="{{id}}" type="{{type}}" class="hastooltip hidden">
+            <p id="{{id}}" type="{{type}}" class="hastooltip can-hide hidden">
                 <span class="icon"></span><em><span class="tooltiptext" i18n-key="prop-{{id}}-lore">有趣文案占位</span></em><br>
                 <button id="dismiss-{{id}}" i18n-key="dismiss-button">解雇</button>
             </p>
@@ -149,7 +153,7 @@
                 <th i18n-key="resource-income">收入</th>
             </tr>
             {{#each this}}
-            <tr id="{{id}}" class="hidden">
+            <tr id="{{id}}" class="can-hide hidden">
                 <td>{{icon}}<span i18n-key="reso-{{id}}">资源名称占位</span></td>
                 <td class="net-produce hastooltip">
                     <span class="num">0</span> {{{unit}}}/<span i18n-key="reso-h">小时</span>
@@ -169,9 +173,10 @@
     
     <script src="scripts/localization.js"></script>
     <script src="scripts/preset.js"></script>
+    <script src="scripts/save_load.js"></script>
     <script src="scripts/htmlgen.js"></script>
-    <script src="scripts/main.js"></script>
     <script src="scripts/shop.js"></script>
     <script src="scripts/resource.js"></script>
+    <script src="scripts/main.js"></script>
 </body>
 </html>

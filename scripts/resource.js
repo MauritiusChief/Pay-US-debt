@@ -30,8 +30,8 @@ $('#excavator [type=checkbox]').on('change', () => {
 
 // 修改劳动力数量
 function changeWorkForce(increaseWorkForce, propertyName, workForceName) {
-    employeeItem = employeeList[workForceName];
-    propertyItem = propertyList[propertyName];
+    employeeItem = gameData.employeeList[workForceName];
+    propertyItem = gameData.propertyList[propertyName];
     if (increaseWorkForce) { // 增加劳动力
         if (propertyItem.amount > propertyItem.amountUsed && employeeItem.amount > employeeItem.amountWorking) {
             propertyItem.amountUsed++;
@@ -59,27 +59,27 @@ function changeWorkForce(increaseWorkForce, propertyName, workForceName) {
 /**勾选盒变更事件，小人自己只能在一个地方工作
  * HTML更新
  * 更新变量：
- *      workingProperty
+ *      gameData.workingProperty
  */
 function checkBoxEvent(propertyName) {
-    // console.log(propertyList[propertyName])
+    // console.log(gameData.propertyList[propertyName])
     thisName = `#${propertyName} [type=checkbox]`;
     if ($(thisName).is(':checked')) { // 此勾选盒勾选的情况
         $('#model-display [type=checkbox]').not(thisName).prop('checked', false); // 选择所有其他勾选盒，取消勾选
-        if (propertyList[propertyName].amount > propertyList[propertyName].amountUsed) { // 确保有空余资产给小人自己用
-            // 根据尚未被改变的workingProperty，判断上一个被使用的资产是什么
-            if (propertyList[workingProperty] !== undefined) {
-                propertyList[workingProperty].amountUsed--;
+        if (gameData.propertyList[propertyName].amount > gameData.propertyList[propertyName].amountUsed) { // 确保有空余资产给小人自己用
+            // 根据尚未被改变的gameData.workingProperty，判断上一个被使用的资产是什么
+            if (gameData.propertyList[gameData.workingProperty] !== undefined) {
+                gameData.propertyList[gameData.workingProperty].amountUsed--;
             }
-            propertyList[propertyName].amountUsed++;
-            workingProperty = propertyName; // workingProperty更新
+            gameData.propertyList[propertyName].amountUsed++;
+            gameData.workingProperty = propertyName; // gameData.workingProperty更新
         } else { // 否则取消勾选此勾选盒
             $(thisName).prop('checked', false);
         }
-        // console.log(propertyList[propertyName])
+        // console.log(gameData.propertyList[propertyName])
     } else { // 此勾选盒不勾选的情况
-        propertyList[propertyName].amountUsed--;
-        workingProperty = ''
-        // console.log(propertyList[propertyName])
+        gameData.propertyList[propertyName].amountUsed--;
+        gameData.workingProperty = ''
+        // console.log(gameData.propertyList[propertyName])
     }
 }
