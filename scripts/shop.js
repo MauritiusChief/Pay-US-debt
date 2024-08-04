@@ -151,6 +151,7 @@ function employEvent(empId, iconF, iconM) {
     // 解锁解雇按钮
     if (gameData.employeeList[empId].amountWorking < gameData.employeeList[empId].amount) {
         $(`#dismiss-${empId}`).prop('disabled', false);
+        delete gameData.disabledButton[`#dismiss-${empId}`];
     }
 
     updateResource();
@@ -164,6 +165,7 @@ function dismissEvent(empId, iconF, iconM) {
         // 锁定按钮，避免人被解雇了其工作的资产还在运转
         if (employeeItem.amountWorking >= employeeItem.amount) {
             $(`#dismiss-${empId}`).prop('disabled', true);
+            gameData.disabledButton[`#dismiss-${empId}`] = 1;
         }
     } else { // 劳动力数量不足1，直接移除
         delete gameData.employeeList[empId];

@@ -46,8 +46,10 @@ function changeWorkForce(increaseWorkForce, propertyName, workForceName) {
     // 锁定和解锁解雇按钮，避免人被解雇了其工作的资产还在运转
     if (employeeItem.amountWorking < employeeItem.amount) {
         $(`#dismiss-${workForceName}`).prop('disabled', false);
+        delete gameData.disabledButton[`#dismiss-${workForceName}`];
     } else { // 无多余员工
         $(`#dismiss-${workForceName}`).prop('disabled', true);
+        gameData.disabledButton[`#dismiss-${workForceName}`] = 1;
     }
     
     updateResource();

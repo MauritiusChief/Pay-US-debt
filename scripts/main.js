@@ -230,16 +230,20 @@ function updateShop() {
         limitPrice = gameData.installPay ? marketList[id].installPrice : marketList[id].price;
         if ( gameData.coinCount >= limitPrice) {
             $(`#${id}`).prop('disabled', false);
+            delete gameData.disabledButton[`#${id}`];
         } else {
             $(`#${id}`).prop('disabled', true);
+            gameData.disabledButton[`#${id}`] = 1;
         }
     }
     for (let id in employList) {
         limitPrice = employList[id].salary;
         if ( gameData.coinCount >= limitPrice) {
             $(`#${id}`).prop('disabled', false);
+            delete gameData.disabledButton[`#${id}`];
         } else {
             $(`#${id}`).prop('disabled', true);
+            gameData.disabledButton[`#${id}`] = 1;
         }
     }
     // 得病无法工作也借用此处

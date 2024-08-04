@@ -28,6 +28,7 @@ let gamePaused = true;
 gameData.installPay = false;
 gameData.removeHidden = {};
 gameData.iconStore = {};
+gameData.disabledButton = {};
 
 /** 商品及职业列表
  ***************/

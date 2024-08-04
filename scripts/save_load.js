@@ -24,6 +24,9 @@ function loadGame() {
         if (gameData.workingProperty !== '') {
             $(`#${gameData.workingProperty} [type=checkbox]`).prop('checked', true); // 根据workingProperty复原勾选盒
         }
+        for (let button in gameData.disabledButton) { // 禁用不能点的按钮，可能会有启用不了的bug？
+            $(button).prop('disabled', true);
+        }
         // 性别小图标
         let selfElement = $("#self .icon");
         if (gameData.currDate.getHours() < 9 ) { // 0-8点
@@ -87,6 +90,7 @@ function resetGame() {
         }
         $('#model-display [type=checkbox]').prop('checked', false); // 勾选盒全部取消
         gameData.iconStore = {};
+        gameData.disabledButton = {};
 
         clearInterval(currentTimer);
         gamePaused = true;
