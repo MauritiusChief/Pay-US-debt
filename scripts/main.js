@@ -37,15 +37,14 @@ function everyHourEvent() {
     // 消除（加班中）标记
     $('#overtime').attr("i18n-key", "work-resting");
     // 小人不加班时的图标
-    $("[type=person]").each(function(index, personTag) {
+    $("[type=person] .icon").each(function(index, personTag) {
         let $personTag = $(personTag);
         if (gameData.currDate.getHours() < 9 ) { // 0-8点
-            $personTag.html( $personTag.html().replace(GIcon[gameData.GIdx],'🛌') );
-            $personTag.html( $personTag.html().replace('🛀','🛌') );
+            $personTag.html( '🛌' );
         } else if (gameData.currDate.getHours() > 16) { // 17-23点
-            $personTag.html( $personTag.html().replace(GIcon[gameData.GIdx],'🛀') );
+            $personTag.html('🛀' );
         } else {
-            $personTag.html( $personTag.html().replace('🛌',GIcon[gameData.GIdx]) );
+            $personTag.html( GIcon[gameData.GIdx] );
         }
     })
     
@@ -121,7 +120,7 @@ function everyMonthEvent() {
  * 更新变量：
  *      gameData.workStat（1，上班）
  *      gameData.health
- *      gameData.gamePaused（false，解除暂停）
+ *      gamePaused（false，解除暂停）
  * HTML更新
  */ 
 $('#click-button').click(clickButton);
@@ -130,9 +129,9 @@ function clickButton() {
     // 触发上班的效果
     gameData.workStat = 1;
     // 变更上班与加班时的图标
-    let selfElement = $("#self");
-    selfElement.html( selfElement.html().replace('🛌', GIcon[gameData.GIdx]) );
-    selfElement.html( selfElement.html().replace('🛀', GIcon[gameData.GIdx]) );
+    let selfElement = $("#self .icon");
+    selfElement.html( GIcon[gameData.GIdx] );
+    selfElement.html( GIcon[gameData.GIdx] );
     if (gameData.currDate.getHours() < 9 || gameData.currDate.getHours() > 16) {
         // 加班标记
         $('#overtime').attr("i18n-key", "work-overtime");
@@ -150,9 +149,9 @@ function clickButton() {
     }
     
     // 每次点击则重置计时，避免时间跳动
-    clearInterval(gameData.currentTimer);
-    gameData.currentTimer = setInterval(everyHourEvent, 1000);
-    gameData.gamePaused = false;
+    clearInterval(currentTimer);
+    currentTimer = setInterval(everyHourEvent, 1000);
+    gamePaused = false;
     $('#game-pause').attr("i18n-key", "game-pause");
     
     incrementTime();
@@ -161,27 +160,26 @@ function clickButton() {
 
 $('#game-pause').click(gamePause);
 function gamePause() {
-    if (gameData.gamePaused) { // 已暂停
-        gameData.currentTimer = setInterval(everyHourEvent, 1000);
+    if (gamePaused) { // 已暂停
+        currentTimer = setInterval(everyHourEvent, 1000);
         $('#game-pause').attr("i18n-key", "game-pause");
-        gameData.gamePaused = false;
+        gamePaused = false;
     } else { // 没暂停
-        clearInterval(gameData.currentTimer);
+        clearInterval(currentTimer);
         $('#game-pause').attr("i18n-key", "game-continue");
-        gameData.gamePaused = true;
+        gamePaused = true;
     }
     $("[i18n-key]").each(translateElement); // 更新文本翻译
 }
 
 $('#change-gender').click(() => {
-    oldGIdx = gameData.GIdx;
     gameData.GIdx = (gameData.GIdx+1) % 3;
     // console.log(oldGIdx+'=>'+GIdx)
     // console.log(GIcon[oldGIdx]+'=>'+GIcon[gameData.GIdx])
-    let selfElement = $("#self");
-    selfElement.html( selfElement.html().replace(GIcon[oldGIdx],GIcon[gameData.GIdx]) );
+    let selfElement = $("#self .icon");
+    selfElement.html( GIcon[gameData.GIdx] );
     let selfGButton = $("#change-gender")
-    selfGButton.html( selfGButton.html().replace(GTxt[oldGIdx],GTxt[gameData.GIdx]) );
+    selfGButton.html( GTxt[gameData.GIdx] );
     // updateDisplay();
 })
 
@@ -325,33 +323,33 @@ $(document).on('keydown', function(event) {
         userKeyInput = '';
     }
     if (userKeyInput.toLowerCase().includes('timefly')) { // 快速过5天
-        clearInterval(gameData.currentTimer);
+        clearInterval(currentTimer);
         Array(5*24).fill().forEach(() => everyHourEvent());
-        if (!gameData.gamePaused) {
-            gameData.currentTimer = setInterval(everyHourEvent, 1000);
+        if (!gamePaused) {
+            currentTimer = setInterval(everyHourEvent, 1000);
         }
         userKeyInput = '';
     }
     if (userKeyInput.toLowerCase().includes('tictoc')) { // 快速过1天
-        clearInterval(gameData.currentTimer);
+        clearInterval(currentTimer);
         Array(24).fill().forEach(() => everyHourEvent());
-        if (!gameData.gamePaused) {
-            gameData.currentTimer = setInterval(everyHourEvent, 1000);
+        if (!gamePaused) {
+            currentTimer = setInterval(everyHourEvent, 1000);
         }
         userKeyInput = '';
     }
     if (userKeyInput.toLowerCase().includes('workhard')) { // 标准模板工作5天
-        clearInterval(gameData.currentTimer);
+        clearInterval(currentTimer);
         Array(5*24).fill().forEach(() => {
             if (gameData.currDate.getHours() > 8) {
                 clickButton();
-                clearInterval(gameData.currentTimer);
+                clearInterval(currentTimer);
             } else {
                 everyHourEvent();
             }
         });
-        if (!gameData.gamePaused) {
-            gameData.currentTimer = setInterval(everyHourEvent, 1000);
+        if (!gamePaused) {
+            currentTimer = setInterval(everyHourEvent, 1000);
         }
         userKeyInput = '';
     }

@@ -24,7 +24,14 @@ function loadGame() {
         if (gameData.workingProperty !== '') {
             $(`#${gameData.workingProperty} [type=checkbox]`).prop('checked', true); // 根据workingProperty复原勾选盒
         }
+        // 性别小图标
+        let selfElement = $("#self .icon");
+        selfElement.html( GIcon[gameData.GIdx] );
+        let selfGButton = $("#change-gender")
+        selfGButton.html( GTxt[gameData.GIdx] );
 
+        clearInterval(currentTimer);
+        gamePaused = true;
         updateDisplay();
 
         alert(alertMsg);
@@ -47,8 +54,6 @@ function resetGame() {
         gameData.currDate = new Date(...dateArray);
         updateUSDebt()
         gameData.gameFinished = false;
-        clearInterval(gameData.currentTimer);
-        gameData.gamePaused = true;
         gameData.installPay = false;
         gameData.installmentList = {};
         gameData.propertyList = {};
@@ -66,6 +71,8 @@ function resetGame() {
         $('#model-display [type=checkbox]').prop('checked', false); // 勾选盒全部取消
         gameData.iconStore = {};
 
+        clearInterval(currentTimer);
+        gamePaused = true;
         updateDisplay();
 
         localStorage.removeItem('StorageGameData');

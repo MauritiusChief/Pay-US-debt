@@ -23,8 +23,8 @@ gameData.goal = 1000000;
 let dateArray = [1000, 0, 1, 9]
 gameData.currDate = new Date(...dateArray);
 gameData.gameFinished = false;
-gameData.currentTimer;
-gameData.gamePaused = true;
+let currentTimer;
+let gamePaused = true;
 gameData.installPay = false;
 gameData.removeHidden = {};
 gameData.iconStore = {};
@@ -215,16 +215,16 @@ function updateDisplay() {
      *      gameData.health
      * HTML更新：
      */
-    let selfElement = $("#self");
+    let selfElement = $("#self .icon");
     let medicinElement = $('#buy-health-elixir');
     if (gameData.health >= 0) {
         medicinElement.addClass('hidden');
         delete gameData.removeHidden["#buy-health-elixir"];
-        selfElement.html( selfElement.html().replace('🚑', GIcon[gameData.GIdx]) );
+        selfElement.html( GIcon[gameData.GIdx] );
     } else {
         medicinElement.removeClass('hidden');
         gameData.removeHidden["#buy-health-elixir"] = 1;
-        selfElement.html( selfElement.html().replace(GIcon[gameData.GIdx], '🚑') );
+        selfElement.html( '🚑' );
     }
 
     /**根据资产列表以及分期付款列表，更新分期付款文本的剩余分期月、剩余还款倒计时天数等
