@@ -220,7 +220,13 @@ function updateDisplay() {
     if (gameData.health >= 0) {
         medicinElement.addClass('hidden');
         delete gameData.removeHidden["#buy-health-elixir"];
-        selfElement.html( GIcon[gameData.GIdx] );
+        if (gameData.currDate.getHours() < 9 && gameData.workStat == 0 ) { // 0-8点
+            selfElement.html( '🛌' );
+        } else if (gameData.currDate.getHours() > 16 && gameData.workStat == 0) { // 17-23点
+            selfElement.html('🛀' );
+        } else {
+            selfElement.html( GIcon[gameData.GIdx] );
+        }
     } else {
         medicinElement.removeClass('hidden');
         gameData.removeHidden["#buy-health-elixir"] = 1;
@@ -239,9 +245,9 @@ function updateDisplay() {
         if ( installmentItem !== undefined ) { // 已有分期付款，只需更新数字
             // console.log('已有分期付款，只需更新数字')
             currDividedMonth = $(`#${id} .install-month`);
-            currDividedMonth.text( currDividedMonth.text().replace(/\d+/, installmentItem.installMonth) );
+            currDividedMonth.text( installmentItem.installMonth );
             currPayCountDown = $(`#${id} .pay-count-down`);
-            currPayCountDown.text( currPayCountDown.text().replace(/\d+/, installmentItem.payCountDown) );
+            currPayCountDown.text( installmentItem.payCountDown );
         } else if ( $(`#${id}:has(.install-month)`).length > 0 ) { // 没有分期付款，去掉分期付款显示（注意：这部分如果到期不还款资产被收回则不会执行）
             $(`#install-${id}`).addClass('hidden')
             delete gameData.removeHidden[`#install-${id}`];

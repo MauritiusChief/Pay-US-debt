@@ -37,7 +37,7 @@ function everyHourEvent() {
     // 消除（加班中）标记
     $('#overtime').attr("i18n-key", "work-resting");
     // 小人不加班时的图标
-    $("[type=person] .wtf-icon").each(function(index, personTag) { // 非得把 .icon 换成 .wtf-icon 才有用？这也太奇怪了
+    $("[type=person] .icon").each(function(index, personTag) {
         let $personTag = $(personTag);
         if (gameData.currDate.getHours() < 9 ) { // 0-8点
             $personTag.html( '🛌' );
@@ -65,22 +65,18 @@ function everyHourEvent() {
  */ 
 function incrementTime() {
     gameData.currDate.setHours(gameData.currDate.getHours() + 1);
-    switch (gameData.currDate.getHours()) {
-        case 17:
-        case 6:
-            $('body').removeClass("dark-mode");
-            $('body').addClass("dawn-mode");
-            break;
-        case 0:
-            $('body').removeClass("dawn-mode");
-            $('body').addClass("dark-mode");
-            break;
-        case 9:
-            $('body').removeClass("dawn-mode");
-            break;
-        default:
-            break;
+    // 直观时间变化
+    if (gameData.currDate.getHours() <= 6 || gameData.currDate.getHours() > 16) { // 0-6点 & 17-23点
+        $('body').removeClass("dawn-mode");
+        $('body').addClass("dark-mode");
+    } else if (gameData.currDate.getHours() <= 9) { // 7-9点
+        $('body').removeClass("dark-mode");
+        $('body').addClass("dawn-mode");
+    } else {
+        $('body').removeClass("dark-mode");
+        $('body').removeClass("dawn-mode");
     }
+
     if (gameData.currDate.getHours() === 10) {
         everyDayEvent();
     }
@@ -130,8 +126,6 @@ function clickButton() {
     gameData.workStat = 1;
     // 变更上班与加班时的图标
     let selfElement = $("#self .icon");
-    // console.log("selfElement: ")
-    // console.log(selfElement)
     selfElement.html( GIcon[gameData.GIdx] );
     if (gameData.currDate.getHours() < 9 || gameData.currDate.getHours() > 16) {
         // 加班标记
@@ -178,11 +172,15 @@ $('#change-gender').click(() => {
     // console.log(oldGIdx+'=>'+GIdx)
     // console.log(GIcon[oldGIdx]+'=>'+GIcon[gameData.GIdx])
     let selfElement = $("#self .icon");
-    selfElement.html( GIcon[gameData.GIdx] );
+    if (gameData.currDate.getHours() < 9 ) { // 0-8点
+        selfElement.html( '🛌' );
+    } else if (gameData.currDate.getHours() > 16) { // 17-23点
+        selfElement.html('🛀' );
+    } else {
+        selfElement.html( GIcon[gameData.GIdx] );
+    }
     let selfGButton = $("#change-gender")
     selfGButton.html( GTxt[gameData.GIdx] );
-    console.log("selfElement: ")
-    console.log(selfElement)
     // updateDisplay();
 })
 

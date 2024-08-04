@@ -26,12 +26,29 @@ function loadGame() {
         }
         // 性别小图标
         let selfElement = $("#self .icon");
-        selfElement.html( GIcon[gameData.GIdx] );
+        if (gameData.currDate.getHours() < 9 ) { // 0-8点
+            selfElement.html( '🛌' );
+        } else if (gameData.currDate.getHours() > 16) { // 17-23点
+            selfElement.html('🛀' );
+        } else {
+            selfElement.html( GIcon[gameData.GIdx] );
+        }
         let selfGButton = $("#change-gender")
         selfGButton.html( GTxt[gameData.GIdx] );
 
         clearInterval(currentTimer);
         gamePaused = true;
+        // 直观时间变化
+        if (gameData.currDate.getHours() <= 6 || gameData.currDate.getHours() > 16) { // 0-6点 & 17-23点
+            $('body').removeClass("dawn-mode");
+            $('body').addClass("dark-mode");
+        } else if (gameData.currDate.getHours() <= 9) { // 7-9点
+            $('body').removeClass("dark-mode");
+            $('body').addClass("dawn-mode");
+        } else {
+            $('body').removeClass("dark-mode");
+            $('body').removeClass("dawn-mode");
+        }
         updateDisplay();
 
         alert(alertMsg);
