@@ -37,7 +37,7 @@ function everyHourEvent() {
     // 消除（加班中）标记
     $('#overtime').attr("i18n-key", "work-resting");
     // 小人不加班时的图标
-    $("[type=person] .icon").each(function(index, personTag) {
+    $("[type=person] .wtf-icon").each(function(index, personTag) { // 非得把 .icon 换成 .wtf-icon 才有用？这也太奇怪了
         let $personTag = $(personTag);
         if (gameData.currDate.getHours() < 9 ) { // 0-8点
             $personTag.html( '🛌' );
@@ -130,7 +130,8 @@ function clickButton() {
     gameData.workStat = 1;
     // 变更上班与加班时的图标
     let selfElement = $("#self .icon");
-    selfElement.html( GIcon[gameData.GIdx] );
+    // console.log("selfElement: ")
+    // console.log(selfElement)
     selfElement.html( GIcon[gameData.GIdx] );
     if (gameData.currDate.getHours() < 9 || gameData.currDate.getHours() > 16) {
         // 加班标记
@@ -180,6 +181,8 @@ $('#change-gender').click(() => {
     selfElement.html( GIcon[gameData.GIdx] );
     let selfGButton = $("#change-gender")
     selfGButton.html( GTxt[gameData.GIdx] );
+    console.log("selfElement: ")
+    console.log(selfElement)
     // updateDisplay();
 })
 
