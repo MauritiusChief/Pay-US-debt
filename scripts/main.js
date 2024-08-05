@@ -213,6 +213,12 @@ $('#game-load').click(() => {
 $('#game-reset').click(() => {
     resetGame()
 });
+$('#game-save-file').click(() => {
+    saveGameFile()
+});
+$('#game-load-file').click(() => {
+    loadGameFile()
+});
 
 
 

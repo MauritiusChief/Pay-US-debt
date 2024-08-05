@@ -14,44 +14,10 @@ function loadGame() {
     if (savedState !== null) {
         gameData = JSON.parse(savedState);
         gameData.currDate = new Date(gameData.currDate); // 把存储的String转换回Date
-        $(".can-hide").addClass('hidden');
-        for (let tag in gameData.removeHidden) { // 隐藏和去除隐藏哪些tag
-            $(tag).removeClass('hidden');
-        }
-        for (let icon in gameData.iconStore) { // 写入存储的图标
-            $(icon).html( gameData.iconStore[icon] );
-        }
-        gameData.workingProperty !== '' ? $(`#${gameData.workingProperty} [type=checkbox]`).prop('checked', true) : {}; // 根据workingProperty复原勾选盒
-        $('#install-pay [type=checkbox]').prop('checked', gameData.installPay);
-        for (let button in gameData.disabledButton) { // 禁用不能点的按钮，可能会有启用不了的bug？
-            $(button).prop('disabled', true);
-        }
-        // 性别小图标
-        let selfElement = $("#self .icon");
-        if (gameData.currDate.getHours() < 9 ) { // 0-8点
-            selfElement.html( '🛌' );
-        } else if (gameData.currDate.getHours() > 16) { // 17-23点
-            selfElement.html('🛀' );
-        } else {
-            selfElement.html( GIcon[gameData.GIdx] );
-        }
-        let selfGButton = $("#change-gender")
-        selfGButton.html( GTxt[gameData.GIdx] );
 
+        loading(gameData);
         clearInterval(currentTimer);
         gamePaused = true;
-        // 直观时间变化
-        if (gameData.currDate.getHours() <= 6) { // 0-6点
-            $('body').removeClass("dawn-mode");
-            $('body').addClass("dark-mode");
-        } else if (gameData.currDate.getHours() <= 9 || gameData.currDate.getHours() > 16) { // 7-9点 & 17-23点
-            $('body').removeClass("dark-mode");
-            $('body').addClass("dawn-mode");
-        } else {
-            $('body').removeClass("dark-mode");
-            $('body').removeClass("dawn-mode");
-        }
-        updateDisplay();
 
         alert(alertMsg);
     } else {
@@ -97,6 +63,93 @@ function resetGame() {
 
         localStorage.removeItem('StorageGameData');
     }
+}
+
+function saveGameFile() {
+    const alertMsg = translations[locale]["setting-file-saved"]
+
+    const json = JSON.stringify(gameData, null, 2);
+    const blob = new Blob([json], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'gameData.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    alert(alertMsg);
+}
+
+function loadGameFile(event) {
+    const alertMsg = translations[locale]["setting-file-loaded"]
+    const alertMsgNotComplete = translations[locale]["setting-load-not-complete"]
+
+    const file = event.target.files[0];
+    if (!file) {
+        alert(alertMsgNotComplete);
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const contents = e.target.result;
+        try {
+            const loadedState = JSON.parse(contents);
+            gameData = JSON.parse(loadedState);
+            gameData.currDate = new Date(gameData.currDate); // 把存储的String转换回Date
+
+            loading(gameData);
+            clearInterval(currentTimer);
+            gamePaused = true;
+        
+            alert(alertMsg);
+        } catch (error) {
+            alert(alertMsgNotComplete);
+        }
+    };
+    reader.readAsText(file);
+}
+
+// 读取数据共用的部分
+function loading(gameData) {
+    $(".can-hide").addClass('hidden');
+        for (let tag in gameData.removeHidden) { // 隐藏和去除隐藏哪些tag
+            $(tag).removeClass('hidden');
+        }
+        for (let icon in gameData.iconStore) { // 写入存储的图标
+            $(icon).html( gameData.iconStore[icon] );
+        }
+        gameData.workingProperty !== '' ? $(`#${gameData.workingProperty} [type=checkbox]`).prop('checked', true) : {}; // 根据workingProperty复原勾选盒
+        $('#install-pay [type=checkbox]').prop('checked', gameData.installPay);
+        for (let button in gameData.disabledButton) { // 禁用不能点的按钮，可能会有启用不了的bug？
+            $(button).prop('disabled', true);
+        }
+        // 性别小图标
+        let selfElement = $("#self .icon");
+        if (gameData.currDate.getHours() < 9 ) { // 0-8点
+            selfElement.html( '🛌' );
+        } else if (gameData.currDate.getHours() > 16) { // 17-23点
+            selfElement.html('🛀' );
+        } else {
+            selfElement.html( GIcon[gameData.GIdx] );
+        }
+        let selfGButton = $("#change-gender")
+        selfGButton.html( GTxt[gameData.GIdx] );
+
+        // 直观时间变化
+        if (gameData.currDate.getHours() <= 6) { // 0-6点
+            $('body').removeClass("dawn-mode");
+            $('body').addClass("dark-mode");
+        } else if (gameData.currDate.getHours() <= 9 || gameData.currDate.getHours() > 16) { // 7-9点 & 17-23点
+            $('body').removeClass("dark-mode");
+            $('body').addClass("dawn-mode");
+        } else {
+            $('body').removeClass("dark-mode");
+            $('body').removeClass("dawn-mode");
+        }
+        updateDisplay();
 }
 
 function updateUSDebt() {

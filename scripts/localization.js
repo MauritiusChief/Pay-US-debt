@@ -98,6 +98,10 @@ const translations = {
         "setting-load-not-complete": "存在数据读取失败",
         "setting-reset": "清除数据",
         "setting-reset-alert": "你确定要清除已储存数据吗？",
+        "setting-save-file": "存储至文件",
+        "setting-load-file": "从文件读取",
+        "setting-file-saved": "存储至文件成功！",
+        "setting-file-loaded": "从文件读取成功！",
     },
     "en": {
         "title": "Pay US debt All",
@@ -187,6 +191,10 @@ const translations = {
         "setting-load-not-complete": "Exist data not loaded",
         "setting-reset": "Clear data",
         "setting-reset-alert": "Are you sure you want to clear all data saved?",
+        "setting-save-file": "Save to file",
+        "setting-load-file": "Load from file",
+        "setting-file-saved": "Data saved to file!",
+        "setting-file-loaded": "Data loaded from file!",
     },
 }
 
