@@ -49,12 +49,12 @@ const employData = [
     {
         id: "zombie",
         icon: "🧟",
-        salary: "3,000.00 $ /<span i18n-key=\"mkt-month\">月</span>",
+        salary: employList["employ-zombie"].salary.toLocaleString()+" $ /<span i18n-key=\"mkt-month\">月</span>",
     },
     {
         id: "vampire",
         icon: "🧛",
-        salary: "7,500.00 $ /<span i18n-key=\"mkt-month\">月</span>",
+        salary: employList["employ-vampire"].salary.toLocaleString()+" $ /<span i18n-key=\"mkt-month\">月</span>",
     }
 ];
 const employSource = $("#employ-template").html();
@@ -63,20 +63,28 @@ const employHtml = employTemplate(employData);
 $("#employ-container").html( employHtml );
 
 // 建造模板
+const buildData = [
+    {
+        id: "office",
+        input: buildList["build-office"].constructInput[0]+"~"+buildList["build-office"].constructInput[1],
+        total: buildList["build-office"].constructTotal,
+    }
+];
+const buildSource = $("#build-template").html();
+const buildTemplate = Handlebars.compile(buildSource);
+const buildHtml = buildTemplate(buildData);
+$("#build-container").html( buildHtml );
 
 // 载具展示模板
 const vehicleData = [
     {
-        id: "mini-truck",
-        label: "小货车"
+        id: "mini-truck"
     },
     {
-        id: "semi-truck",
-        label: "半挂车"
+        id: "semi-truck"
     },
     {
-        id: "excavator",
-        label: "挖掘机"
+        id: "excavator"
     }
 ];
 const vehicleSource = $("#vehicle-template").html();

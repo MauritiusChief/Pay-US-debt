@@ -242,9 +242,19 @@ function updateShop() {
             gameData.disabledButton[`#${id}`] = 1;
         }
     }
+    for (let id in shopList) {
+        limitPrice = shopList[id].price;
+        if ( gameData.coinCount >= limitPrice) {
+            $(`#${id}`).prop('disabled', false);
+            delete gameData.disabledButton[`#${id}`];
+        } else {
+            $(`#${id}`).prop('disabled', true);
+            gameData.disabledButton[`#${id}`] = 1;
+        }
+    }
     for (let id in employList) {
-        let correspondEmployee = gameData.employeeList[id.replace("employ-","")];
-        let currentAmount = correspondEmployee ? correspondEmployee.amount : 1;
+        correspondEmployee = gameData.employeeList[id.replace("employ-","")];
+        currentAmount = correspondEmployee ? correspondEmployee.amount : 1;
         limitPrice = employList[id].salary * currentAmount;
         // 限制：至少得发的起所有员工一个月的工资
         if ( gameData.coinCount > limitPrice) {

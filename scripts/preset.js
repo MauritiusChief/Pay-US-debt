@@ -45,8 +45,12 @@ for (let id in marketList) {
     item.installPrice = genDividedPrice(item.price,1.1,item.installMonth,item.step)
 }
 //示例：{id:'buy-mini-truck', price:3500, installPrice:640, installMonth:6, step:10},
+const buildList = {
+    'build-office': {buildOn: 'warehouse', constructInput: [6, 15], constructTotal: 400}
+}
 const shopList = { // 不可分期商品列表
-    'buy-health-elixir': {price:50},
+    'buy-health-elixir': {price:49.99},
+    'buy-laptop': {price:259.99}, // 买了之后解锁产出管理力的能力
 }
 const employList = { // 雇员列表
     'employ-zombie': {salary:3000},
@@ -59,20 +63,63 @@ gameData.propertyList = {};
 gameData.employeeList = {};
 //示例employeeList:{ employee-name': {amount:1, amountWorking:0, maintainStatus:5, maintainDecrChance:0.5} }
 gameData.employeeGStack = {}; // F 代表女，M 代表男
-initialResourceList = {
+let initialResourceList = {
     'transport': {produce: 0, consume: 0, stock: 0, price: 0.5, buy: 1.5},
-    'construct': {produce: 0, consume: 0, stock: 0, price: 1.5, buy: 1.5},
+    'construct': {produce: 0, consume: 0, stock: 0, price: 4.5, buy: 1.5},
     'manage': {produce: 0, consume: 0, stock: 0, price: 7.5, buy: 2.0},
     'gear': {produce: 0, consume: 0, stock: 0, price: 0.56, buy: 1.2},
     'nut-bolt': {produce: 0, consume: 0, stock: 0, price: 0.16, buy: 1.2},
-    'steel': {produce: 0, consume: 0, stock: 0, price: 0.37, buy: 1.2}
+    'steel': {produce: 0, consume: 0, stock: 0, price: 0.37, buy: 1.2},
 };
 gameData.resourceList = initialResourceList;
-initialSelfResourceList = {
+let initialSelfResourceList = {
     'transport': {produce:0},
-    'construct': {produce:0}
+    'construct': {produce:0},
+    'manage': {produce:0},
 };
 gameData.selfResourceList = initialSelfResourceList;
+
+const produceAddMapping = { // 各种资源可由何种资产产出，每个资产产出多少（在有劳动力工作的前提下）
+    'transport': {
+        'semi-truck': 85,
+        'mini-truck': 45,
+        'excavator': 0,
+        'default': 25
+    },
+    'construct': {
+        'excavator': 5,
+        'default': 0
+    },
+    'manage': {
+        'office': 4,
+        'default': 0
+    }
+};
+const consumeAddMapping = {
+    'gear': {
+        'semi-truck': 0.02,
+        'mini-truck': 0.04,
+        'excavator': 0.05,
+        'default': 0
+    },
+    'nut-bolt': {
+        'semi-truck': 0.4,
+        'mini-truck': 0.8,
+        'excavator': 1.0,
+        'default': 0
+    },
+    'manage': { // 共用这个const
+        'zombie': 0.5,
+        'vampire': 1.0,
+        'default': 0
+    }
+}
+const produceMultMapping = {
+    'transport': {
+        'warehouse': 5,
+        'default': 0
+    }
+};
 
 /**根据资产更新资源产出和收入
  * 需要变量：
@@ -87,43 +134,7 @@ gameData.selfResourceList = initialSelfResourceList;
 function updateResource() {
     actuIncomePerH = 0;
     estiIncomePerH = 0;
-    const produceAddMapping = {
-        'transport': {
-            'semi-truck': 85,
-            'mini-truck': 45,
-            'excavator': 0,
-            'default': 25
-        },
-        'construct': {
-            'excavator': 15,
-            'default': 0
-        }
-    };
-    const consumeAddMapping = {
-        'gear': {
-            'semi-truck': 0.02,
-            'mini-truck': 0.04,
-            'excavator': 0.05,
-            'default': 0
-        },
-        'nut-bolt': {
-            'semi-truck': 0.4,
-            'mini-truck': 0.8,
-            'excavator': 1.0,
-            'default': 0
-        },
-        'manage': { // 共用这个const
-            'zombie': 0.5,
-            'vampire': 0.6,
-            'default': 0
-        }
-    }
-    const produceMultMapping = {
-        'transport': {
-            'warehouse': 5,
-            'default': 0
-        }
-    };
+
     // 帮助函数，根据 资源类型 和 资产，决定这个资源类型的产量
     const getProduceValue = (resourceType, propertyName) => { 
         if (produceAddMapping[resourceType] && produceAddMapping[resourceType][propertyName] !== undefined ) {
@@ -145,6 +156,7 @@ function updateResource() {
         }
         return produceMultMapping[resourceType] ? produceMultMapping[resourceType]['default'] : 0;
     };
+
     // 根据当前工作使用的资产处理小人自己的资源产出
     for (let id in gameData.selfResourceList) {
         gameData.selfResourceList[id].produce = getProduceValue(id, gameData.workingProperty);

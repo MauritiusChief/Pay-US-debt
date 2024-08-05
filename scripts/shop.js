@@ -38,6 +38,12 @@ $('#buy-health-elixir').click(() => {
     gameData.coinCount -= shopItem.price;
     gameData.health += 20;
 })
+$('#buy-laptop').click(() => {
+    shopItem = shopList['buy-laptop']
+    gameData.coinCount -= shopItem.price;
+    $('#laptop').removeClass('hidden');
+    gameData.removeHidden['#laptop'] = 1;
+})
 
 $('#employ-zombie').click(() => {
     employEvent('zombie', '🧟‍♀️', '🧟‍♂️');

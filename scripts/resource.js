@@ -1,5 +1,15 @@
 console.log('resource.js')
 
+$('#laptop [type=checkbox]').on('change', () => {
+    thisName = '#laptop [type=checkbox]';
+    if ($(thisName).is(':checked')) { // 此勾选盒勾选的情况
+        $('#model-display [type=checkbox]').not(thisName).prop('checked', false); // 选择所有其他勾选盒，取消勾选
+        gameData.workingProperty = 'laptop'; // 办公了就不能干其他工作
+    } else { // 此勾选盒不勾选的情况
+        gameData.workingProperty = '';
+    }
+})
+
 $('#mini-truck [type=decr]').click(() => {
     changeWorkForce(false, 'mini-truck', 'zombie')
 })
