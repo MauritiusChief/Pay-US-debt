@@ -60,11 +60,12 @@ gameData.employeeList = {};
 //示例employeeList:{ employee-name': {amount:1, amountWorking:0, maintainStatus:5, maintainDecrChance:0.5} }
 gameData.employeeGStack = {}; // F 代表女，M 代表男
 initialResourceList = {
-    'transport': {produce: 0, consume: 0, stock: 0, price: 0.5},
-    'construct': {produce: 0, consume: 0, stock: 0, price: 1.5},
-    'gear': {produce: 0, consume: 0, stock: 0, price: 0.56},
-    'nut-bolt': {produce: 0, consume: 0, stock: 0, price: 0.16},
-    'steel': {produce: 0, consume: 0, stock: 0, price: 0.37}
+    'transport': {produce: 0, consume: 0, stock: 0, price: 0.5, buy: 1.5},
+    'construct': {produce: 0, consume: 0, stock: 0, price: 1.5, buy: 1.5},
+    'manage': {produce: 0, consume: 0, stock: 0, price: 7.5, buy: 2.0},
+    'gear': {produce: 0, consume: 0, stock: 0, price: 0.56, buy: 1.2},
+    'nut-bolt': {produce: 0, consume: 0, stock: 0, price: 0.16, buy: 1.2},
+    'steel': {produce: 0, consume: 0, stock: 0, price: 0.37, buy: 1.2}
 };
 gameData.resourceList = initialResourceList;
 initialSelfResourceList = {
@@ -110,6 +111,11 @@ function updateResource() {
             'mini-truck': 0.8,
             'excavator': 1.0,
             'default': 0
+        },
+        'manage': { // 共用这个const
+            'zombie': 0.5,
+            'vampire': 0.6,
+            'default': 0
         }
     }
     const produceMultMapping = {
@@ -125,7 +131,7 @@ function updateResource() {
         }
         return produceAddMapping[resourceType] ? produceAddMapping[resourceType]['default'] : 0;
     };
-    // 类似的读取资源消耗的函数
+    // 类似的读取资源消耗的函数，也用来读取管理劳动力消耗的管理力
     const getConsumeValue = (resourceType, propertyName) => { 
         if (consumeAddMapping[resourceType] && consumeAddMapping[resourceType][propertyName] !== undefined ) {
             return consumeAddMapping[resourceType][propertyName];
@@ -149,7 +155,7 @@ function updateResource() {
         // 点击生产的资源
         if (gameData.selfResourceList[id] !== undefined) {
             gameData.resourceList[id].produce += gameData.selfResourceList[id].produce * gameData.workStat; // gameData.workStat 0 代表不上班，1代表上班
-            priceMulti = gameData.selfResourceList[id].produce < 0 ? 1.2 : 1.0; // priceMulti 价格乘数 1.2是买时的价格，1.0是卖时的价格
+            priceMulti = gameData.selfResourceList[id].produce < 0 ? gameData.resourceList[id].buy : 1.0; // priceMulti 价格乘数 buy是买时的价格，1.0是卖时的价格
             estiIncomePerH += gameData.selfResourceList[id].produce * gameData.resourceList[id].price * priceMulti;
         }
         // 自动生产的资源
@@ -169,10 +175,16 @@ function updateResource() {
             gameData.resourceList[id].produce += propertyAddProduce*propertyUsed
         }
         gameData.resourceList[id].produce *= (1 + propertyMultProduce/100); // 对资源产量进行百分比加成
+        // 劳动力所消耗的管理力
+        for (empId in gameData.employeeList) {
+            employeeWorking = gameData.employeeList[empId].amountWorking;
+            employeeAddConsume = getConsumeValue(id, empId); // 数值消耗
+            gameData.resourceList[id].consume += employeeAddConsume*employeeWorking
+        }
         // console.log(propertyUsed)
         // 计算总资源
         netProduct = gameData.resourceList[id].produce - gameData.resourceList[id].consume;
-        priceMulti = netProduct < 0 ? 1.2 : 1; // priceMulti 价格乘数 1.2是买时的价格，1.0是卖时的价格
+        priceMulti = netProduct < 0 ? gameData.resourceList[id].buy : 1.0; // priceMulti 价格乘数 buy是买时的价格，1.0是卖时的价格
         actuIncomePerH += (netProduct * gameData.resourceList[id].price * priceMulti); // 此处已将点击生产和自动生产的资源都计入
     }
 }
@@ -284,7 +296,7 @@ function updateDisplay() {
         tableRow.find(".net-produce .produce").html( gameData.resourceList[id].produce.toFixed(2) );
         tableRow.find(".net-produce .consume").html( gameData.resourceList[id].consume.toFixed(2) );
         netProduct = gameData.resourceList[id].produce - gameData.resourceList[id].consume;
-        priceMulti = netProduct < 0 ? 1.2 : 1;
+        priceMulti = netProduct < 0 ? gameData.resourceList[id].buy : 1;
         tableRow.find(".income .num").html( (netProduct*gameData.resourceList[id].price*priceMulti).toFixed(2) );
         tableRow.find(".income .price").html( netProduct < 0 ? -(gameData.resourceList[id].price*priceMulti).toFixed(2).toLocaleString() : gameData.resourceList[id].price.toFixed(2).toLocaleString() );
     }

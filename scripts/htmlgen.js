@@ -62,6 +62,8 @@ const employTemplate = Handlebars.compile(employSource);
 const employHtml = employTemplate(employData);
 $("#employ-container").html( employHtml );
 
+// 建造模板
+
 // 载具展示模板
 const vehicleData = [
     {
@@ -120,6 +122,11 @@ const tableData = [
         id: "construct",
         icon: "🚧",
         unit: "㎡"
+    },
+    {
+        id: "manage",
+        icon: "📋",
+        unit: "<span i18n-key=\"reso-labor\">人</span>"
     },
     {
         id: "gear",
