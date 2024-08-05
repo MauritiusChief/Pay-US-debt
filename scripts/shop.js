@@ -141,7 +141,8 @@ function employEvent(empId, iconF, iconM) {
         gameData.employeeList[empId] = {amount: 1, amountWorking: 0, maintainStatus: 5, maintainDecrChance: 0.2};
     }
     gender = Math.random() > 0.5 ? 'F' : 'M';
-    gameData.employeeGStack.push(gender);
+    gameData.employeeGStack[empId] ? {} : gameData.employeeGStack[empId] = [];
+    gameData.employeeGStack[empId].push(gender);
     empIcon = gender === 'F' ? iconF : iconM;
     $(`#${empId} .icon`).html( $(`#${empId} .icon`).html()+empIcon );
     gameData.iconStore[`#${empId} .icon`] = $(`#${empId} .icon`).html();
@@ -173,7 +174,7 @@ function dismissEvent(empId, iconF, iconM) {
         delete gameData.removeHidden[`#${empId}`];
     }
     icon = $(`#${empId} .icon`);
-    iconToDelete = gameData.employeeGStack.pop() === 'F' ? iconF : iconM;
+    iconToDelete = gameData.employeeGStack[empId].pop() === 'F' ? iconF : iconM;
     // 以下四行是为了实现删除最后一个emoji而不是第一个emoji的效果
     reversedHtml = icon.html().split('').reverse().join('');
     revIconToDelete = iconToDelete.split('').reverse().join('');

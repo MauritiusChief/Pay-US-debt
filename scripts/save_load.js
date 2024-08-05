@@ -43,7 +43,7 @@ function resetGame() {
         gameData.installmentList = {};
         gameData.propertyList = {};
         gameData.employeeList = {};
-        gameData.employeeGStack = []; // F 代表女，M 代表男
+        gameData.employeeGStack = {}; // F 代表女，M 代表男
         gameData.resourceList = initialResourceList;
         gameData.selfResourceList = initialSelfResourceList;
 

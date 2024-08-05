@@ -58,7 +58,7 @@ gameData.propertyList = {};
 //示例propertyList:{ 'property-name': {amount:1, amountUsed:0, maintainStatus:5, maintainDecrChance:0.5} }
 gameData.employeeList = {};
 //示例employeeList:{ employee-name': {amount:1, amountWorking:0, maintainStatus:5, maintainDecrChance:0.5} }
-gameData.employeeGStack = []; // F 代表女，M 代表男
+gameData.employeeGStack = {}; // F 代表女，M 代表男
 initialResourceList = {
     'transport': {produce: 0, consume: 0, stock: 0, price: 0.5},
     'construct': {produce: 0, consume: 0, stock: 0, price: 1.5},
