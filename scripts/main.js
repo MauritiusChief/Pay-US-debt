@@ -217,8 +217,9 @@ $('#game-save-file').click(() => {
     saveGameFile()
 });
 $('#game-load-file').click(() => {
-    loadGameFile()
+    $('#fileInput').click();
 });
+$('#fileInput').on('change', loadGameFile);
 
 
 

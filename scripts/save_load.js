@@ -89,15 +89,17 @@ function loadGameFile(event) {
     const file = event.target.files[0];
     if (!file) {
         alert(alertMsgNotComplete);
+        console.log("file："+file)
         return;
     }
 
     const reader = new FileReader();
     reader.onload = function(e) {
         const contents = e.target.result;
+        // console.log(contents)
         try {
-            const loadedState = JSON.parse(contents);
-            gameData = JSON.parse(loadedState);
+            gameData = JSON.parse(contents);
+            // console.log(gameData)
             gameData.currDate = new Date(gameData.currDate); // 把存储的String转换回Date
 
             loading(gameData);
@@ -107,6 +109,7 @@ function loadGameFile(event) {
             alert(alertMsg);
         } catch (error) {
             alert(alertMsgNotComplete);
+            // console.error(error)
         }
     };
     reader.readAsText(file);
@@ -182,7 +185,7 @@ function updateUSDebt() {
         processData(totalDebt, acquireDateRec);
     })
     .catch(error => {
-        console.error('获取美债数据出错:', error);
+        console.warn('获取美债数据出错:', error);
         console.log('使用预制数据');
         processData(presetTotalDebt, presetAcquireDateRec);
     });
