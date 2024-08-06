@@ -41,10 +41,13 @@ $('#buy-health-elixir').click(() => {
 $('#buy-laptop').click(() => {
     shopItem = shopList['buy-laptop']
     gameData.coinCount -= shopItem.price;
+    gameData.propertyList['laptop'] = {amount: 1, amountUsed: 0, maintainStatus: 5, maintainDecrChance: 0.2};
     $('#laptop').removeClass('hidden');
     $("#manage").removeClass("hidden");
     gameData.removeHidden["#manage"] = 1;
     gameData.removeHidden['#laptop'] = 1;
+    $('#buy-laptop').addClass('hidden');
+    delete gameData.removeHidden['#buy-laptop'];
 })
 
 $('#employ-zombie').click(() => {

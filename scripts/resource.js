@@ -51,7 +51,8 @@ function changeWorkForce(increaseWorkForce, propertyName, workForceName) {
             employeeItem.amountWorking++;
         }
     } else { // 减少劳动力
-        if (propertyItem.amountUsed > 0 && employeeItem.amountWorking > 0) { // 注意：小人自己使用会让propertyItem.amountUsed +1
+        amountUsedLimit = propertyName === gameData.workingProperty ? 1 : 0 ;
+        if (propertyItem.amountUsed > amountUsedLimit && employeeItem.amountWorking > 0) {
             propertyItem.amountUsed--;
             employeeItem.amountWorking--;
         }
@@ -83,10 +84,9 @@ function checkBoxEvent(propertyName) {
 
         $('#model-display [type=checkbox]').not(thisName).prop('checked', false); // 选择所有其他勾选盒，取消勾选
         // console.log(gameData.workingProperty)
-        if ( propertyName == 'laptop' || // 单独给laptop更新用
-            gameData.propertyList[propertyName].amount > gameData.propertyList[propertyName].amountUsed) { // 确保有空余资产给小人自己用
-            // 根据尚未被改变的gameData.workingProperty，判断上一个被使用的资产是什么
-            if (gameData.propertyList[gameData.workingProperty] !== undefined) gameData.propertyList[gameData.workingProperty].amountUsed--;
+        // 根据尚未被改变的gameData.workingProperty，判断上一个被使用的资产是什么
+        if (gameData.propertyList[gameData.workingProperty] !== undefined) gameData.propertyList[gameData.workingProperty].amountUsed--;
+        if ( gameData.propertyList[propertyName].amount > gameData.propertyList[propertyName].amountUsed) { // 确保有空余资产给小人自己用
             if (gameData.propertyList[propertyName] !== undefined) gameData.propertyList[propertyName].amountUsed++;
             gameData.workingProperty = propertyName; // gameData.workingProperty更新
         } else { // 否则取消勾选此勾选盒

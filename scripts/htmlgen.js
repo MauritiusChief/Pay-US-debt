@@ -159,3 +159,6 @@ $("#resource-container").html( tableHtml );
 // 解锁最基础的运力资源
 $("#transport").removeClass('hidden');
 gameData.removeHidden["#transport"] = 1;
+
+$("#buy-laptop").removeClass('hidden');
+gameData.removeHidden["#buy-laptop"] = 1;
