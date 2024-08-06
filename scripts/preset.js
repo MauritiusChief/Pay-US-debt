@@ -49,7 +49,7 @@ const buildList = {
     'build-office': {buildOn: 'warehouse', constructInput: [6, 15], constructTotal: 400}
 }
 const shopList = { // 不可分期商品列表
-    'buy-health-elixir': {price:299.99},
+    'buy-health-elixir': {price:149.99},
     'buy-laptop': {price:259.99}, // 买了之后解锁产出管理力的能力
 }
 const employList = { // 雇员列表
