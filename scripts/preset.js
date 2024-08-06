@@ -84,6 +84,8 @@ const produceAddMapping = { // 各种资源可由何种资产产出，每个资�
         'semi-truck': 85,
         'mini-truck': 45,
         'excavator': 0,
+        'warehouse': 25,
+        'laptop': 0, // 仅个人使用
         'default': 25
     },
     'construct': {
@@ -92,6 +94,7 @@ const produceAddMapping = { // 各种资源可由何种资产产出，每个资�
     },
     'manage': {
         'office': 4,
+        'laptop': 2, // 仅个人使用
         'default': 0
     }
 };
@@ -217,6 +220,9 @@ function updateDisplayJob() {
         case 'excavator':
             currentJobKey = "click-job-excavator-operator";
             break;
+        case 'laptop':
+            currentJobKey = "click-job-self-employ-manager";
+            break;
         default:
             currentJobKey = "click-job-porter";
             break;
@@ -231,7 +237,7 @@ function updateDisplay() {
     $('#coin-count').text( `${gameData.coinCount.toFixed(2).toLocaleString()} $` );
     $('#coin-per-hour').text( `${actuIncomePerH.toFixed(2).toLocaleString()} $` );
     $('#coins-per-click').text( `${estiIncomePerH.toLocaleString()} $` );
-    $('#goal-remain').text( `${(gameData.goal - gameData.coinCount)>0 ? (gameData.goal - gameData.coinCount).toLocaleString() : 0} $` );
+    $('#goal-remain').text( `${(gameData.goal - gameData.coinCount)>0 ? (gameData.goal - gameData.coinCount).toFixed(2).toLocaleString() : 0} $` );
     $('#current-date').html( `${gameData.currDate.getFullYear()}-${(gameData.currDate.getMonth()+1).toString().padStart(2, '0')}-${gameData.currDate.getDate().toString().padStart(2, '0')};  ${genClockIcon(gameData.currDate.getHours())}${gameData.currDate.getHours()}<span i18n-key="o-clock"></span>` );
     $('#health').text( Math.round(gameData.health*100)/100 ); // 避免 1.099999999 这样的数字出现
 

@@ -42,6 +42,8 @@ $('#buy-laptop').click(() => {
     shopItem = shopList['buy-laptop']
     gameData.coinCount -= shopItem.price;
     $('#laptop').removeClass('hidden');
+    $("#manage").removeClass("hidden");
+    gameData.removeHidden["#manage"] = 1;
     gameData.removeHidden['#laptop'] = 1;
 })
 

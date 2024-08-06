@@ -37,6 +37,15 @@ $('#excavator [type=incr]').click(() => {
 $('#excavator [type=checkbox]').on('change', () => {
     checkBoxEvent('excavator');
 })
+$('#warehouse [type=decr]').click(() => {
+    changeWorkForce(false, 'warehouse', 'zombie')
+})
+$('#warehouse [type=incr]').click(() => {
+    changeWorkForce(true, 'warehouse', 'zombie')
+})
+$('#warehouse [type=checkbox]').on('change', () => {
+    checkBoxEvent('warehouse');
+})
 
 // 修改劳动力数量
 function changeWorkForce(increaseWorkForce, propertyName, workForceName) {

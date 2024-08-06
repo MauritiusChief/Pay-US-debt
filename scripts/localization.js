@@ -36,6 +36,7 @@ const translations = {
         "click-job-semi-truck-driver": "半挂车司机",
         "click-job-excavator-operator": "挖掘机操作员",
         "click-job-porter": "搬运工",
+        "click-job-self-employ-manager": "个体户老板",
 
         "market": "市场",
         "installment": "分期付款",
@@ -139,6 +140,7 @@ const translations = {
         "click-job-semi-truck-driver": "Semi-trailer Truck Driver",
         "click-job-excavator-operator": "Excavator Operator",
         "click-job-porter": "Porter",
+        "click-job-self-employ-manager": "Self-Employ Manager",
 
         "market": "Market",
         "installment": "installment",
