@@ -87,7 +87,8 @@ function checkBoxEvent(propertyName) {
     thisName = `#${propertyName} [type=checkbox]`;
     if ($(thisName).is(':checked')) { // 此勾选盒勾选的情况
         $('#model-display [type=checkbox]').not(thisName).prop('checked', false); // 选择所有其他勾选盒，取消勾选
-        if (gameData.propertyList[propertyName].amount > gameData.propertyList[propertyName].amountUsed) { // 确保有空余资产给小人自己用
+        if ( gameData.workingProperty == 'laptop' || // 单独给laptop更新用
+            gameData.propertyList[propertyName].amount > gameData.propertyList[propertyName].amountUsed) { // 确保有空余资产给小人自己用
             // 根据尚未被改变的gameData.workingProperty，判断上一个被使用的资产是什么
             if (gameData.propertyList[gameData.workingProperty] !== undefined) {
                 gameData.propertyList[gameData.workingProperty].amountUsed--;
