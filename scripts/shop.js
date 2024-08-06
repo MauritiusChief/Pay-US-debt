@@ -54,7 +54,9 @@ $('#employ-zombie').click(() => {
     employEvent('zombie', '🧟‍♀️', '🧟‍♂️');
     $('.use-worker').removeClass('hidden');
     $("#manage").removeClass("hidden");
+    $("#buy-laptop").removeClass('hidden');
     gameData.removeHidden["#manage"] = 1;
+    gameData.removeHidden["#buy-laptop"] = 1;
     gameData.removeHidden[".use-worker"] = 1;
 })
 $('#dismiss-zombie').click(() => {
@@ -64,7 +66,9 @@ $('#employ-vampire').click(() => {
     employEvent('vampire', '🧛‍♀️', '🧛‍♂️');
     $('.use-worker').removeClass('hidden');
     $("#manage").removeClass("hidden");
+    $("#buy-laptop").removeClass('hidden');
     gameData.removeHidden["#manage"] = 1;
+    gameData.removeHidden["#buy-laptop"] = 1;
     gameData.removeHidden[".use-worker"] = 1;
 })
 $('#dismiss-vampire').click(() => {
