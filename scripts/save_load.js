@@ -153,31 +153,37 @@ function loading(gameData) {
 }
 
 function updateUSDebt() {
+    const presetTotalDebt = "35001278179208.67";
+    const presetAcquireDateRec = '2024-07-26';
+
+    // 处理数据的函数
+    function processData(totalDebt, acquireDateRec) {
+        gameData.goal = parseFloat(totalDebt);
+        $('#goal').text(gameData.goal.toLocaleString() + " $");
+        $('#goal-remain').text((gameData.goal - gameData.coinCount).toLocaleString() + " $");
+        $('#goal-date').text(acquireDateRec);
+        let acquireDateArray = acquireDateRec.split("-");
+        acquireDateArray[1] = parseInt(acquireDateArray[1]) - 1; // 月份问题
+        let acquireDate = new Date(...acquireDateArray);
+        acquireDate.setHours(9);
+        if (acquireDate.getTime() > gameData.currDate.getTime()) {
+            gameData.currDate = acquireDate;
+            $('#current-date').html(`${acquireDate.getFullYear()}-${(acquireDate.getMonth() + 1).toString().padStart(2, '0')}-${acquireDate.getDate().toString().padStart(2, '0')};  ${genClockIcon(acquireDate.getHours())}${acquireDate.getHours()}<span i18n-key="o-clock"></span>`);
+            $("[i18n-key]").each(translateElement);
+        }
+    }
+
     // Fetch the current national debt
     fetch('https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny?sort=-record_date&format=json&page[number]=1&page[size]=1')
     .then(response => response.json())
     .then(data => {
         const totalDebt = data.data[0].tot_pub_debt_out_amt;
         const acquireDateRec = data.data[0].record_date
-        gameData.goal = parseFloat(totalDebt);
-        $('#goal').text( gameData.goal.toLocaleString() + " $" );
-        $('#goal-remain').text( (gameData.goal - gameData.coinCount).toLocaleString() + " $" );
-        $('#goal-date').text( acquireDateRec );
-        let acquireDateArray = acquireDateRec.split("-");
-        acquireDateArray[1] = parseInt(acquireDateArray[1])-1; //月份问题
-        let acquireDate = new Date(...acquireDateArray);
-        acquireDate.setHours(9);
-        // console.log(acquireDate)
-        // console.log(gameData.currDate)
-        if (acquireDate.getTime() > gameData.currDate.getTime()) {
-            gameData.currDate = acquireDate;
-            $('#current-date').html( `${acquireDate.getFullYear()}-${(acquireDate.getMonth()+1).toString().padStart(2, '0')}-${acquireDate.getDate().toString().padStart(2, '0')};  ${genClockIcon(acquireDate.getHours())}${acquireDate.getHours()}<span i18n-key="o-clock"></span>` );
-            $("[i18n-key]").each(translateElement);
-        }
+        processData(totalDebt, acquireDateRec);
     })
     .catch(error => {
         console.error('获取美债数据出错:', error);
-        $('#goal').text( '数据获取失败' );
-        $('#goal-date').text( '数据获取失败' );
+        console.log('使用预制数据');
+        processData(presetTotalDebt, presetAcquireDateRec);
     });
 }
