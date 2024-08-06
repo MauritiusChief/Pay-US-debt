@@ -94,7 +94,7 @@ const translations = {
         "notice": "通知",
 
         "build": "建造",
-        "build-construct-input": "最低&最大投入 ",
+        "build-construct-input": "建造力投入 ",
         "build-construct-total": "建筑面积 ",
         "build-cancel": "取消建造",
         "build-office": "办公室",
@@ -198,7 +198,7 @@ const translations = {
         "notice": "Notice",
 
         "build": "Building",
-        "build-construct-input": "Min & Max input ",
+        "build-construct-input": "Construction input ",
         "build-construct-total": "Building area ",
         "build-cancel": "Cancel building",
         "build-office": " office",
