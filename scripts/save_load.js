@@ -70,10 +70,15 @@ function saveGameFile() {
 
     const json = JSON.stringify(gameData, null, 2);
     const blob = new Blob([json], {type: 'application/json'});
+
+    const now = new Date();
+    const timestamp = now.toISOString().replace(/[:.]/g, '-'); // Format timestamp to be safe for filenames
+    const filename = `gameData_${timestamp}.json`;
+
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'gameData.json';
+    a.download = filename;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
