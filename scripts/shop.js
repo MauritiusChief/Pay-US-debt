@@ -37,6 +37,7 @@ $('#buy-health-elixir').click(() => {
     shopItem = shopList['buy-health-elixir']
     gameData.coinCount -= shopItem.price;
     gameData.health += 20;
+    updateDisplay();
 })
 $('#buy-laptop').click(() => {
     shopItem = shopList['buy-laptop']
@@ -46,8 +47,8 @@ $('#buy-laptop').click(() => {
     $("#manage").removeClass("hidden");
     gameData.removeHidden["#manage"] = 1;
     gameData.removeHidden['#laptop'] = 1;
-    $('#buy-laptop').addClass('hidden');
-    delete gameData.removeHidden['#buy-laptop'];
+    $('#buy-laptop').prop('disabled', true);
+    gameData.disabledButton['#buy-laptop'] = 1;
 })
 
 $('#employ-zombie').click(() => {
