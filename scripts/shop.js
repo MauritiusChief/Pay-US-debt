@@ -47,18 +47,20 @@ $('#buy-laptop').click(() => {
     $("#manage").removeClass("hidden");
     gameData.removeHidden["#manage"] = 1;
     gameData.removeHidden['#laptop'] = 1;
-    $('#buy-laptop').prop('disabled', true);
-    gameData.disabledButton['#buy-laptop'] = 1;
+    $("#buy-laptop").addClass('hidden');
+    delete gameData.removeHidden["#buy-laptop"];
 })
 
 $('#employ-zombie').click(() => {
     employEvent('zombie', '🧟‍♀️', '🧟‍♂️');
     $('.use-worker').removeClass('hidden');
     $("#manage").removeClass("hidden");
-    $("#buy-laptop").removeClass('hidden');
     gameData.removeHidden["#manage"] = 1;
-    gameData.removeHidden["#buy-laptop"] = 1;
     gameData.removeHidden[".use-worker"] = 1;
+    if (gameData.propertyList['laptop'] === undefined) {
+        $("#buy-laptop").removeClass('hidden');
+        gameData.removeHidden["#buy-laptop"] = 1;
+    }
 })
 $('#dismiss-zombie').click(() => {
     dismissEvent('zombie', '🧟‍♀️', '🧟‍♂️');
@@ -67,10 +69,12 @@ $('#employ-vampire').click(() => {
     employEvent('vampire', '🧛‍♀️', '🧛‍♂️');
     $('.use-worker').removeClass('hidden');
     $("#manage").removeClass("hidden");
-    $("#buy-laptop").removeClass('hidden');
     gameData.removeHidden["#manage"] = 1;
-    gameData.removeHidden["#buy-laptop"] = 1;
     gameData.removeHidden[".use-worker"] = 1;
+    if (gameData.propertyList['laptop'] === undefined) {
+        $("#buy-laptop").removeClass('hidden');
+        gameData.removeHidden["#buy-laptop"] = 1;
+    }
 })
 $('#dismiss-vampire').click(() => {
     dismissEvent('vampire', '🧛‍♀️', '🧛‍♂️');
