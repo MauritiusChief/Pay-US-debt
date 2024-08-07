@@ -66,6 +66,7 @@
 
             <div id="vehicle-container"></div><!-- 资产列表 -->
             <div id="field-container"></div><!-- 地产列表 -->
+            <div id="building-container"></div><!-- 建筑列表 -->
 
             <h2 i18n-key="resource">资源</h2>
             <div id="resource-container"></div><!-- 资源列表 -->
@@ -162,6 +163,25 @@
                     <span i18n-key="mkt-pay-ctd"></span><span class="pay-count-down"></span><span i18n-key="mkt-day"></span>
                 </div>
                 <span class="icon"></span><span class="tooltiptext"><span i18n-key="mkt-{{id}}">地产名称占位</span></span><br>
+                <span class="work-force use-worker can-hide hidden">
+                    <button type="decr">-</button>
+                    <span class="work-force-input">0</span>/<span class="work-force-limit">0</span>
+                    <button type="incr">+</button>
+                </span>
+                <span class="work-here"><input type="checkbox"><span i18n-key="mkt-{{id}}-prompt">在此工作占位</span></span>
+            </p></div>
+        {{/each}}
+    </script>
+    <!-- 建筑 展示模板 -->
+    <script id="building-template" type="text/x-handlebars-template">
+        {{#each this}}
+            <div id="{{id}}" class="hastooltip can-hide hidden"><p>
+                <div id="construct-{{id}}" class="can-hide hidden">
+                    <span i18n-key="build-construct-input">建造力投入 </span><span class="build-construct-input"></span><span>㎡</span><br>
+                    <span i18n-key="build-construct-done">已建筑面积 </span><span class="build-construct-done"></span><span>㎡ / </span>
+                    <span class="build-construct-total"></span>㎡
+                </div>
+                <span class="icon"></span><span class="tooltiptext"><span i18n-key="mkt-{{id}}">建筑名称占位</span></span><br>
                 <span class="work-force use-worker can-hide hidden">
                     <button type="decr">-</button>
                     <span class="work-force-input">0</span>/<span class="work-force-limit">0</span>

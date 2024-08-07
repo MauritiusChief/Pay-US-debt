@@ -103,6 +103,17 @@ const fieldTemplate = Handlebars.compile(fieldSource);
 const fieldHtml = fieldTemplate(fieldData);
 $("#field-container").html( fieldHtml );
 
+// 建筑展示模板
+const buildingData = [
+    {
+        id: "office"
+    }
+];
+const buildingSource = $("#building-template").html();
+const buildingTemplate = Handlebars.compile(buildingSource);
+const buildingHtml = buildingTemplate(buildingData);
+$("#building-container").html( buildingHtml );
+
 // 劳动力展示模板
 const workForceData = [
     {

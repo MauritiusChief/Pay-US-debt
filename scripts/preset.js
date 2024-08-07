@@ -56,12 +56,14 @@ const employList = { // 雇员列表
     'employ-zombie': {salary:3000},
     'employ-vampire': {salary:7500}
 }
-gameData.installmentList = {};
+gameData.installmentList = {}; // 记录分期付款信息，注：正在分期付款时视为拥有
 //示例installmentList:{ 'property-name': {icon:'🎈', installPrice:10, installMonth:6, payCountDown:30} }
 gameData.propertyList = {};
 //示例propertyList:{ 'property-name': {amount:1, amountUsed:0, maintainStatus:5, maintainDecrChance:0.5} }
 gameData.employeeList = {};
 //示例employeeList:{ employee-name': {amount:1, amountWorking:0, maintainStatus:5, maintainDecrChance:0.5} }
+gameData.constructList = {}; // 记录建造信息，注：正在建造时 不视为拥有
+//示例constructList:{ 'building-name': {icon:'🎈', installPrice:10, installMonth:6, payCountDown:30} }
 gameData.employeeGStack = {}; // F 代表女，M 代表男
 let initialResourceList = {
     'transport': {produce: 0, consume: 0, stock: 0, price: 0.5, buy: 1.5},
