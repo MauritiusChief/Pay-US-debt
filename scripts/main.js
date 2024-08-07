@@ -287,8 +287,7 @@ function updateDividedPay() {
             // 移除这个资产
             propertyItem = gameData.propertyList[id];
             // 移除这个资产前，先把在此资产工作的劳动力解放
-            changeWorkForce(false, id, 'zombie') // 用的resource.js中的函数
-            // TODO：目前只有僵尸作为劳动力，所以硬编码写死成僵尸
+            $(`#${id} [type=decr]`).click(); // 模拟点击减少劳动力的按钮
             if (propertyItem.amount > 1) { // 资产数量-1
                 propertyItem.amount--;
             } else { // 资产数量不足1，直接移除
