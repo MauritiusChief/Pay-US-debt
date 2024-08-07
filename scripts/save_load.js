@@ -161,7 +161,7 @@ function loading(gameData) {
 }
 
 function updateUSDebt() {
-    const presetTotalDebt = "35001278179208.67";
+    const presetTotalDebt = 35001278179208.67;
     const presetAcquireDateRec = '2024-07-26';
 
     // 处理数据的函数

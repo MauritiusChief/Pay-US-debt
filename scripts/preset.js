@@ -239,7 +239,7 @@ function updateDisplay() {
     $('#coin-count').text( `${gameData.coinCount.toFixed(2).toLocaleString()} $` );
     $('#coin-per-hour').text( `${actuIncomePerH.toFixed(2).toLocaleString()} $` );
     $('#coins-per-click').text( `${estiIncomePerH.toLocaleString()} $` );
-    $('#goal-remain').text( `${(gameData.goal - gameData.coinCount)>0 ? (gameData.goal - gameData.coinCount).toFixed(2).toLocaleString() : 0} $` );
+    $('#goal-remain').text( `${(gameData.goal - gameData.coinCount)>0 ? parseFloat((gameData.goal - gameData.coinCount).toFixed(2)).toLocaleString() : 0} $` );
     $('#current-date').html( `${gameData.currDate.getFullYear()}-${(gameData.currDate.getMonth()+1).toString().padStart(2, '0')}-${gameData.currDate.getDate().toString().padStart(2, '0')};  ${genClockIcon(gameData.currDate.getHours())}${gameData.currDate.getHours()}<span i18n-key="o-clock"></span>` );
     $('#health').text( Math.round(gameData.health*100)/100 ); // 避免 1.099999999 这样的数字出现
 
