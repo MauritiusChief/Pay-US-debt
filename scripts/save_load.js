@@ -181,8 +181,18 @@ function updateUSDebt() {
         }
     }
 
+    // 设置超时时间
+    const fetchWithTimeout = (url, options, timeout = 5000) => {
+        return Promise.race([
+            fetch(url, options),
+            new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('请求超时')), timeout)
+            )
+        ]);
+    };
+
     // Fetch the current national debt
-    fetch('https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny?sort=-record_date&format=json&page[number]=1&page[size]=1')
+    fetchWithTimeout('https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny?sort=-record_date&format=json&page[number]=1&page[size]=1', {}, 5000)
     .then(response => response.json())
     .then(data => {
         const totalDebt = data.data[0].tot_pub_debt_out_amt;
