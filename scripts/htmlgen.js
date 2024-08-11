@@ -4,76 +4,64 @@ console.log('htmlgen.js')
 const buttonVehicleData = [
     {
         id: "mini-truck",
-        price: marketList["buy-mini-truck"].price.toLocaleString()+" $",
-        installment: 
-            marketList["buy-mini-truck"].installPrice.toLocaleString()+" $ * " + 
-            marketList["buy-mini-truck"].installMonth+"<span i18n-key=\"mkt-month\">月</span>"
+        price: marketList["buy-mini-truck"].price.toLocaleString() + " $",
+        installment:
+            marketList["buy-mini-truck"].installPrice.toLocaleString() + " $ * " +
+            marketList["buy-mini-truck"].installMonth + "<span i18n-key=\"mkt-month\">月</span>"
     },
     {
         id: "semi-truck",
-        price: marketList["buy-semi-truck"].price.toLocaleString()+" $",
-        installment: 
-            marketList["buy-semi-truck"].installPrice.toLocaleString()+" $ * " + 
-            marketList["buy-semi-truck"].installMonth+"<span i18n-key=\"mkt-month\">月</span>"
+        price: marketList["buy-semi-truck"].price.toLocaleString() + " $",
+        installment:
+            marketList["buy-semi-truck"].installPrice.toLocaleString() + " $ * " +
+            marketList["buy-semi-truck"].installMonth + "<span i18n-key=\"mkt-month\">月</span>"
     },
     {
         id: "excavator",
-        price: marketList["buy-excavator"].price.toLocaleString()+" $",
-        installment: 
-            marketList["buy-excavator"].installPrice.toLocaleString()+" $ * " + 
-            marketList["buy-excavator"].installMonth+"<span i18n-key=\"mkt-month\">月</span>"
+        price: marketList["buy-excavator"].price.toLocaleString() + " $",
+        installment:
+            marketList["buy-excavator"].installPrice.toLocaleString() + " $ * " +
+            marketList["buy-excavator"].installMonth + "<span i18n-key=\"mkt-month\">月</span>"
     }
 ];
-const buttonVehicleSource = $("#buy-vehicle-template").html();
-const buttonVehicleTemplate = Handlebars.compile(buttonVehicleSource);
-const buttonVehicleHtml = buttonVehicleTemplate(buttonVehicleData);
-$("#buy-vehicle-container").html( buttonVehicleHtml );
+generateHtmlFromTemplate("buy-vehicle", buttonVehicleData);
 
 // 买地产模板
 const buttonFieldData = [
     {
         id: "warehouse",
-        price: marketList["buy-warehouse"].price.toLocaleString()+" $",
-        installment: 
-            marketList["buy-warehouse"].installPrice.toLocaleString()+" $ * " + 
-            marketList["buy-warehouse"].installMonth+"<span i18n-key=\"mkt-month\">月</span>"
+        price: marketList["buy-warehouse"].price.toLocaleString() + " $",
+        installment:
+            marketList["buy-warehouse"].installPrice.toLocaleString() + " $ * " +
+            marketList["buy-warehouse"].installMonth + "<span i18n-key=\"mkt-month\">月</span>"
     }
 ];
-const buttonFieldSource = $("#buy-field-template").html();
-const buttonFieldTemplate = Handlebars.compile(buttonFieldSource);
-const buttonFieldHtml = buttonFieldTemplate(buttonFieldData);
-$("#buy-field-container").html( buttonFieldHtml );
+generateHtmlFromTemplate("buy-field", buttonFieldData);
 
 // 雇佣模板
 const employData = [
     {
         id: "zombie",
         icon: "🧟",
-        salary: employList["employ-zombie"].salary.toLocaleString()+" $ /<span i18n-key=\"mkt-month\">月</span>",
+        salary: employList["employ-zombie"].salary.toLocaleString() + " $ /<span i18n-key=\"mkt-month\">月</span>",
     },
     {
         id: "vampire",
         icon: "🧛",
-        salary: employList["employ-vampire"].salary.toLocaleString()+" $ /<span i18n-key=\"mkt-month\">月</span>",
+        salary: employList["employ-vampire"].salary.toLocaleString() + " $ /<span i18n-key=\"mkt-month\">月</span>",
     }
 ];
-const employSource = $("#employ-template").html();
-const employTemplate = Handlebars.compile(employSource);
-const employHtml = employTemplate(employData);
-$("#employ-container").html( employHtml );
+generateHtmlFromTemplate("employ", employData);
 
 // 建造模板
 const buildData = [
     {
         id: "office",
-        input: buildList["build-office"].constructInput[0]+"~"+buildList["build-office"].constructInput[1],
+        input: buildList["build-office"].constructInput[0] + "~" + buildList["build-office"].constructInput[1],
         total: buildList["build-office"].constructTotal,
     }
 ];
-const buildSource = $("#build-template").html();
-const buildTemplate = Handlebars.compile(buildSource);
-const buildHtml = buildTemplate(buildData);
-$("#build-container").html( buildHtml );
+generateHtmlFromTemplate("build", buildData);
 
 // 载具展示模板
 const vehicleData = [
@@ -87,10 +75,7 @@ const vehicleData = [
         id: "excavator"
     }
 ];
-const vehicleSource = $("#vehicle-template").html();
-const vehicleTemplate = Handlebars.compile(vehicleSource);
-const vehicleHtml = vehicleTemplate(vehicleData);
-$("#vehicle-container").html( vehicleHtml );
+generateHtmlFromTemplate("vehicle", vehicleData);
 
 // 地产展示模板
 const fieldData = [
@@ -98,10 +83,7 @@ const fieldData = [
         id: "warehouse"
     }
 ];
-const fieldSource = $("#field-template").html();
-const fieldTemplate = Handlebars.compile(fieldSource);
-const fieldHtml = fieldTemplate(fieldData);
-$("#field-container").html( fieldHtml );
+generateHtmlFromTemplate("field", fieldData);
 
 // 建筑展示模板
 const buildingData = [
@@ -109,10 +91,7 @@ const buildingData = [
         id: "office"
     }
 ];
-const buildingSource = $("#building-template").html();
-const buildingTemplate = Handlebars.compile(buildingSource);
-const buildingHtml = buildingTemplate(buildingData);
-$("#building-container").html( buildingHtml );
+generateHtmlFromTemplate("building", buildingData);
 
 // 劳动力展示模板
 const workForceData = [
@@ -125,10 +104,7 @@ const workForceData = [
         type: "undead"
     }
 ]
-const workForceSource = $("#work-force-template").html();
-const workForceTemplate = Handlebars.compile(workForceSource);
-const workForceHtml = workForceTemplate(workForceData);
-$("#work-force-container").html( workForceHtml );
+generateHtmlFromTemplate("work-force", workForceData);
 
 // 资源列表模板
 const tableData = [
@@ -163,10 +139,15 @@ const tableData = [
         unit: "kg"
     }
 ];
-const tableSource = $("#resource-template").html();
-const tableTemplate = Handlebars.compile(tableSource);
-const tableHtml = tableTemplate(tableData);
-$("#resource-container").html( tableHtml );
+generateHtmlFromTemplate("resource", tableData);
+
+function generateHtmlFromTemplate(name, data) {
+    const source = $(`#${name}-template`).html();
+    const template = Handlebars.compile(source);
+    const html = template(data);
+    $(`#${name}-container`).html(html);
+}
+
 // 解锁最基础的运力资源
 $("#transport").removeClass('hidden');
 gameData.removeHidden["#transport"] = 1;

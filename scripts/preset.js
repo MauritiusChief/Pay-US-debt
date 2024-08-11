@@ -15,8 +15,8 @@ gameData.workStat = 0; // 上班与否标记，用在资源列表更新中，0�
 let estiIncomePerH = 12.5;
 gameData.workingProperty = ''
 gameData.GIdx = 0
-const GIcon = ['🧍','🧍‍♂️','🧍‍♀️']
-const GTxt = ['?','♂','♀']
+const GIcon = ['🧍', '🧍‍♂️', '🧍‍♀️']
+const GTxt = ['?', '♂', '♀']
 
 // 游戏机制数据
 gameData.goal = 1000000;
@@ -30,31 +30,34 @@ gameData.removeHidden = {};
 gameData.iconStore = {};
 gameData.disabledButton = {};
 
+// 翻译
+let translations = {};
+
 /** 商品及职业列表
  ***************/
 // 加商品和职业可以很方便地在这里加
 const marketList = { // 可分期商品列表（目前包括 载具 和 地产）
-    'buy-mini-truck': {price:genPrice(7190,10700,10), installMonth:12, step:10},
-    'buy-semi-truck': {price:genPrice(138500,183500,100), installMonth:24, step:50},
-    'buy-excavator': {price:genPrice(40000,61000,50), installMonth:12, step:50},
+    'buy-mini-truck': { price: genPrice(7190, 10700, 10), installMonth: 12, step: 10 },
+    'buy-semi-truck': { price: genPrice(138500, 183500, 100), installMonth: 24, step: 50 },
+    'buy-excavator': { price: genPrice(40000, 61000, 50), installMonth: 12, step: 50 },
 
-    'buy-warehouse': {price:genPrice(3000,5000,50), installMonth:3, step:100}
+    'buy-warehouse': { price: genPrice(3000, 5000, 50), installMonth: 3, step: 100 }
 }
 for (let id in marketList) {
     item = marketList[id];
-    item.installPrice = genDividedPrice(item.price,1.1,item.installMonth,item.step)
+    item.installPrice = genDividedPrice(item.price, 1.1, item.installMonth, item.step)
 }
 //示例：{id:'buy-mini-truck', price:3500, installPrice:640, installMonth:6, step:10},
 const buildList = {
-    'build-office': {buildOn: 'warehouse', constructInput: [6, 15], constructTotal: 400}
+    'build-office': { buildOn: 'warehouse', constructInput: [6, 15], constructTotal: 400 }
 }
 const shopList = { // 不可分期商品列表
-    'buy-health-elixir': {price:149.99},
-    'buy-laptop': {price:259.99}, // 买了之后解锁产出管理力的能力
+    'buy-health-elixir': { price: 149.99 },
+    'buy-laptop': { price: 259.99 }, // 买了之后解锁产出管理力的能力
 }
 const employList = { // 雇员列表
-    'employ-zombie': {salary:3000},
-    'employ-vampire': {salary:7500}
+    'employ-zombie': { salary: 3000 },
+    'employ-vampire': { salary: 7500 }
 }
 gameData.installmentList = {}; // 记录分期付款信息，注：正在分期付款时视为拥有
 //示例installmentList:{ 'property-name': {icon:'🎈', installPrice:10, installMonth:6, payCountDown:30} }
@@ -66,18 +69,18 @@ gameData.constructList = {}; // 记录建造信息，注：正在建造时 不�
 //示例constructList:{ 'building-name': {icon:'🎈', installPrice:10, installMonth:6, payCountDown:30} }
 gameData.employeeGStack = {}; // F 代表女，M 代表男
 let initialResourceList = {
-    'transport': {produce: 0, consume: 0, stock: 0, price: 0.5, buy: 1.5},
-    'construct': {produce: 0, consume: 0, stock: 0, price: 4.5, buy: 1.5},
-    'manage': {produce: 0, consume: 0, stock: 0, price: 7.5, buy: 2.0},
-    'gear': {produce: 0, consume: 0, stock: 0, price: 0.56, buy: 1.2},
-    'nut-bolt': {produce: 0, consume: 0, stock: 0, price: 0.16, buy: 1.2},
-    'steel': {produce: 0, consume: 0, stock: 0, price: 0.37, buy: 1.2},
+    'transport': { produce: 0, consume: 0, stock: 0, price: 0.5, buy: 1.5 },
+    'construct': { produce: 0, consume: 0, stock: 0, price: 4.5, buy: 1.5 },
+    'manage': { produce: 0, consume: 0, stock: 0, price: 7.5, buy: 2.0 },
+    'gear': { produce: 0, consume: 0, stock: 0, price: 0.56, buy: 1.2 },
+    'nut-bolt': { produce: 0, consume: 0, stock: 0, price: 0.16, buy: 1.2 },
+    'steel': { produce: 0, consume: 0, stock: 0, price: 0.37, buy: 1.2 },
 };
 gameData.resourceList = initialResourceList;
 let initialSelfResourceList = {
-    'transport': {produce:0},
-    'construct': {produce:0},
-    'manage': {produce:0},
+    'transport': { produce: 0 },
+    'construct': { produce: 0 },
+    'manage': { produce: 0 },
 };
 gameData.selfResourceList = initialSelfResourceList;
 
@@ -141,22 +144,22 @@ function updateResource() {
     estiIncomePerH = 0;
 
     // 帮助函数，根据 资源类型 和 资产，决定这个资源类型的产量
-    const getProduceValue = (resourceType, propertyName) => { 
-        if (produceAddMapping[resourceType] && produceAddMapping[resourceType][propertyName] !== undefined ) {
+    const getProduceValue = (resourceType, propertyName) => {
+        if (produceAddMapping[resourceType] && produceAddMapping[resourceType][propertyName] !== undefined) {
             return produceAddMapping[resourceType][propertyName];
         }
         return produceAddMapping[resourceType] ? produceAddMapping[resourceType]['default'] : 0;
     };
     // 类似的读取资源消耗的函数，也用来读取管理劳动力消耗的管理力
-    const getConsumeValue = (resourceType, propertyName) => { 
-        if (consumeAddMapping[resourceType] && consumeAddMapping[resourceType][propertyName] !== undefined ) {
+    const getConsumeValue = (resourceType, propertyName) => {
+        if (consumeAddMapping[resourceType] && consumeAddMapping[resourceType][propertyName] !== undefined) {
             return consumeAddMapping[resourceType][propertyName];
         }
         return consumeAddMapping[resourceType] ? consumeAddMapping[resourceType]['default'] : 0;
     };
     // 百分比加成函数
-    const getProduceMultipe = (resourceType, propertyName) => { 
-        if (produceMultMapping[resourceType] && produceMultMapping[resourceType][propertyName] !== undefined ) {
+    const getProduceMultipe = (resourceType, propertyName) => {
+        if (produceMultMapping[resourceType] && produceMultMapping[resourceType][propertyName] !== undefined) {
             return produceMultMapping[resourceType][propertyName];
         }
         return produceMultMapping[resourceType] ? produceMultMapping[resourceType]['default'] : 0;
@@ -185,18 +188,18 @@ function updateResource() {
             propertyAddConsume = getConsumeValue(id, propId); // 数值消耗
             propertyMultProduce += getProduceMultipe(id, propId) * propertyAmount; // 百分比加成
 
-            gameData.resourceList[id].consume += propertyAddConsume*propertyUsed // 此处故意不减去小人自己使用的资产
+            gameData.resourceList[id].consume += propertyAddConsume * propertyUsed // 此处故意不减去小人自己使用的资产
             if (propId === gameData.workingProperty) {// 减去小人自己使用的资产
                 propertyUsed--;
             }
-            gameData.resourceList[id].produce += propertyAddProduce*propertyUsed
+            gameData.resourceList[id].produce += propertyAddProduce * propertyUsed
         }
-        gameData.resourceList[id].produce *= (1 + propertyMultProduce/100); // 对资源产量进行百分比加成
+        gameData.resourceList[id].produce *= (1 + propertyMultProduce / 100); // 对资源产量进行百分比加成
         // 劳动力所消耗的管理力
         for (empId in gameData.employeeList) {
             employeeWorking = gameData.employeeList[empId].amountWorking;
             employeeAddConsume = getConsumeValue(id, empId); // 数值消耗
-            gameData.resourceList[id].consume += employeeAddConsume*employeeWorking
+            gameData.resourceList[id].consume += employeeAddConsume * employeeWorking
         }
         // console.log(propertyUsed)
         // 计算总资源
@@ -229,19 +232,19 @@ function updateDisplayJob() {
             currentJobKey = "click-job-porter";
             break;
     }
-    $('#current-job').attr("i18n-key", currentJobKey );
+    $('#current-job').attr("i18n-key", currentJobKey);
 }
 
 /** 更新显示（不是所有显示都在此更新）
  *********************************/
 function updateDisplay() {
     // 基本文本更新
-    $('#coin-count').text( `${gameData.coinCount.toFixed(2).toLocaleString()} $` );
-    $('#coin-per-hour').text( `${actuIncomePerH.toFixed(2).toLocaleString()} $` );
-    $('#coins-per-click').text( `${estiIncomePerH.toLocaleString()} $` );
-    $('#goal-remain').text( `${(gameData.goal - gameData.coinCount)>0 ? parseFloat((gameData.goal - gameData.coinCount).toFixed(2)).toLocaleString() : 0} $` );
-    $('#current-date').html( `${gameData.currDate.getFullYear()}-${(gameData.currDate.getMonth()+1).toString().padStart(2, '0')}-${gameData.currDate.getDate().toString().padStart(2, '0')};  ${genClockIcon(gameData.currDate.getHours())}${gameData.currDate.getHours()}<span i18n-key="o-clock"></span>` );
-    $('#health').text( Math.round(gameData.health*100)/100 ); // 避免 1.099999999 这样的数字出现
+    $('#coin-count').text(`${gameData.coinCount.toFixed(2).toLocaleString()} $`);
+    $('#coin-per-hour').text(`${actuIncomePerH.toFixed(2).toLocaleString()} $`);
+    $('#coins-per-click').text(`${estiIncomePerH.toLocaleString()} $`);
+    $('#goal-remain').text(`${(gameData.goal - gameData.coinCount) > 0 ? parseFloat((gameData.goal - gameData.coinCount).toFixed(2)).toLocaleString() : 0} $`);
+    $('#current-date').html(`${gameData.currDate.getFullYear()}-${(gameData.currDate.getMonth() + 1).toString().padStart(2, '0')}-${gameData.currDate.getDate().toString().padStart(2, '0')};  ${genClockIcon(gameData.currDate.getHours())}${gameData.currDate.getHours()}<span i18n-key="o-clock"></span>`);
+    $('#health').text(Math.round(gameData.health * 100) / 100); // 避免 1.099999999 这样的数字出现
 
     /**健康值相关的图标跟新
      * 需要变量：
@@ -253,17 +256,17 @@ function updateDisplay() {
     if (gameData.health >= 0) {
         medicinElement.addClass('hidden');
         delete gameData.removeHidden["#buy-health-elixir"];
-        if (gameData.currDate.getHours() < 9 && gameData.workStat == 0 ) { // 0-8点
-            selfElement.html( '🛌' );
+        if (gameData.currDate.getHours() < 9 && gameData.workStat == 0) { // 0-8点
+            selfElement.html('🛌');
         } else if (gameData.currDate.getHours() > 16 && gameData.workStat == 0) { // 17-23点
-            selfElement.html('🛀' );
+            selfElement.html('🛀');
         } else {
-            selfElement.html( GIcon[gameData.GIdx] );
+            selfElement.html(GIcon[gameData.GIdx]);
         }
     } else {
         medicinElement.removeClass('hidden');
         gameData.removeHidden["#buy-health-elixir"] = 1;
-        selfElement.html( '🚑' );
+        selfElement.html('🚑');
     }
 
     /**根据资产列表以及分期付款列表，更新分期付款文本的剩余分期月、剩余还款倒计时天数等
@@ -275,20 +278,20 @@ function updateDisplay() {
     for (let id in gameData.propertyList) {
         // 分期付款期间 以及 偿清贷款 的情况
         installmentItem = gameData.installmentList[id];
-        if ( installmentItem !== undefined ) { // 已有分期付款，只需更新数字
+        if (installmentItem !== undefined) { // 已有分期付款，只需更新数字
             // console.log('已有分期付款，只需更新数字')
             currDividedMonth = $(`#${id} .install-month`);
-            currDividedMonth.text( installmentItem.installMonth );
+            currDividedMonth.text(installmentItem.installMonth);
             currPayCountDown = $(`#${id} .pay-count-down`);
-            currPayCountDown.text( installmentItem.payCountDown );
-        } else if ( $(`#${id}:has(.install-month)`).length > 0 ) { // 没有分期付款，去掉分期付款显示（注意：这部分如果到期不还款资产被收回则不会执行）
+            currPayCountDown.text(installmentItem.payCountDown);
+        } else if ($(`#${id}:has(.install-month)`).length > 0) { // 没有分期付款，去掉分期付款显示（注意：这部分如果到期不还款资产被收回则不会执行）
             $(`#install-${id}`).addClass('hidden')
             delete gameData.removeHidden[`#install-${id}`];
         } // 到期不还款的情况在 updateDividedPay()
 
         // 更新劳动力分配面板
-        $(`#${id} .work-force-limit`).text( gameData.propertyList[id].amount );
-        $(`#${id} .work-force-input`).text( gameData.propertyList[id].amountUsed );
+        $(`#${id} .work-force-limit`).text(gameData.propertyList[id].amount);
+        $(`#${id} .work-force-input`).text(gameData.propertyList[id].amountUsed);
         // console.log(gameData.propertyList[id].amountUsed)
     }
 
@@ -297,9 +300,9 @@ function updateDisplay() {
 
     installTag = $('.buy-or-install');
     if (!gameData.installPay) {
-        installTag.attr('i18n-key', 'mkt-buy' );
+        installTag.attr('i18n-key', 'mkt-buy');
     } else {
-        installTag.attr('i18n-key', 'mkt-install' );
+        installTag.attr('i18n-key', 'mkt-install');
     }
 
     // 根据资产更新职业
@@ -312,13 +315,13 @@ function updateDisplay() {
      */
     for (let id in gameData.resourceList) {
         tableRow = $(`#${id}`);
-        tableRow.find(".net-produce .num").html( (gameData.resourceList[id].produce - gameData.resourceList[id].consume).toFixed(2) );
-        tableRow.find(".net-produce .produce").html( gameData.resourceList[id].produce.toFixed(2) );
-        tableRow.find(".net-produce .consume").html( gameData.resourceList[id].consume.toFixed(2) );
+        tableRow.find(".net-produce .num").html((gameData.resourceList[id].produce - gameData.resourceList[id].consume).toFixed(2));
+        tableRow.find(".net-produce .produce").html(gameData.resourceList[id].produce.toFixed(2));
+        tableRow.find(".net-produce .consume").html(gameData.resourceList[id].consume.toFixed(2));
         netProduct = gameData.resourceList[id].produce - gameData.resourceList[id].consume;
         priceMulti = netProduct < 0 ? gameData.resourceList[id].buy : 1;
-        tableRow.find(".income .num").html( (netProduct*gameData.resourceList[id].price*priceMulti).toFixed(2) );
-        tableRow.find(".income .price").html( netProduct < 0 ? -(gameData.resourceList[id].price*priceMulti).toFixed(2).toLocaleString() : gameData.resourceList[id].price.toFixed(2).toLocaleString() );
+        tableRow.find(".income .num").html((netProduct * gameData.resourceList[id].price * priceMulti).toFixed(2));
+        tableRow.find(".income .price").html(netProduct < 0 ? -(gameData.resourceList[id].price * priceMulti).toFixed(2).toLocaleString() : gameData.resourceList[id].price.toFixed(2).toLocaleString());
     }
 
     $("[i18n-key]").each(translateElement); // 更新文本翻译
