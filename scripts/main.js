@@ -15,7 +15,7 @@ updateUSDebt();
  * 需要变量：
  *      gameData.currDate
  * 使用函数：
- *      incrementTime()
+ *      everyHourEvent()
  *      updateShop()
  *      updateDisplay()
  * 更新变量：
@@ -48,7 +48,7 @@ function passiveHourEvent() {
         }
     })
 
-    incrementTime();
+    everyHourEvent();
     updateDisplay();
 
 
@@ -63,7 +63,7 @@ function passiveHourEvent() {
  *      updateResource()
  * HTML更新
  */
-function incrementTime() {
+function everyHourEvent() {
     gameData.currDate.setHours(gameData.currDate.getHours() + 1);
     // 直观时间变化
     if (gameData.currDate.getHours() <= 6) { // 0-6点
@@ -86,7 +86,7 @@ function incrementTime() {
     updateResource();
     gameData.coinCount += actuIncomePerH;
 
-    checkGoal()
+    checkGoal();
 }
 /**每日事件
  */
@@ -110,7 +110,7 @@ function everyMonthEvent() {
  * 需要变量：
  *      gameData.currDate
  * 使用函数：
- *      incrementTime()
+ *      everyHourEvent()
  *      updateShop()
  *      updateDisplay()
  * 更新变量：
@@ -149,7 +149,7 @@ function clickButton() {
     gamePaused = false;
     $('#game-pause').attr("i18n-key", "game-pause");
 
-    incrementTime();
+    everyHourEvent();
     updateDisplay();
 };
 
