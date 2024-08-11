@@ -114,14 +114,12 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
         $(`#${buyId}`).removeClass('hidden'); // 去除隐藏
         gameData.removeHidden[`#${buyId}`] = 1;
 
-    } else if ( buyPayCountDown > 0 && gameData.installPay) { // 进入分期付款流程
-        // console.log("进入分期付款流程")
+    } else if ( buyPayCountDown > 0 && gameData.installPay) { // console.log("进入分期付款流程")
         // 这部分代码只有运行分期付款的商品才执行
         gameData.coinCount -= marketItem.installPrice;
 
         installmentItem = gameData.installmentList[buyId];
-        if ( installmentItem !== undefined ) { // 已有分期付款
-            // console.log('已有分期付款')
+        if ( installmentItem !== undefined ) { // console.log('已有分期付款')
             if (installmentItem.installMonth > 1) { // 还有1期以上
                 // console.log('还有1期以上')
                 installmentItem.installMonth--;
@@ -130,8 +128,7 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
                 // console.log('只剩1期，移除该分期付款')
                 delete gameData.installmentList[buyId]
             }
-        } else { // 没有分期付款，创建新分期付款
-            // console.log('没有分期付款，创建新分期付款')
+        } else { // console.log('没有分期付款，创建新分期付款')
             gameData.installmentList[buyId] = {icon: buyIcon, installPrice: buyInstallPrice, installMonth: buyInstallMonth, payCountDown: buyPayCountDown};
             // 添加商品以及分期付款标识
             propertyItem = gameData.propertyList[buyId];
