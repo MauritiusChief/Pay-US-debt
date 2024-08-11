@@ -11,7 +11,7 @@ updateUSDebt();
 
 /** 游戏机制 
  ***********/
-/**每小时事件（特指不工作时定时触发的时间流逝）
+/**被动每小时事件（特指不工作时定时触发的时间流逝）
  * 需要变量：
  *      gameData.currDate
  * 使用函数：
@@ -22,13 +22,13 @@ updateUSDebt();
  *      gameData.workStat（0，没上班）
  *      gameData.health
  * HTML更新
- */ 
-function everyHourEvent() {
+ */
+function passiveHourEvent() {
 
     // 触发不上班效果 TODO:可以做成分开的函数
     gameData.workStat = 0;
     // 不上班则回复健康
-    if (gameData.currDate.getHours() < 9 ) { // 0-8点
+    if (gameData.currDate.getHours() < 9) { // 0-8点
         gameData.health < 0 ? gameData.health += 0.1 : gameData.health += 2;
     } else { // 9点之后整天
         gameData.health < 0 ? gameData.health += 0.05 : gameData.health += 1;
@@ -37,20 +37,20 @@ function everyHourEvent() {
     // 消除（加班中）标记
     $('#overtime').attr("i18n-key", "work-resting");
     // 小人不加班时的图标
-    $("[type=person] .icon").each(function(index, personTag) {
+    $("[type=person] .icon").each(function (index, personTag) {
         let $personTag = $(personTag);
-        if (gameData.currDate.getHours() < 9 ) { // 0-8点
-            $personTag.html( '🛌' );
+        if (gameData.currDate.getHours() < 9) { // 0-8点
+            $personTag.html('🛌');
         } else if (gameData.currDate.getHours() > 16) { // 17-23点
-            $personTag.html('🛀' );
+            $personTag.html('🛀');
         } else {
-            $personTag.html( GIcon[gameData.GIdx] );
+            $personTag.html(GIcon[gameData.GIdx]);
         }
     })
-    
+
     incrementTime();
     updateDisplay();
-    
+
 
     // console.log(gameData.propertyList)
     // console.log(gameData.installmentList)
@@ -62,7 +62,7 @@ function everyHourEvent() {
  * 使用函数：
  *      updateResource()
  * HTML更新
- */ 
+ */
 function incrementTime() {
     gameData.currDate.setHours(gameData.currDate.getHours() + 1);
     // 直观时间变化
@@ -89,7 +89,7 @@ function incrementTime() {
     checkGoal()
 }
 /**每日事件
- */ 
+ */
 function everyDayEvent() {
     updateDividedPay()
     if (gameData.currDate.getDate() === 1) {
@@ -103,7 +103,7 @@ function everyMonthEvent() {
         // console.log(employList[`employ-${id}`].salary)
         gameData.coinCount -= employList[`employ-${id}`].salary * gameData.employeeList[id].amount;
     }
-    
+
 }
 
 /**点击挣钱按钮（工作点击触发的时间流逝）
@@ -118,7 +118,7 @@ function everyMonthEvent() {
  *      gameData.health
  *      gamePaused（false，解除暂停）
  * HTML更新
- */ 
+ */
 $('#click-button').click(clickButton);
 function clickButton() {
 
@@ -126,7 +126,7 @@ function clickButton() {
     gameData.workStat = 1;
     // 变更上班与加班时的图标
     let selfElement = $("#self .icon");
-    selfElement.html( GIcon[gameData.GIdx] );
+    selfElement.html(GIcon[gameData.GIdx]);
     if (gameData.currDate.getHours() < 9 || gameData.currDate.getHours() > 16) {
         // 加班标记
         $('#overtime').attr("i18n-key", "work-overtime");
@@ -135,20 +135,20 @@ function clickButton() {
         $('#overtime').text("");
     }
     // 上班与加班时减少健康
-    if (gameData.currDate.getHours() < 9 ) { // 0-8点
+    if (gameData.currDate.getHours() < 9) { // 0-8点
         gameData.health -= 2;
-    } else if ( gameData.currDate.getHours() > 16 ) { // 17点-23点
+    } else if (gameData.currDate.getHours() > 16) { // 17点-23点
         gameData.health -= 1.5;
     } else {
         gameData.health -= 1;
     }
-    
+
     // 每次点击则重置计时，避免时间跳动
     clearInterval(currentTimer);
-    currentTimer = setInterval(everyHourEvent, 1000);
+    currentTimer = setInterval(passiveHourEvent, 1000);
     gamePaused = false;
     $('#game-pause').attr("i18n-key", "game-pause");
-    
+
     incrementTime();
     updateDisplay();
 };
@@ -156,7 +156,7 @@ function clickButton() {
 $('#game-pause').click(gamePause);
 function gamePause() {
     if (gamePaused) { // 已暂停
-        currentTimer = setInterval(everyHourEvent, 1000);
+        currentTimer = setInterval(passiveHourEvent, 1000);
         $('#game-pause').attr("i18n-key", "game-pause");
         gamePaused = false;
     } else { // 没暂停
@@ -168,25 +168,25 @@ function gamePause() {
 }
 
 $('#change-gender').click(() => {
-    gameData.GIdx = (gameData.GIdx+1) % 3;
+    gameData.GIdx = (gameData.GIdx + 1) % 3;
     // console.log(oldGIdx+'=>'+GIdx)
     // console.log(GIcon[oldGIdx]+'=>'+GIcon[gameData.GIdx])
     let selfElement = $("#self .icon");
-    if (gameData.currDate.getHours() < 9 ) { // 0-8点
-        selfElement.html( '🛌' );
+    if (gameData.currDate.getHours() < 9) { // 0-8点
+        selfElement.html('🛌');
     } else if (gameData.currDate.getHours() > 16) { // 17-23点
-        selfElement.html('🛀' );
+        selfElement.html('🛀');
     } else {
-        selfElement.html( GIcon[gameData.GIdx] );
+        selfElement.html(GIcon[gameData.GIdx]);
     }
     let selfGButton = $("#change-gender")
-    selfGButton.html( GTxt[gameData.GIdx] );
+    selfGButton.html(GTxt[gameData.GIdx]);
     // updateDisplay();
 })
 
 $('#language-select').on('change', (e) => {
     let selectedValue = e.target.value;
-    
+
     if (selectedValue === "") {
         locale = supportedLocale.includes(navLocal) ? navLocal : defaultLocale;
     } else {
@@ -235,7 +235,7 @@ $('#fileInput').on('change', loadGameFile);
 function updateShop() {
     for (let id in marketList) {
         limitPrice = gameData.installPay ? marketList[id].installPrice : marketList[id].price;
-        if ( gameData.coinCount >= limitPrice) {
+        if (gameData.coinCount >= limitPrice) {
             $(`#${id}`).prop('disabled', false);
             delete gameData.disabledButton[`#${id}`];
         } else {
@@ -245,7 +245,7 @@ function updateShop() {
     }
     for (let id in shopList) {
         limitPrice = shopList[id].price;
-        if ( gameData.coinCount >= limitPrice) {
+        if (gameData.coinCount >= limitPrice) {
             $(`#${id}`).prop('disabled', false);
             delete gameData.disabledButton[`#${id}`];
         } else {
@@ -254,11 +254,11 @@ function updateShop() {
         }
     }
     for (let id in employList) {
-        correspondEmployee = gameData.employeeList[id.replace("employ-","")];
+        correspondEmployee = gameData.employeeList[id.replace("employ-", "")];
         currentAmount = correspondEmployee ? correspondEmployee.amount : 1;
         limitPrice = employList[id].salary * currentAmount;
         // 限制：至少得发的起所有员工一个月的工资
-        if ( gameData.coinCount > limitPrice) {
+        if (gameData.coinCount > limitPrice) {
             $(`#${id}`).prop('disabled', false);
             delete gameData.disabledButton[`#${id}`];
         } else {
@@ -298,9 +298,9 @@ function updateDividedPay() {
                 delete gameData.removeHidden[`#${id}`];
                 gameData.workingProperty === id ? gameData.workingProperty = '' : {};
             }
-            
+
             icon = $(`#${id} .icon`);
-            icon.html( icon.html().replace(gameData.installmentList[id].icon, "") );
+            icon.html(icon.html().replace(gameData.installmentList[id].icon, ""));
             gameData.iconStore[`#${id} .icon`] = icon.html();
             $(`#install-${id}`).addClass('hidden');
             delete gameData.removeHidden[`#install-${id}`];
@@ -318,7 +318,7 @@ function checkGoal() {
 
 /** 键盘输入 */
 let userKeyInput = ''
-$(document).on('keydown', function(event) {
+$(document).on('keydown', function (event) {
     const key = event.key;
 
     // Add the pressed key to the userInput string
@@ -348,36 +348,36 @@ $(document).on('keydown', function(event) {
     }
     if (userKeyInput.toLowerCase().includes('timefly')) { // 快速过5天
         clearInterval(currentTimer);
-        Array(5*24).fill().forEach(() => everyHourEvent());
+        Array(5 * 24).fill().forEach(() => passiveHourEvent());
         if (!gamePaused) {
-            currentTimer = setInterval(everyHourEvent, 1000);
+            currentTimer = setInterval(passiveHourEvent, 1000);
         }
         userKeyInput = '';
     }
     if (userKeyInput.toLowerCase().includes('tictoc')) { // 快速过1天
         clearInterval(currentTimer);
-        Array(24).fill().forEach(() => everyHourEvent());
+        Array(24).fill().forEach(() => passiveHourEvent());
         if (!gamePaused) {
-            currentTimer = setInterval(everyHourEvent, 1000);
+            currentTimer = setInterval(passiveHourEvent, 1000);
         }
         userKeyInput = '';
     }
     if (userKeyInput.toLowerCase().includes('workhard')) { // 标准模板工作5天
         clearInterval(currentTimer);
-        Array(5*24).fill().forEach(() => {
+        Array(5 * 24).fill().forEach(() => {
             if (gameData.currDate.getHours() > 8) {
                 clickButton();
                 clearInterval(currentTimer);
             } else {
-                everyHourEvent();
+                passiveHourEvent();
             }
         });
         if (!gamePaused) {
-            currentTimer = setInterval(everyHourEvent, 1000);
+            currentTimer = setInterval(passiveHourEvent, 1000);
         }
         userKeyInput = '';
     }
-    
+
     // Optional: Clear user input if it exceeds the cheat code length to avoid unnecessary memory usage
     if (userKeyInput.length > 20) {
         userKeyInput = userKeyInput.substring(1);
