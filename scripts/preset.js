@@ -37,15 +37,22 @@ let translations = {};
  ***************/
 // 加商品和职业可以很方便地在这里加
 const marketList = { // 可分期商品列表（目前包括 载具 和 地产）
-    'buy-mini-truck': { price: genPrice(7190, 10700, 10), installMonth: 12, step: 10 },
-    'buy-semi-truck': { price: genPrice(138500, 183500, 100), installMonth: 24, step: 50 },
-    'buy-excavator': { price: genPrice(40000, 61000, 50), installMonth: 12, step: 50 },
+    'buy-mini-truck': { price: genPrice(7190, 10700, 10), installMonth: 12 },
+    'buy-semi-truck': { price: genPrice(138500, 183500, 100), installMonth: 24 },
+    'buy-excavator': { price: genPrice(40000, 61000, 50), installMonth: 12 },
 
-    'buy-warehouse': { price: genPrice(3000, 5000, 50), installMonth: 3, step: 100 }
+    'buy-warehouse': { price: genPrice(3000, 5000, 50), installMonth: 3 },
+}
+const marketStep = { // 价格倍数
+    'buy-mini-truck': { step: 10 },
+    'buy-semi-truck': { step: 50 },
+    'buy-excavator': { step: 50 },
+
+    'buy-warehouse': { step: 100 },
 }
 for (let id in marketList) {
     item = marketList[id];
-    item.installPrice = genDividedPrice(item.price, 1.1, item.installMonth, item.step)
+    item.installPrice = genDividedPrice(item.price, 1.1, item.installMonth, marketStep[id])
 }
 //示例：{id:'buy-mini-truck', price:3500, installPrice:640, installMonth:6, step:10},
 const buildList = {
@@ -144,49 +151,37 @@ function updateResource() {
     estiIncomePerH = 0;
 
     // 帮助函数，根据 资源类型 和 资产，决定这个资源类型的产量
-    const getProduceValue = (resourceType, propertyName) => {
-        if (produceAddMapping[resourceType] && produceAddMapping[resourceType][propertyName] !== undefined) {
-            return produceAddMapping[resourceType][propertyName];
+    const getValueByPropertyName = (mapping, resourceType, propertyName) => {
+        if (mapping[resourceType] && mapping[resourceType][propertyName] !== undefined) {
+            return mapping[resourceType][propertyName];
         }
-        return produceAddMapping[resourceType] ? produceAddMapping[resourceType]['default'] : 0;
-    };
-    // 类似的读取资源消耗的函数，也用来读取管理劳动力消耗的管理力
-    const getConsumeValue = (resourceType, propertyName) => {
-        if (consumeAddMapping[resourceType] && consumeAddMapping[resourceType][propertyName] !== undefined) {
-            return consumeAddMapping[resourceType][propertyName];
-        }
-        return consumeAddMapping[resourceType] ? consumeAddMapping[resourceType]['default'] : 0;
-    };
-    // 百分比加成函数
-    const getProduceMultipe = (resourceType, propertyName) => {
-        if (produceMultMapping[resourceType] && produceMultMapping[resourceType][propertyName] !== undefined) {
-            return produceMultMapping[resourceType][propertyName];
-        }
-        return produceMultMapping[resourceType] ? produceMultMapping[resourceType]['default'] : 0;
+        return mapping[resourceType] ? mapping[resourceType]['default'] : 0;
     };
 
     // 根据当前工作使用的资产处理小人自己的资源产出
     for (let id in gameData.selfResourceList) {
-        gameData.selfResourceList[id].produce = getProduceValue(id, gameData.workingProperty);
+        gameData.selfResourceList[id].produce = getValueByPropertyName(produceAddMapping, id, gameData.workingProperty);
     }
     for (let id in gameData.resourceList) {
         gameData.resourceList[id].produce = 0;
         gameData.resourceList[id].consume = 0;
+
         // 点击生产的资源
         if (gameData.selfResourceList[id] !== undefined) {
             gameData.resourceList[id].produce += gameData.selfResourceList[id].produce * gameData.workStat; // gameData.workStat 0 代表不上班，1代表上班
             priceMulti = gameData.selfResourceList[id].produce < 0 ? gameData.resourceList[id].buy : 1.0; // priceMulti 价格乘数 buy是买时的价格，1.0是卖时的价格
             estiIncomePerH += gameData.selfResourceList[id].produce * gameData.resourceList[id].price * priceMulti;
         }
+        
         // 自动生产的资源
         propertyMultProduce = 0;
         for (propId in gameData.propertyList) {
             // console.log(gameData.propertyList[propId])
             propertyUsed = gameData.propertyList[propId].amountUsed;
             propertyAmount = gameData.propertyList[propId].amount;
-            propertyAddProduce = getProduceValue(id, propId); // 数值加成
-            propertyAddConsume = getConsumeValue(id, propId); // 数值消耗
-            propertyMultProduce += getProduceMultipe(id, propId) * propertyAmount; // 百分比加成
+            propertyAddProduce = getValueByPropertyName(produceAddMapping, id, propId); // 数值加成
+            propertyAddConsume = getValueByPropertyName(consumeAddMapping, id, propId); // 数值消耗
+            propertyMultProduce += getValueByPropertyName(produceMultMapping, id, propId) * propertyAmount; // 百分比加成
 
             gameData.resourceList[id].consume += propertyAddConsume * propertyUsed // 此处故意不减去小人自己使用的资产
             if (propId === gameData.workingProperty) {// 减去小人自己使用的资产
@@ -198,7 +193,7 @@ function updateResource() {
         // 劳动力所消耗的管理力
         for (empId in gameData.employeeList) {
             employeeWorking = gameData.employeeList[empId].amountWorking;
-            employeeAddConsume = getConsumeValue(id, empId); // 数值消耗
+            employeeAddConsume = getValueByPropertyName(consumeAddMapping, id, empId); // 数值消耗
             gameData.resourceList[id].consume += employeeAddConsume * employeeWorking
         }
         // console.log(propertyUsed)
