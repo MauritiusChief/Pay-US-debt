@@ -282,7 +282,7 @@ function updateDisplay() {
         } else if ($(`#${id}:has(.install-month)`).length > 0) { // 没有分期付款，去掉分期付款显示（注意：这部分如果到期不还款资产被收回则不会执行）
             $(`#install-${id}`).addClass('hidden')
             delete gameData.removeHidden[`#install-${id}`];
-        } // 到期不还款的情况在 updateDividedPay()
+        } // 到期不还款的情况在 updateInstallment()
 
         // 更新劳动力分配面板
         $(`#${id} .work-force-limit`).text(gameData.propertyList[id].amount);

@@ -91,7 +91,7 @@ function everyHourEvent() {
 /**每日事件
  */
 function everyDayEvent() {
-    updateDividedPay()
+    updateInstallment()
     if (gameData.currDate.getDate() === 1) everyMonthEvent();
 }
 /**每月事件
@@ -275,7 +275,7 @@ function updateShop() {
  *      gameData.propertyList（需保证gameData.installmentList.item必须在gameData.propertyList中有对应）
  *      gameData.workingProperty
  */
-function updateDividedPay() {
+function updateInstallment() {
     for (let id in gameData.installmentList) {
         gameData.installmentList[id].payCountDown--;
         if (gameData.installmentList[id].payCountDown === 0) {
