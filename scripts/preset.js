@@ -181,12 +181,13 @@ function updateResource() {
             propertyMultProduce += getValueByPropertyName(produceMultMapping, id, propId) * propertyAmount; // 百分比加成
 
             gameData.resourceList[id].consume += propertyAddConsume * propertyUsed // 此处故意不减去小人自己使用的资产
-            if (propId === gameData.workingProperty) {// 减去小人自己使用的资产
-                propertyUsed--;
-            }
+
+            if (propId === gameData.workingProperty) propertyUsed--; // 减去小人自己使用的资产
+
             gameData.resourceList[id].produce += propertyAddProduce * propertyUsed
         }
         gameData.resourceList[id].produce *= (1 + propertyMultProduce / 100); // 对资源产量进行百分比加成
+        
         // 劳动力所消耗的管理力
         for (empId in gameData.employeeList) {
             employeeWorking = gameData.employeeList[empId].amountWorking;
@@ -289,13 +290,7 @@ function updateDisplay() {
 
 
     // 更新商店按钮
-
-    installTag = $('.buy-or-install');
-    if (!gameData.installPay) {
-        installTag.attr('i18n-key', 'mkt-buy');
-    } else {
-        installTag.attr('i18n-key', 'mkt-install');
-    }
+    $('.buy-or-install').attr('i18n-key', gameData.installPay ? 'mkt-install' : 'mkt-buy');
 
     // 根据资产更新职业
     updateDisplayJob();

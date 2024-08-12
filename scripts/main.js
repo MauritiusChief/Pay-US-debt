@@ -200,18 +200,10 @@ $('#update-us-debt').click(() => {
     if (confirm(conferMsg)) updateUSDebt();
 });
 
-$('#game-save').click(() => {
-    saveGame()
-});
-$('#game-load').click(() => {
-    loadGame()
-});
-$('#game-reset').click(() => {
-    resetGame()
-});
-$('#game-save-file').click(() => {
-    saveGameFile()
-});
+$('#game-save').click(saveGame);
+$('#game-load').click(loadGame);
+$('#game-reset').click(resetGame);
+$('#game-save-file').click(saveGameFile);
 $('#game-load-file').click(() => {
     $('#fileInput').click();
 });
