@@ -102,4 +102,6 @@ translation[en] = {
     "setting-load-file": "Load from file",
     "setting-file-saved": "Data saved to file!",
     "setting-file-loaded": "Data loaded from file!",
+
+    "game-finished": "Congratulations! You've helped the United States pay off the entire U.S. debt! The Stars and Stripes forever!"
 }

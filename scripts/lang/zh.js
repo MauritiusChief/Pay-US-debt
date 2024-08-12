@@ -102,4 +102,6 @@ translation[zh] = {
     "setting-load-file": "从文件读取",
     "setting-file-saved": "存储至文件成功！",
     "setting-file-loaded": "从文件读取成功！",
+
+    "game-finished": "恭喜你！你帮美帝还清了全部美债！星条旗永不落！"
 }

@@ -306,8 +306,9 @@ function updateInstallment() {
 
 function checkGoal() {
     if (gameData.coinCount >= gameData.goal && !gameData.gameFinished) {
+        const alertMsg = translations[locale]["game-finished"];
         gameData.gameFinished = true;
-        alert("恭喜你！你帮美帝还清了全部美债！星条旗永不落！");
+        alert(alertMsg);
     }
 }
 
