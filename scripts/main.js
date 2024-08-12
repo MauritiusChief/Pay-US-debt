@@ -92,9 +92,7 @@ function everyHourEvent() {
  */
 function everyDayEvent() {
     updateDividedPay()
-    if (gameData.currDate.getDate() === 1) {
-        everyMonthEvent();
-    }
+    if (gameData.currDate.getDate() === 1) everyMonthEvent();
 }
 /**每月事件
  */
@@ -199,9 +197,7 @@ $('#language-select').on('change', (e) => {
 $('#update-us-debt').click(() => {
     // 这里不知道如何用attribute修改，故只能这样
     const conferMsg = translations[locale]["setting-get-debt-alert"]
-    if (confirm(conferMsg)) {
-        updateUSDebt();
-    }
+    if (confirm(conferMsg)) updateUSDebt();
 });
 
 $('#game-save').click(() => {
@@ -267,8 +263,7 @@ function updateShop() {
         }
     }
     // 得病无法工作也借用此处
-    ableToWork = gameData.health < 0 ? true : false;
-    $("#click-button").prop('disabled', ableToWork)
+    $("#click-button").prop('disabled', gameData.health < 0)
 }
 
 /**根据分期付款到期未还款更新或移除资产（包含相关更新显示）
