@@ -30,9 +30,6 @@ gameData.removeHidden = {};
 gameData.iconStore = {};
 gameData.disabledButton = {};
 
-// 翻译
-let translations = {};
-
 /** 商品及职业列表
  ***************/
 // 加商品和职业可以很方便地在这里加

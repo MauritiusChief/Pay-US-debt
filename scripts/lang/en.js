@@ -1,5 +1,5 @@
 
-translation[en] = {
+translations['en'] = {
     "title": "Pay US debt All",
     "disp-h": "Make Money to Pay U.S. Debts",
     "disp-debt": "Total U.S. debt: ",

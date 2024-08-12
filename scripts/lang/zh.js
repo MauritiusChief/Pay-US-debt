@@ -1,5 +1,5 @@
 
-translation[zh] = {
+translations['zh'] = {
     "title": "美帝还债记",
     "disp-h": "挣钱帮美帝还债",
     "disp-debt": "美债总额: ",
