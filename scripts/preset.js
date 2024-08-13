@@ -160,45 +160,50 @@ function updateResource() {
         gameData.selfResourceList[id].produce = getValueByPropertyName(produceAddMapping, id, gameData.workingProperty);
     }
     for (let id in gameData.resourceList) {
-        gameData.resourceList[id].produce = 0;
-        gameData.resourceList[id].consume = 0;
+        let resource = gameData.resourceList[id];
+        resource.produce = 0;
+        resource.consume = 0;
 
         // 点击生产的资源
         if (gameData.selfResourceList[id] !== undefined) {
-            gameData.resourceList[id].produce += gameData.selfResourceList[id].produce * gameData.workStat; // gameData.workStat 0 代表不上班，1代表上班
-            priceMulti = gameData.selfResourceList[id].produce < 0 ? gameData.resourceList[id].buy : 1.0; // priceMulti 价格乘数 buy是买时的价格，1.0是卖时的价格
-            estiIncomePerH += gameData.selfResourceList[id].produce * gameData.resourceList[id].price * priceMulti;
+            let selfResource = gameData.selfResourceList[id];
+            resource.produce += selfResource.produce * gameData.workStat; // 根据工作状态调整产量
+
+            let priceMultiplier = selfResource.produce < 0 ? resource.buy : 1.0; // 根据生产/消耗决定价格乘数
+            estiIncomePerH += selfResource.produce * resource.price * priceMultiplier;
         }
         
         // 自动生产的资源
-        propertyMultProduce = 0;
+        let propertyMultProduce = 0;
         for (propId in gameData.propertyList) {
             // console.log(gameData.propertyList[propId])
-            propertyUsed = gameData.propertyList[propId].amountUsed;
-            propertyAmount = gameData.propertyList[propId].amount;
-            propertyAddProduce = getValueByPropertyName(produceAddMapping, id, propId); // 数值加成
-            propertyAddConsume = getValueByPropertyName(consumeAddMapping, id, propId); // 数值消耗
+            let property = gameData.propertyList[propId];
+            let propertyUsed = property.amountUsed;
+            let propertyAmount = property.amount;
+
+            let propertyAddProduce = getValueByPropertyName(produceAddMapping, id, propId); // 数值加成
+            let propertyAddConsume = getValueByPropertyName(consumeAddMapping, id, propId); // 数值消耗
             propertyMultProduce += getValueByPropertyName(produceMultMapping, id, propId) * propertyAmount; // 百分比加成
 
-            gameData.resourceList[id].consume += propertyAddConsume * propertyUsed // 此处故意不减去小人自己使用的资产
+            resource.consume += propertyAddConsume * propertyUsed; // 此处故意不减去小人自己使用的资产
 
             if (propId === gameData.workingProperty) propertyUsed--; // 减去小人自己使用的资产
 
-            gameData.resourceList[id].produce += propertyAddProduce * propertyUsed
+            resource.produce += propertyAddProduce * propertyUsed;
         }
-        gameData.resourceList[id].produce *= (1 + propertyMultProduce / 100); // 对资源产量进行百分比加成
+        resource.produce *= (1 + propertyMultProduce / 100); // 对资源产量进行百分比加成
         
         // 劳动力所消耗的管理力
         for (empId in gameData.employeeList) {
-            employeeWorking = gameData.employeeList[empId].amountWorking;
-            employeeAddConsume = getValueByPropertyName(consumeAddMapping, id, empId); // 数值消耗
-            gameData.resourceList[id].consume += employeeAddConsume * employeeWorking
+            let employee = gameData.employeeList[empId];
+            let employeeAddConsume = getValueByPropertyName(consumeAddMapping, id, empId); // 数值消耗
+            resource.consume += employeeAddConsume * employee.amountWorking;
         }
         // console.log(propertyUsed)
         // 计算总资源
-        netProduct = gameData.resourceList[id].produce - gameData.resourceList[id].consume;
-        priceMulti = netProduct < 0 ? gameData.resourceList[id].buy : 1.0; // priceMulti 价格乘数 buy是买时的价格，1.0是卖时的价格
-        actuIncomePerH += (netProduct * gameData.resourceList[id].price * priceMulti); // 此处已将点击生产和自动生产的资源都计入
+        let netProduct = resource.produce - resource.consume;
+        let priceMultiplier = netProduct < 0 ? resource.buy : 1.0;
+        actuIncomePerH += (netProduct * resource.price * priceMultiplier); // 此处已将点击生产和自动生产的资源都计入
     }
 }
 /**根据资产更新职业
@@ -301,47 +306,23 @@ function updateDisplay() {
      * HTML更新：
      */
     for (let id in gameData.resourceList) {
+        let resource = gameData.resourceList[id];
         tableRow = $(`#${id}`);
-        tableRow.find(".net-produce .num").html((gameData.resourceList[id].produce - gameData.resourceList[id].consume).toFixed(2));
-        tableRow.find(".net-produce .produce").html(gameData.resourceList[id].produce.toFixed(2));
-        tableRow.find(".net-produce .consume").html(gameData.resourceList[id].consume.toFixed(2));
-        netProduct = gameData.resourceList[id].produce - gameData.resourceList[id].consume;
-        priceMulti = netProduct < 0 ? gameData.resourceList[id].buy : 1;
-        tableRow.find(".income .num").html((netProduct * gameData.resourceList[id].price * priceMulti).toFixed(2));
-        tableRow.find(".income .price").html(netProduct < 0 ? -(gameData.resourceList[id].price * priceMulti).toFixed(2).toLocaleString() : gameData.resourceList[id].price.toFixed(2).toLocaleString());
+        tableRow.find(".net-produce .num").html((resource.produce - resource.consume).toFixed(2));
+        tableRow.find(".net-produce .produce").html(resource.produce.toFixed(2));
+        tableRow.find(".net-produce .consume").html(resource.consume.toFixed(2));
+        let netProduct = resource.produce - resource.consume;
+        priceMultiplier = netProduct < 0 ? resource.buy : 1;
+        tableRow.find(".income .num").html((netProduct * resource.price * priceMultiplier).toFixed(2));
+        tableRow.find(".income .price").html(netProduct < 0 ? -(resource.price * priceMultiplier).toFixed(2).toLocaleString() : resource.price.toFixed(2).toLocaleString());
     }
 
     $("[i18n-key]").each(translateElement); // 更新文本翻译
 }
 
 function genClockIcon(time) {
-    time = time % 12;
-    switch (time) {
-        case 1:
-            return '🕐';
-        case 2:
-            return '🕑';
-        case 3:
-            return '🕒';
-        case 4:
-            return '🕓';
-        case 5:
-            return '🕔';
-        case 6:
-            return '🕕';
-        case 7:
-            return '🕖';
-        case 8:
-            return '🕗';
-        case 9:
-            return '🕘';
-        case 10:
-            return '🕙';
-        case 11:
-            return '🕚';
-        case 0:
-            return '🕛';
-    }
+    const icons = ['🕛', '🕐', '🕑', '🕒', '🕓', '🕔', '🕕', '🕖', '🕗', '🕘', '🕙', '🕚'];
+    return icons[time % 12];
 }
 function genPrice(min, max, step) {
     const range = Math.floor((max - min) / step) + 1;
