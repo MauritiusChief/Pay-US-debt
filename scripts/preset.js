@@ -49,7 +49,7 @@ const marketStep = { // 价格倍数
 }
 for (let id in marketList) {
     item = marketList[id];
-    item.installPrice = genDividedPrice(item.price, 1.1, item.installMonth, marketStep[id])
+    item.installPrice = genDividedPrice(item.price, 1.1, item.installMonth, marketStep[id].step)
 }
 //示例：{id:'buy-mini-truck', price:3500, installPrice:640, installMonth:6, step:10},
 const buildList = {
