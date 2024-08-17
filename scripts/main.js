@@ -282,16 +282,14 @@ function updateInstallment() {
                 delete gameData.propertyList[id];
                 // 更新勾选盒以及gameData.workingProperty
                 $('#model-display [type=checkbox]').not(id).prop('checked', false);
-                $(`#${id}`).addClass('hidden');
-                delete gameData.removeHidden[`#${id}`];
+                addToHiddenRemoved(id);
                 gameData.workingProperty === id ? gameData.workingProperty = '' : {};
             }
 
             icon = $(`#${id} .icon`);
             icon.html(icon.html().replace(gameData.installmentList[id].icon, ""));
             gameData.iconStore[`#${id} .icon`] = icon.html();
-            $(`#install-${id}`).addClass('hidden');
-            delete gameData.removeHidden[`#install-${id}`];
+            addToHiddenRemoved(`#install-${id}`);
             delete gameData.installmentList[id]; // 移除这个分期付款
         }
     }

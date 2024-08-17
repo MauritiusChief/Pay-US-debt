@@ -276,11 +276,11 @@ function addToPropertyList(id) {
 function updateIconStore(containerId) {
     gameData.iconStore[`#${containerId} .icon`] = $(`#${containerId} .icon`).html();
 }
-function addToHiddenRemoved(id) {
-    $(`#${id}`).removeClass("hidden");
-    gameData.removeHidden[`#${id}`] = 1;
+function addToHiddenRemoved(selector) {
+    $(selector).removeClass("hidden");
+    gameData.removeHidden[selector] = 1;
 }
-function deleteFromHiddenRemoved(id) {
-    $(`#${id}`).addClass('hidden');
-    delete gameData.removeHidden[`#${id}`];
+function deleteFromHiddenRemoved(selector) {
+    $(selector).addClass('hidden');
+    delete gameData.removeHidden[selector];
 }

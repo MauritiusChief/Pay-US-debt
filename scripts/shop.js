@@ -8,26 +8,19 @@ $('#install-pay [type=checkbox]').on('change', () => {
 })
 $('#buy-mini-truck').click(() => {
     buyEvent('mini-truck', '🚚', 30);
-    $("#gear").removeClass("hidden");
-    $("#nut-bolt").removeClass("hidden");
-    gameData.removeHidden["#gear"] = 1;
-    gameData.removeHidden["#nut-bolt"] = 1;
+    addToHiddenRemoved("#gear");
+    addToHiddenRemoved("#nut-bolt");
 })
 $('#buy-semi-truck').click(() => {
     buyEvent('semi-truck', '🚛', 30);
-    $("#gear").removeClass("hidden");
-    $("#nut-bolt").removeClass("hidden");
-    gameData.removeHidden["#gear"] = 1;
-    gameData.removeHidden["#nut-bolt"] = 1;
+    addToHiddenRemoved("#gear");
+    addToHiddenRemoved("#nut-bolt");
 })
 $('#buy-excavator').click(() => {
     buyEvent('excavator', '<img src="icons/excavator.svg" alt="🚜" class="svg-icon">', 30);
-    $("#construct").removeClass("hidden");
-    $("#gear").removeClass("hidden");
-    $("#nut-bolt").removeClass("hidden");
-    gameData.removeHidden["#construct"] = 1;
-    gameData.removeHidden["#gear"] = 1;
-    gameData.removeHidden["#nut-bolt"] = 1;
+    addToHiddenRemoved("#gear");
+    addToHiddenRemoved("#nut-bolt");
+    addToHiddenRemoved("#construct");
 })
 $('#buy-warehouse').click(() => {
     buyEvent('warehouse', '<img src="icons/warehouse.svg" alt="📦" class="svg-icon">', 30);
@@ -43,23 +36,17 @@ $('#buy-laptop').click(() => {
     shopItem = shopList['buy-laptop']
     gameData.coinCount -= shopItem.price;
     gameData.propertyList['laptop'] = {amount: 1, amountUsed: 0, maintainStatus: 5, maintainDecrChance: 0.2};
-    $('#laptop').removeClass('hidden');
-    $("#manage").removeClass("hidden");
-    gameData.removeHidden["#manage"] = 1;
-    gameData.removeHidden['#laptop'] = 1;
-    $("#buy-laptop").addClass('hidden');
-    delete gameData.removeHidden["#buy-laptop"];
+    addToHiddenRemoved("#laptop");
+    addToHiddenRemoved("#manage");
+    deleteFromHiddenRemoved("#buy-laptop");
 })
 
 $('#employ-zombie').click(() => {
     employEvent('zombie', '🧟‍♀️', '🧟‍♂️');
-    $('.use-worker').removeClass('hidden');
-    $("#manage").removeClass("hidden");
-    gameData.removeHidden["#manage"] = 1;
-    gameData.removeHidden[".use-worker"] = 1;
+    addToHiddenRemoved("#manage");
+    addToHiddenRemoved(".use-worker");
     if (gameData.propertyList['laptop'] === undefined) {
-        $("#buy-laptop").removeClass('hidden');
-        gameData.removeHidden["#buy-laptop"] = 1;
+       addToHiddenRemoved("#buy-laptop");
     }
 })
 $('#dismiss-zombie').click(() => {
@@ -67,13 +54,10 @@ $('#dismiss-zombie').click(() => {
 })
 $('#employ-vampire').click(() => {
     employEvent('vampire', '🧛‍♀️', '🧛‍♂️');
-    $('.use-worker').removeClass('hidden');
-    $("#manage").removeClass("hidden");
-    gameData.removeHidden["#manage"] = 1;
-    gameData.removeHidden[".use-worker"] = 1;
+    addToHiddenRemoved("#manage");
+    addToHiddenRemoved(".use-worker");
     if (gameData.propertyList['laptop'] === undefined) {
-        $("#buy-laptop").removeClass('hidden');
-        gameData.removeHidden["#buy-laptop"] = 1;
+       addToHiddenRemoved("#buy-laptop");
     }
 })
 $('#dismiss-vampire').click(() => {
@@ -106,8 +90,7 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
 
         $(`#${buyId} .icon`).html( $(`#${buyId} .icon`).html()+buyIcon );
         gameData.iconStore[`#${buyId} .icon`] = $(`#${buyId} .icon`).html();
-        $(`#${buyId}`).removeClass('hidden'); // 去除隐藏
-        gameData.removeHidden[`#${buyId}`] = 1;
+        addToHiddenRemoved(`#${buyId}`);
 
     } else if ( buyPayCountDown > 0 && gameData.installPay) { // console.log("进入分期付款流程")
         // 这部分代码只有运行分期付款的商品才执行
@@ -130,10 +113,8 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
             gameData.iconStore[`#${buyId} .icon`] = $(`#${buyId} .icon`).html();
             $(`#${buyId} .install-month`).html( buyInstallMonth );
             $(`#${buyId} .pay-count-down`).html( buyPayCountDown );
-            $(`#install-${buyId}`).removeClass('hidden'); // 去除分期的隐藏
-            $(`#${buyId}`).removeClass('hidden'); // 去除隐藏
-            gameData.removeHidden[`#install-${buyId}`] = 1;
-            gameData.removeHidden[`#${buyId}`] = 1;
+            addToHiddenRemoved(`#install-${buyId}`);
+            addToHiddenRemoved(`#${buyId}`);
             $("[i18n-key]").each(translateElement);
         }
     }
@@ -157,8 +138,7 @@ function employEvent(empId, iconF, iconM) {
     empIcon = gender === 'F' ? iconF : iconM;
     $(`#${empId} .icon`).html( $(`#${empId} .icon`).html()+empIcon );
     gameData.iconStore[`#${empId} .icon`] = $(`#${empId} .icon`).html();
-    $(`#${empId}`).removeClass('hidden'); // 去除隐藏
-    gameData.removeHidden[`#${empId}`] = 1;
+    addToHiddenRemoved(`#${empId}`);
 
     // 解锁解雇按钮
     if (gameData.employeeList[empId].amountWorking < gameData.employeeList[empId].amount) {
@@ -181,8 +161,7 @@ function dismissEvent(empId, iconF, iconM) {
         }
     } else { // 劳动力数量不足1，直接移除
         delete gameData.employeeList[empId];
-        $(`#${empId}`).addClass('hidden');
-        delete gameData.removeHidden[`#${empId}`];
+        deleteFromHiddenRemoved(`#${empId}`);
     }
     icon = $(`#${empId} .icon`);
     iconToDelete = gameData.employeeGStack[empId].pop() === 'F' ? iconF : iconM;

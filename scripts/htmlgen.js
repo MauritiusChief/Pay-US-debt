@@ -152,8 +152,7 @@ function generateHtmlFromTemplate(templateName, data, containerName = templateNa
 }
 
 // 解锁最基础的运力资源
-$("#transport").removeClass('hidden');
-gameData.removeHidden["#transport"] = 1;
+addToHiddenRemoved("#transport");
 
 // 执行翻译过程
 $("[i18n-key]").each(translateElement);
