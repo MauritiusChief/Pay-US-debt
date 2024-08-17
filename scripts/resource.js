@@ -1,4 +1,4 @@
-console.log('resource.js')
+console.log('加载resource.js')
 
 $('#laptop [type=checkbox]').on('change', () => {
     checkBoxEvent('laptop');

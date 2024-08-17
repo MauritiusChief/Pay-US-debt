@@ -1,4 +1,4 @@
-console.log('htmlgen.js')
+console.log('加载htmlgen.js')
 
 // 买载具模板
 const buttonVehicleData = [

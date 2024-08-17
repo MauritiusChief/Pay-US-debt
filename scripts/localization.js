@@ -1,4 +1,4 @@
-console.log('localization.js')
+console.log('加载localization.js')
 
 const defaultLocale = "zh";
 const supportedLocale = ["zh", "en"];
@@ -14,4 +14,4 @@ translations = {};
 supportedLocale.forEach(code => {
     translations[code] = {};
 })
-console.log(translations)
+// console.log(translations)

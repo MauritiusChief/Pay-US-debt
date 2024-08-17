@@ -1,4 +1,4 @@
-console.log("build.js")
+console.log("加载build.js")
 
 $('#build-office').click(() => {
     if ( $('#build-office .build-or-cancel').attr("i18n-key") == "build" ) { // 原文字为建造，变换成取消建造

@@ -1,4 +1,4 @@
-console.log('main.js')
+console.log('加载main.js')
 
 /** 初始化
  ********/
@@ -304,71 +304,4 @@ function checkGoal() {
     }
 }
 
-/** 键盘输入 */
-let userKeyInput = ''
-$(document).on('keydown', function (event) {
-    const key = event.key;
-
-    // Add the pressed key to the userInput string
-    userKeyInput += key;
-
-    if (userKeyInput.includes(' ')) { // 空格暂停
-        gamePause();
-        userKeyInput = '';
-    }
-
-    // Check if the current input matches the cheat code
-    if (userKeyInput.toLowerCase().includes('paxamericana')) {
-        gameData.coinCount += 20000000000000
-        userKeyInput = '';
-    }
-    if (userKeyInput.toLowerCase().includes('gold')) {
-        gameData.coinCount += 50000
-        userKeyInput = '';
-    }
-    if (userKeyInput.toLowerCase().includes('money')) {
-        gameData.coinCount += 6000
-        userKeyInput = '';
-    }
-    if (userKeyInput.toLowerCase().includes('coin')) {
-        gameData.coinCount += 500
-        userKeyInput = '';
-    }
-    if (userKeyInput.toLowerCase().includes('timefly')) { // 快速过5天
-        clearInterval(currentTimer);
-        Array(5 * 24).fill().forEach(() => passiveHourEvent());
-        if (!gamePaused) {
-            currentTimer = setInterval(passiveHourEvent, 1000);
-        }
-        userKeyInput = '';
-    }
-    if (userKeyInput.toLowerCase().includes('tictoc')) { // 快速过1天
-        clearInterval(currentTimer);
-        Array(24).fill().forEach(() => passiveHourEvent());
-        if (!gamePaused) {
-            currentTimer = setInterval(passiveHourEvent, 1000);
-        }
-        userKeyInput = '';
-    }
-    if (userKeyInput.toLowerCase().includes('workhard')) { // 标准模板工作5天
-        clearInterval(currentTimer);
-        Array(5 * 24).fill().forEach(() => {
-            if (gameData.currDate.getHours() > 8) {
-                clickButton();
-                clearInterval(currentTimer);
-            } else {
-                passiveHourEvent();
-            }
-        });
-        if (!gamePaused) {
-            currentTimer = setInterval(passiveHourEvent, 1000);
-        }
-        userKeyInput = '';
-    }
-
-    // Optional: Clear user input if it exceeds the cheat code length to avoid unnecessary memory usage
-    if (userKeyInput.length > 20) {
-        userKeyInput = userKeyInput.substring(1);
-    }
-});
 

@@ -1,4 +1,4 @@
-console.log('save_load.js')
+console.log('加载save_load.js')
 
 function saveGame() {
     const alertMsg = translations[locale]["setting-saved"]
