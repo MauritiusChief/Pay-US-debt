@@ -10,7 +10,7 @@ $('#build-office').click(() => {
         $('#build-office .build-or-cancel').attr("i18n-key", "build-cancel") // 原文字为建造，变换成取消建造
     } else { // 当前为取消建筑
         delete gameData.constructList['office'];
-        deleteFromHiddenRemoved('#office');
+        if (gameData.propertyList['office' === undefined]) deleteFromHiddenRemoved('#office');
         deleteFromHiddenRemoved('#construct-office');
         $(`#office .icon`).html( $(`#office .icon`).html().replace('🏗️', "") );
         updateIconStore('office');
