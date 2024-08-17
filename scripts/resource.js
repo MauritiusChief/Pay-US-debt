@@ -45,6 +45,7 @@ $('#warehouse [type=checkbox]').on('change', () => {
 function changeWorkForce(increaseWorkForce, propertyName, workForceName) {
     employeeItem = gameData.employeeList[workForceName];
     propertyItem = gameData.propertyList[propertyName];
+    if (employeeItem === undefined) return; // 没有这种工人就直接退出
     if (increaseWorkForce) { // 增加劳动力
         if (propertyItem.amount > propertyItem.amountUsed && employeeItem.amount > employeeItem.amountWorking) {
             propertyItem.amountUsed++;

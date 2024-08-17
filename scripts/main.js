@@ -77,9 +77,7 @@ function everyHourEvent() {
         $('body').removeClass("dawn-mode");
     }
 
-    if (gameData.currDate.getHours() === 10) {
-        everyDayEvent();
-    }
+    if (gameData.currDate.getHours() === 10) everyDayEvent();
 
     // 无论时间流逝是定时触发还是点击触发都需执行的内容
     updateConstruct();
@@ -303,11 +301,10 @@ function updateConstruct() {
             // 建造完毕
             $(`#${id} .icon`).html( $(`#${id} .icon`).html().replace('🏗️', constructItem.icon) ); // 替换图标
             updateIconStore(id);
-            $('#build-office .build-or-cancel').attr("i18n-key", "build") // 原文字为取消建造，变换成建造
+            $(`#build-${id} .build-or-cancel`).attr("i18n-key", "build") // 原文字为取消建造，变换成建造
             addToPropertyList(id);
             delete gameData.constructList[id];
-            $(`#construct-office`).addClass('hidden'); // 加上隐藏
-            deleteFromHideRemoved('construct-office');
+            deleteFromHiddenRemoved(`#construct-${id}`);
         } else {
             let resource = gameData.resourceList['construct'];
             var constructLeft = resource.produce;
