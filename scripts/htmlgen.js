@@ -1,5 +1,8 @@
 console.log('加载htmlgen.js')
 
+// 生成partial模板：劳动力管理按钮
+Handlebars.registerPartial('_workforce_button', $('#partial-work-force-button-template').html());
+
 // 买载具模板
 const buttonVehicleData = [
     {
@@ -75,7 +78,7 @@ const vehicleData = [
         id: "excavator"
     }
 ];
-generateHtmlFromTemplate("vehicle", vehicleData);
+generateHtmlFromTemplate("market-shared", vehicleData, "vehicle");
 
 // 地产展示模板
 const fieldData = [
@@ -83,7 +86,7 @@ const fieldData = [
         id: "warehouse"
     }
 ];
-generateHtmlFromTemplate("field", fieldData);
+generateHtmlFromTemplate("market-shared", fieldData, "field");
 
 // 建筑展示模板
 const buildingData = [
@@ -141,11 +144,11 @@ const tableData = [
 ];
 generateHtmlFromTemplate("resource", tableData);
 
-function generateHtmlFromTemplate(name, data) {
-    const source = $(`#${name}-template`).html();
+function generateHtmlFromTemplate(templateName, data, containerName = templateName) {
+    const source = $(`#${templateName}-template`).html();
     const template = Handlebars.compile(source);
     const html = template(data);
-    $(`#${name}-container`).html(html);
+    $(`#${containerName}-container`).html(html);
 }
 
 // 解锁最基础的运力资源

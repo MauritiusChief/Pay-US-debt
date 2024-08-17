@@ -136,39 +136,25 @@
     </script>
     
 
-    <!-- 载具 展示模板 -->
-    <script id="vehicle-template" type="text/x-handlebars-template">
-        {{#each this}}
-            <div id="{{id}}" class="hastooltip can-hide hidden"><p>
-                <div id="install-{{id}}" class="can-hide hidden">
-                    <span i18n-key="mkt-install"></span><span class="install-month"></span><span i18n-key="mkt-month"></span>
-                    <span i18n-key="mkt-pay-ctd"></span><span class="pay-count-down"></span><span i18n-key="mkt-day"></span>
-                </div>
-                <span class="icon"></span><span class="tooltiptext"><span i18n-key="mkt-{{id}}">载具名称占位</span></span><br>
-                <span class="work-force use-worker can-hide hidden">
-                    <button type="decr">-</button>
-                    <span class="work-force-input">0</span>/<span class="work-force-limit">0</span>
-                    <button type="incr">+</button>
-                </span>
-                <span class="work-here"><input type="checkbox"><span i18n-key="mkt-{{id}}-prompt">在此工作占位</span></span>
-            </p></div>
-        {{/each}}
+    <!-- partial模板：管理劳动力按钮 -->
+    <script id="partial-work-force-button-template" type="text/x-handlebars-template">
+        <span class="work-force use-worker can-hide hidden"> <!-- 劳动力管理按钮 -->
+            <button type="decr">-</button>
+            <span class="work-force-input">0</span>/<span class="work-force-limit">0</span>
+            <button type="incr">+</button>
+        </span>
+        <span class="work-here"><input type="checkbox"><span i18n-key="mkt-{{id}}-prompt">在此工作占位</span></span>
     </script>
-    <!-- 地产 展示模板 -->
-    <script id="field-template" type="text/x-handlebars-template">
+    <!-- 载具、地产通用 展示模板 -->
+    <script id="market-shared-template" type="text/x-handlebars-template">
         {{#each this}}
             <div id="{{id}}" class="hastooltip can-hide hidden"><p>
-                <div id="install-{{id}}" class="can-hide hidden">
+                <div id="install-{{id}}" class="can-hide hidden"> <!-- 分期付款信息 -->
                     <span i18n-key="mkt-install"></span><span class="install-month"></span><span i18n-key="mkt-month"></span>
                     <span i18n-key="mkt-pay-ctd"></span><span class="pay-count-down"></span><span i18n-key="mkt-day"></span>
                 </div>
-                <span class="icon"></span><span class="tooltiptext"><span i18n-key="mkt-{{id}}">地产名称占位</span></span><br>
-                <span class="work-force use-worker can-hide hidden">
-                    <button type="decr">-</button>
-                    <span class="work-force-input">0</span>/<span class="work-force-limit">0</span>
-                    <button type="incr">+</button>
-                </span>
-                <span class="work-here"><input type="checkbox"><span i18n-key="mkt-{{id}}-prompt">在此工作占位</span></span>
+                <span class="icon"></span><span class="tooltiptext"><span i18n-key="mkt-{{id}}">载具/地产名称占位</span></span><br>
+                {{> _workforce_button}}
             </p></div>
         {{/each}}
     </script>
@@ -176,18 +162,13 @@
     <script id="building-template" type="text/x-handlebars-template">
         {{#each this}}
             <div id="{{id}}" class="hastooltip can-hide hidden"><p>
-                <div id="construct-{{id}}" class="can-hide hidden">
+                <div id="construct-{{id}}" class="can-hide hidden"> <!-- 建造信息 -->
                     <span i18n-key="build-construct-input">建造力投入 </span><span class="build-construct-input"></span><span>㎡</span><br>
                     <span i18n-key="build-construct-done">已建筑面积 </span><span class="build-construct-done"></span><span>㎡ / </span>
                     <span class="build-construct-total"></span>㎡
                 </div>
                 <span class="icon"></span><span class="tooltiptext"><span i18n-key="mkt-{{id}}">建筑名称占位</span></span><br>
-                <span class="work-force use-worker can-hide hidden">
-                    <button type="decr">-</button>
-                    <span class="work-force-input">0</span>/<span class="work-force-limit">0</span>
-                    <button type="incr">+</button>
-                </span>
-                <span class="work-here"><input type="checkbox"><span i18n-key="mkt-{{id}}-prompt">在此工作占位</span></span>
+                {{> _workforce_button}}
             </p></div>
         {{/each}}
     </script>
