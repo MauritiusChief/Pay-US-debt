@@ -76,6 +76,7 @@ translations['zh'] = {
     "prop-self": "这是你自己",
     "prop-laptop": "性能很差，但足以运行办公软件",
     "prop-use-laptop": "管理劳动力",
+    "prop-use-laptop-alt": "兼职外包",
     "prop-zombie-lore": "正在担心胆固醇过高",
     "prop-vampire-lore": "喜欢收集遮阳伞和防晒霜",
     "dismiss-button": "解雇",

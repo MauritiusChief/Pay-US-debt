@@ -83,6 +83,8 @@ function updateDisplay() {
         tableRow.find(".income .num").html((netProduct * resource.price * priceMultiplier).toFixed(2));
         tableRow.find(".income .price").html(netProduct < 0 ? -(resource.price * priceMultiplier).toFixed(2).toLocaleString() : resource.price.toFixed(2).toLocaleString());
     }
+    // 管理力的小彩蛋
+    $("#use-laptop-lore").attr('i18n-key', gameData.resourceList['manage'].consume > 0 ? "prop-use-laptop" : "prop-use-laptop-alt")
 
     $("[i18n-key]").each(translateElement); // 更新文本翻译
 }

@@ -76,6 +76,7 @@ translations['en'] = {
     "prop-self": "This is you.",
     "prop-laptop": "Poor performance, but enough to run office software.",
     "prop-use-laptop": "Manage workforce",
+    "prop-use-laptop-alt": "Take outsourcing",
     "prop-zombie-lore": "Worrying about high cholesterol.",
     "prop-vampire-lore": "Likes to collect parasols and sunscreen.",
     "dismiss-button": "Dismiss",
