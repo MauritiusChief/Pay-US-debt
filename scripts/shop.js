@@ -89,7 +89,7 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
         addToPropertyList(buyId);
 
         $(`#${buyId} .icon`).html( $(`#${buyId} .icon`).html()+buyIcon );
-        gameData.iconStore[`#${buyId} .icon`] = $(`#${buyId} .icon`).html();
+        updateIconStore(buyId);
         addToHiddenRemoved(`#${buyId}`);
 
     } else if ( buyPayCountDown > 0 && gameData.installPay) { // console.log("进入分期付款流程")
@@ -110,7 +110,7 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
             addToPropertyList(buyId);
             
             $(`#${buyId} .icon`).html( $(`#${buyId} .icon`).html()+buyIcon );
-            gameData.iconStore[`#${buyId} .icon`] = $(`#${buyId} .icon`).html();
+            updateIconStore(buyId);
             $(`#${buyId} .install-month`).html( buyInstallMonth );
             $(`#${buyId} .pay-count-down`).html( buyPayCountDown );
             addToHiddenRemoved(`#install-${buyId}`);
@@ -137,7 +137,7 @@ function employEvent(empId, iconF, iconM) {
     gameData.employeeGStack[empId].push(gender);
     empIcon = gender === 'F' ? iconF : iconM;
     $(`#${empId} .icon`).html( $(`#${empId} .icon`).html()+empIcon );
-    gameData.iconStore[`#${empId} .icon`] = $(`#${empId} .icon`).html();
+    updateIconStore(empId);
     addToHiddenRemoved(`#${empId}`);
 
     // 解锁解雇按钮
@@ -172,7 +172,7 @@ function dismissEvent(empId, iconF, iconM) {
     reversedHtml = reversedHtml.split('').reverse().join('');
 
     icon.html( reversedHtml );
-    gameData.iconStore[`#${empId} .icon`] = icon.html();
+    updateIconStore(empId);
 
     
 

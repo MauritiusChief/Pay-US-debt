@@ -288,7 +288,7 @@ function updateInstallment() {
 
             icon = $(`#${id} .icon`);
             icon.html(icon.html().replace(gameData.installmentList[id].icon, ""));
-            gameData.iconStore[`#${id} .icon`] = icon.html();
+            updateIconStore(id);
             addToHiddenRemoved(`#install-${id}`);
             delete gameData.installmentList[id]; // 移除这个分期付款
         }
