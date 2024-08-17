@@ -53,6 +53,8 @@ translations['zh'] = {
     "mkt-zombie-lore": "勤奋但脑子不太好",
     "mkt-vampire": "白脸专家",
     "mkt-vampire-lore": "毕业于德古拉堡大学",
+    "mkt-office": "办公室",
+    "mkt-office-prompt": "在办公室办公",
 
     "resource": "资源",
     "resource-name": "名称",

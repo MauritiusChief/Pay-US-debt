@@ -82,6 +82,7 @@ function everyHourEvent() {
     }
 
     // 无论时间流逝是定时触发还是点击触发都需执行的内容
+    updateConstruct();
     updateShop();
     updateResource();
     gameData.coinCount += actuIncomePerH;
@@ -292,6 +293,42 @@ function updateInstallment() {
             $(`#install-${id}`).addClass('hidden');
             delete gameData.removeHidden[`#install-${id}`];
             delete gameData.installmentList[id]; // 移除这个分期付款
+        }
+    }
+}
+
+// 每小时只能执行一次，否则会出现反复投入建造力的情况
+function updateConstruct() {
+    for (let id in gameData.constructList) {
+        let constructItem = gameData.constructList[id];
+        if (constructItem.constructInputed > constructItem.constructTotal) {
+            // 建造完毕
+            $(`#${id} .icon`).html( $(`#${id} .icon`).html().replace('🏗️', constructItem.icon) ); // 替换图标
+            updateIconStore(id);
+            $('#build-office .build-or-cancel').attr("i18n-key", "build") // 原文字为取消建造，变换成建造
+            addToPropertyList(id);
+            delete gameData.constructList[id];
+            $(`#construct-office`).addClass('hidden'); // 加上隐藏
+            deleteFromHideRemoved('construct-office');
+        } else {
+            let resource = gameData.resourceList['construct'];
+            var constructLeft = resource.produce;
+            for (consId in gameData.constructList) {
+                // 消耗的建筑力是动态的：若生产小于最小限制，则消耗最小限制；若大于最大限制，则消耗最大限制；若在限制当中，则消耗
+                let lowerLimit = buildList[`build-${consId}`].constructInput[0];
+                let upperLimit = buildList[`build-${consId}`].constructInput[1];
+                var constructToConsume = upperLimit;
+                if (constructLeft < lowerLimit) {
+                    constructToConsume = lowerLimit;
+                } else if (constructLeft < upperLimit) {
+                    constructToConsume = constructLeft;
+                } // 否则保持不变，还是upperLimit
+                constructItem.constructInputed += constructToConsume;
+                // 建筑信息更新
+            }
+            $(`#${id} .build-construct-input`).html( constructToConsume );
+            $(`#${id} .build-construct-done`).html( constructItem.constructInputed );
+            $(`#${id} .build-construct-total`).html( constructItem.constructTotal );
         }
     }
 }

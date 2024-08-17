@@ -53,6 +53,8 @@ translations['en'] = {
     "mkt-zombie-lore": "Hard-working, but not very good at brains.",
     "mkt-vampire": "Palefase Expert",
     "mkt-vampire-lore": "Graduated from the University of Fort Dracula.",
+    "mkt-office": "Office",
+    "mkt-office-prompt": "Work in Office",
 
     "resource": "Resource",
     "resource-name": "Name",

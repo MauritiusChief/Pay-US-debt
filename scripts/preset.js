@@ -51,7 +51,7 @@ for (let id in marketList) {
     item = marketList[id];
     item.installPrice = genDividedPrice(item.price, 1.1, item.installMonth, marketStep[id].step)
 }
-//示例：{id:'buy-mini-truck', price:3500, installPrice:640, installMonth:6, step:10},
+//示例：{id:'buy-mini-truck', price:3500, installPrice:640, installMonth:6},
 const buildList = {
     'build-office': { buildOn: 'warehouse', constructInput: [6, 15], constructTotal: 400 }
 }
@@ -70,7 +70,7 @@ gameData.propertyList = {};
 gameData.employeeList = {};
 //示例employeeList:{ employee-name': {amount:1, amountWorking:0, maintainStatus:5, maintainDecrChance:0.5} }
 gameData.constructList = {}; // 记录建造信息，注：正在建造时 不视为拥有
-//示例constructList:{ 'building-name': {icon:'🎈', installPrice:10, installMonth:6, payCountDown:30} }
+//示例constructList:{ 'building-name': {icon:'🎈', constructInputed:0, constructTotal: 400} }
 gameData.employeeGStack = {}; // F 代表女，M 代表男
 let initialResourceList = {
     'transport': { produce: 0, consume: 0, stock: 0, price: 0.5, buy: 1.5 },
@@ -164,7 +164,7 @@ function updateResource() {
         resource.produce = 0;
         resource.consume = 0;
 
-        // 点击生产的资源
+        /** 点击生产的资源 **/ 
         if (gameData.selfResourceList[id] !== undefined) {
             let selfResource = gameData.selfResourceList[id];
             resource.produce += selfResource.produce * gameData.workStat; // 根据工作状态调整产量
@@ -173,7 +173,7 @@ function updateResource() {
             estiIncomePerH += selfResource.produce * resource.price * priceMultiplier;
         }
         
-        // 自动生产的资源
+        /** 被动生产&消耗的资源 **/
         let propertyMultProduce = 0;
         for (propId in gameData.propertyList) {
             // console.log(gameData.propertyList[propId])
@@ -193,12 +193,30 @@ function updateResource() {
         }
         resource.produce *= (1 + propertyMultProduce / 100); // 对资源产量进行百分比加成
         
-        // 劳动力所消耗的管理力
+        /** 劳动力所消耗的管理力资源 **/ 
         for (empId in gameData.employeeList) {
             let employee = gameData.employeeList[empId];
             let employeeAddConsume = getValueByPropertyName(consumeAddMapping, id, empId); // 数值消耗
             resource.consume += employeeAddConsume * employee.amountWorking;
         }
+        /** 建筑所消耗的建筑力资源 **/
+        if (id === 'construct') {
+            var constructLeft = resource.produce;
+            for (consId in gameData.constructList) {
+                // 消耗的建筑力是动态的：若生产小于最小限制，则消耗最小限制；若大于最大限制，则消耗最大限制；若在限制当中，则消耗
+                let lowerLimit = buildList[`build-${consId}`].constructInput[0];
+                let upperLimit = buildList[`build-${consId}`].constructInput[1];
+                var constructToConsume = upperLimit;
+                if (constructLeft < lowerLimit) {
+                    constructToConsume = lowerLimit;
+                } else if (constructLeft < upperLimit) {
+                    constructToConsume = constructLeft;
+                } // 否则保持不变，还是upperLimit
+                constructLeft -= constructToConsume;
+                resource.consume += constructToConsume;
+            }
+        }
+        
         // console.log(propertyUsed)
         // 计算总资源
         let netProduct = resource.produce - resource.consume;
@@ -242,4 +260,27 @@ function genDividedPrice(value, multiplier, divisor, step) {
     const dividedValue = value * multiplier / divisor;
     const roundedValue = Math.round(dividedValue / step) * step;
     return roundedValue;
+}
+
+// 在shop和build中使用的函数，给propertyList添加东西用
+function addToPropertyList(id) {
+    propertyItem = gameData.propertyList[id];
+    if ( propertyItem !== undefined ) {// 已有这个商品
+        propertyItem.amount++;
+    } else { // 没有这个商品，创建这个商品
+        gameData.propertyList[id] = {amount: 1, amountUsed: 0, maintainStatus: 5, maintainDecrChance: 0.2};
+    }
+}
+
+// 方便修改数据的函数
+function updateIconStore(containerId) {
+    gameData.iconStore[`#${containerId} .icon`] = $(`#${containerId} .icon`).html();
+}
+function addToHiddenRemoved(id) {
+    $(`#${id}`).removeClass("hidden");
+    gameData.removeHidden[`#${id}`] = 1;
+}
+function deleteFromHiddenRemoved(id) {
+    $(`#${id}`).addClass('hidden');
+    delete gameData.removeHidden[`#${id}`];
 }

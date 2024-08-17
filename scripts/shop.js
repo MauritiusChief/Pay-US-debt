@@ -102,12 +102,7 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
         // console.log("进入全款流程")
         gameData.coinCount -= marketItem.price;
         // 资产列表添加商品
-        propertyItem = gameData.propertyList[buyId];
-        if ( propertyItem !== undefined ) {// 已有这个商品
-            propertyItem.amount++;
-        } else { // 没有这个商品，创建这个商品
-            gameData.propertyList[buyId] = {amount: 1, amountUsed: 0, maintainStatus: 5, maintainDecrChance: 0.2};
-        }
+        addToPropertyList(buyId);
 
         $(`#${buyId} .icon`).html( $(`#${buyId} .icon`).html()+buyIcon );
         gameData.iconStore[`#${buyId} .icon`] = $(`#${buyId} .icon`).html();
@@ -120,23 +115,16 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
 
         installmentItem = gameData.installmentList[buyId];
         if ( installmentItem !== undefined ) { // console.log('已有分期付款')
-            if (installmentItem.installMonth > 1) { // 还有1期以上
-                // console.log('还有1期以上')
+            if (installmentItem.installMonth > 1) { // console.log('还有1期以上')
                 installmentItem.installMonth--;
                 installmentItem.payCountDown = 30;
-            }  else { // 只剩1期，移除该分期付款
-                // console.log('只剩1期，移除该分期付款')
+            }  else { // console.log('只剩1期，移除该分期付款')
                 delete gameData.installmentList[buyId]
             }
         } else { // console.log('没有分期付款，创建新分期付款')
             gameData.installmentList[buyId] = {icon: buyIcon, installPrice: buyInstallPrice, installMonth: buyInstallMonth, payCountDown: buyPayCountDown};
             // 添加商品以及分期付款标识
-            propertyItem = gameData.propertyList[buyId];
-            if ( propertyItem !== undefined ) {// 已有这个商品
-                propertyItem.amount++;
-            } else { // 没有这个商品，创建这个商品
-                gameData.propertyList[buyId] = {amount: 1, amountUsed: 0, maintainStatus: 5, maintainDecrChance: 0.2};
-            }
+            addToPropertyList(buyId);
             
             $(`#${buyId} .icon`).html( $(`#${buyId} .icon`).html()+buyIcon );
             gameData.iconStore[`#${buyId} .icon`] = $(`#${buyId} .icon`).html();
