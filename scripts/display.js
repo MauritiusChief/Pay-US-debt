@@ -18,7 +18,7 @@ function updateDisplay() {
      */
     let selfElement = $("#self .icon");
     if (gameData.health >= 0) {
-        addToHiddenRemoved("#buy-health-elixir");
+        deleteFromHiddenRemoved("#buy-health-elixir");
         if (gameData.currDate.getHours() < 9 && gameData.workStat == 0) { // 0-8点
             selfElement.html('🛌');
         } else if (gameData.currDate.getHours() > 16 && gameData.workStat == 0) { // 17-23点
