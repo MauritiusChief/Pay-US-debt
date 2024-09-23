@@ -203,6 +203,7 @@ function updateResource() {
         if (id === 'construct') {
             var constructLeft = resource.produce;
             for (consId in gameData.constructList) {
+                // TODO: 做成通用的method
                 // 消耗的建筑力是动态的：若生产小于最小限制，则消耗最小限制；若大于最大限制，则消耗最大限制；若在限制当中，则消耗
                 let lowerLimit = buildList[`build-${consId}`].constructInput[0];
                 let upperLimit = buildList[`build-${consId}`].constructInput[1];

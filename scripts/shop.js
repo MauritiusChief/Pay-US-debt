@@ -91,6 +91,7 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
         $(`#${buyId} .icon`).html( $(`#${buyId} .icon`).html()+buyIcon );
         updateIconStore(buyId);
         addToHiddenRemoved(`#${buyId}`);
+        console.log( $(`#${buyId} .work-force`) )
 
     } else if ( buyPayCountDown > 0 && gameData.installPay) { // console.log("进入分期付款流程")
         // 这部分代码只有运行分期付款的商品才执行
