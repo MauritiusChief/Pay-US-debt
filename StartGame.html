@@ -43,10 +43,6 @@
             <div id="employ-container"></div><!-- 雇佣按钮 -->
 
         </div>
-        <div id="build" class="grid-panel">
-            <h2 i18n-key="build">建造</h2>
-            <div id="build-container"></div><!-- 地产列表 -->
-        </div>
         <div id="model-display" class="grid-panel">
             <h2 i18n-key="property">资产</h2>
             <div id="self" type="person" class="hastooltip">
@@ -66,7 +62,6 @@
 
             <div id="vehicle-container"></div><!-- 资产列表 -->
             <div id="field-container"></div><!-- 地产列表 -->
-            <div id="building-container"></div><!-- 建筑列表 -->
 
             <h2 i18n-key="resource">资源</h2>
             <div id="resource-container"></div><!-- 资源列表 -->
@@ -122,19 +117,6 @@
         {{/each}}
     </script>
 
-    <!-- 建造 按钮模板 -->
-    <script id="build-template" type="text/x-handlebars-template">
-        {{#each this}}
-        <button id="build-{{id}}" class="build hastooltip">
-            <span class="build-or-cancel" i18n-key="build">建造</span><span i18n-key="build-{{id}}">建造名称占位</span>
-            <span class="tooltiptext">
-                <span i18n-key="build-construct-input">建造力投入 </span>{{input}}㎡/<span i18n-key="reso-h">h</span><br>
-                <span i18n-key="build-construct-total">建筑面积 </span>{{total}}㎡
-            </span>
-        </button>
-        {{/each}}
-    </script>
-    
 
     <!-- partial模板：管理劳动力按钮 -->
     <script id="partial-work-force-button-template" type="text/x-handlebars-template">
@@ -154,20 +136,6 @@
                     <span i18n-key="mkt-pay-ctd"></span><span class="pay-count-down"></span><span i18n-key="mkt-day"></span>
                 </div>
                 <span class="icon"></span><span class="tooltiptext"><span i18n-key="mkt-{{id}}">载具/地产名称占位</span></span><br>
-                {{> _workforce_button}}
-            </p></div>
-        {{/each}}
-    </script>
-    <!-- 建筑 展示模板 -->
-    <script id="building-template" type="text/x-handlebars-template">
-        {{#each this}}
-            <div id="{{id}}" class="hastooltip can-hide hidden"><p>
-                <div id="construct-{{id}}" class="can-hide hidden"> <!-- 建造信息 -->
-                    <span i18n-key="build-construct-input">建造力投入 </span><span class="build-construct-input"></span><span>㎡</span><br>
-                    <span i18n-key="build-construct-done">已建筑面积 </span><span class="build-construct-done"></span><span>㎡ / </span>
-                    <span class="build-construct-total"></span>㎡
-                </div>
-                <span class="icon"></span><span class="tooltiptext"><span i18n-key="mkt-{{id}}">建筑名称占位</span></span><br>
                 {{> _workforce_button}}
             </p></div>
         {{/each}}
