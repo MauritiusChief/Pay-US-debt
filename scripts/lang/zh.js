@@ -69,8 +69,8 @@ translations['zh'] = {
     "reso-transport": "运力",
     "reso-construct": "建造力",
     "reso-manage": "管理力",
-    "reso-gear": "传动零件",
-    "reso-nut-bolt": "连接零件",
+    "reso-gear": "齿轮",
+    "reso-nut-bolt": "螺母螺栓",
     "reso-steel": "钢材",
 
     "property": "资产",

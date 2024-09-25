@@ -17,13 +17,13 @@ $('#buy-semi-truck').click(() => {
     addToHiddenRemoved("#nut-bolt");
 })
 $('#buy-excavator').click(() => {
-    buyEvent('excavator', '<img src="icons/excavator.svg" alt="🚜" class="svg-icon">', 30);
+    buyEvent('excavator', '🏗️', 30);
     addToHiddenRemoved("#gear");
     addToHiddenRemoved("#nut-bolt");
     addToHiddenRemoved("#construct");
 })
 $('#buy-warehouse').click(() => {
-    buyEvent('warehouse', '<img src="icons/warehouse.svg" alt="📦" class="svg-icon">', 30);
+    buyEvent('warehouse', '🏚️', 30);
 })
 
 $('#buy-health-elixir').click(() => {
