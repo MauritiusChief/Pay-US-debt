@@ -12,6 +12,10 @@ $(document).on('keydown', function (event) {
         gamePause();
         userKeyInput = '';
     }
+    if (userKeyInput.includes('\\')) {
+        if (gameData.health >= 0) clickButton();
+        userKeyInput = '';
+    }
 
     // Define a function to handle cheat code actions
     function checkCheatCode(cheat, action) {

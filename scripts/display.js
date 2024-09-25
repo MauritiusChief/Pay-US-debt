@@ -4,7 +4,7 @@ console.log('03-加载display.js')
  *********************************/
 function updateDisplay() {
     // 基本文本更新
-    $('#coin-count').text(`${gameData.coinCount.toFixed(2).toLocaleString()} $`);
+    $('#coin-count').text(`${parseFloat(gameData.coinCount.toFixed(2)).toLocaleString()} $`);
     $('#coin-per-hour').text(`${actuIncomePerH.toFixed(2).toLocaleString()} $`);
     $('#coins-per-click').text(`${estiIncomePerH.toLocaleString()} $`);
     $('#goal-remain').text(`${(gameData.goal - gameData.coinCount) > 0 ? parseFloat((gameData.goal - gameData.coinCount).toFixed(2)).toLocaleString() : 0} $`);
