@@ -45,7 +45,7 @@ $('#employ-zombie').click(() => {
     employEvent('zombie', '🧟‍♀️', '🧟‍♂️');
     addToHiddenRemoved("#manage");
     addToHiddenRemoved(".use-worker");
-    if (gameData.propertyList['laptop'] === undefined) {
+    if (!'laptop' in gameData.propertyList) {
        addToHiddenRemoved("#buy-laptop");
     }
 })
@@ -56,7 +56,7 @@ $('#employ-vampire').click(() => {
     employEvent('vampire', '🧛‍♀️', '🧛‍♂️');
     addToHiddenRemoved("#manage");
     addToHiddenRemoved(".use-worker");
-    if (gameData.propertyList['laptop'] === undefined) {
+    if (!'laptop' in gameData.propertyList) {
        addToHiddenRemoved("#buy-laptop");
     }
 })

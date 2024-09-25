@@ -247,7 +247,7 @@ function updateShop() {
         currentAmount = correspondEmployee ? correspondEmployee.amount : 1;
         limitPrice = employList[id].salary * currentAmount;
         // 限制：至少得发的起所有员工一个月的工资
-        if (gameData.coinCount > limitPrice) {
+        if (gameData.coinCount > limitPrice && 'laptop' in gameData.propertyList) {
             $(`#${id}`).prop('disabled', false);
             delete gameData.disabledButton[`#${id}`];
         } else {
