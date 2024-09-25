@@ -1,4 +1,4 @@
-console.log('加载localization.js')
+console.log('01-加载localization.js')
 
 const defaultLocale = "zh";
 const supportedLocale = ["zh", "en"];

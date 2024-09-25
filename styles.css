@@ -16,8 +16,19 @@ body div {
 }
 
 #total-display { grid-area: header; }
-#shop { grid-area: menu; }
-#build { grid-area: menu2; }
+#shop-title { grid-area: sh-title; }
+#shop-left { grid-area: sh-left; }
+#shop-right { grid-area: sh-right; }
+#shop-footer { grid-area: sh-footer; }
+#shop {
+    grid-area: menu;
+    display: grid;
+    grid-template-areas: 
+    'sh-title sh-title'
+    'sh-left sh-right'
+    'sh-footer sh-footer';
+    gap: 10px;
+}
 #clicker { grid-area: main; }
 #model-display { grid-area: right; }
 #notice { grid-area: footer; }
@@ -26,10 +37,8 @@ body div {
 .grid-container {
     display: grid;
     grid-template-areas:
-    'menu menu2 header right'
-    'menu menu2 main right'
-    'menu menu2 footer right'
-    'menu menu2 side right';
+    'menu header right footer'
+    'menu main right side';
     gap: 20px;
     padding: 10px;
 }
@@ -47,8 +56,7 @@ body div {
         grid-template-areas:
             'menu header right'
             'menu main right'
-            'menu2 footer right'
-            'menu2 side right';
+            'menu side footer';
     }
     .grid-container .grid-panel {
         padding: 10px 15px;
@@ -61,8 +69,8 @@ body div {
             'header right'
             'main right'
             'footer right'
-            'menu menu2'
-            'side side';
+            'menu side'
+            'menu side';
     }
 
     .grid-container .grid-panel {
@@ -70,7 +78,7 @@ body div {
     }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 646px) {
     .grid-container {
         grid-template-areas:
             'header'
@@ -78,7 +86,6 @@ body div {
             'right'
             'footer'
             'menu'
-            'menu2'
             'side';
         gap: 10px;
         padding: 5px;

@@ -1,4 +1,4 @@
-console.log('加载resource.js')
+console.log('07-加载resource.js')
 
 $('#laptop [type=checkbox]').on('change', () => {
     checkBoxEvent('laptop');
@@ -86,9 +86,9 @@ function checkBoxEvent(propertyName) {
         $('#model-display [type=checkbox]').not(thisName).prop('checked', false); // 选择所有其他勾选盒，取消勾选
         // console.log(gameData.workingProperty)
         // 根据尚未被改变的gameData.workingProperty，判断上一个被使用的资产是什么
-        if (gameData.propertyList[gameData.workingProperty] !== undefined) gameData.propertyList[gameData.workingProperty].amountUsed--;
+        if (gameData.workingProperty in gameData.propertyList) gameData.propertyList[gameData.workingProperty].amountUsed--;
         if ( gameData.propertyList[propertyName].amount > gameData.propertyList[propertyName].amountUsed) { // 确保有空余资产给小人自己用
-            if (gameData.propertyList[propertyName] !== undefined) gameData.propertyList[propertyName].amountUsed++;
+            if (propertyName in gameData.propertyList) gameData.propertyList[propertyName].amountUsed++;
             gameData.workingProperty = propertyName; // gameData.workingProperty更新
         } else { // 否则取消勾选此勾选盒
             $(thisName).prop('checked', false);
@@ -98,7 +98,7 @@ function checkBoxEvent(propertyName) {
 
     } else { // 此勾选盒不勾选的情况
 
-        if (gameData.propertyList[propertyName] !== undefined) gameData.propertyList[propertyName].amountUsed--;
+        if (propertyName in gameData.propertyList) gameData.propertyList[propertyName].amountUsed--;
         gameData.workingProperty = ''
         // console.log(gameData.propertyList[propertyName])
 

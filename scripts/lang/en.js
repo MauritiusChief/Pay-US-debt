@@ -69,8 +69,8 @@ translations['en'] = {
     "reso-transport": "Transportation",
     "reso-construct": "Construction",
     "reso-manage": "Management",
-    "reso-gear": "Transmission Parts",
-    "reso-nut-bolt": "Connecting Parts",
+    "reso-gear": "Gears",
+    "reso-nut-bolt": "Nut & Bolt",
     "reso-steel": "Steel",
 
     "property": "Property",

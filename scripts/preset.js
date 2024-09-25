@@ -1,4 +1,4 @@
-console.log('加载preset.js')
+console.log('02-加载preset.js')
 
 /* 存储所有游戏数据的变量 */
 // 实在想不到还有什么别的方法可以快速实现存储数据了
@@ -52,9 +52,6 @@ for (let id in marketList) {
     item.installPrice = genDividedPrice(item.price, 1.1, item.installMonth, marketStep[id].step)
 }
 //示例：{id:'buy-mini-truck', price:3500, installPrice:640, installMonth:6},
-const buildList = {
-    'build-office': { buildOn: 'warehouse', constructInput: [6, 15], constructTotal: 400 }
-}
 const shopList = { // 不可分期商品列表
     'buy-health-elixir': { price: 149.99 },
     'buy-laptop': { price: 259.99 }, // 买了之后解锁产出管理力的能力
@@ -198,24 +195,6 @@ function updateResource() {
             let employee = gameData.employeeList[empId];
             let employeeAddConsume = getValueByPropertyName(consumeAddMapping, id, empId); // 数值消耗
             resource.consume += employeeAddConsume * employee.amountWorking;
-        }
-        /** 建筑所消耗的建筑力资源 **/
-        if (id === 'construct') {
-            var constructLeft = resource.produce;
-            for (consId in gameData.constructList) {
-                // TODO: 做成通用的method
-                // 消耗的建筑力是动态的：若生产小于最小限制，则消耗最小限制；若大于最大限制，则消耗最大限制；若在限制当中，则消耗
-                let lowerLimit = buildList[`build-${consId}`].constructInput[0];
-                let upperLimit = buildList[`build-${consId}`].constructInput[1];
-                var constructToConsume = upperLimit;
-                if (constructLeft < lowerLimit) {
-                    constructToConsume = lowerLimit;
-                } else if (constructLeft < upperLimit) {
-                    constructToConsume = constructLeft;
-                } // 否则保持不变，还是upperLimit
-                constructLeft -= constructToConsume;
-                resource.consume += constructToConsume;
-            }
         }
         
         // console.log(propertyUsed)

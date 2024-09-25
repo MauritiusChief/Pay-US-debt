@@ -1,4 +1,4 @@
-console.log('加载htmlgen.js')
+console.log('05-加载htmlgen.js')
 
 // 生成partial模板：劳动力管理按钮
 Handlebars.registerPartial('_workforce_button', $('#partial-work-force-button-template').html());
@@ -56,16 +56,6 @@ const employData = [
 ];
 generateHtmlFromTemplate("employ", employData);
 
-// 建造模板
-const buildData = [
-    {
-        id: "office",
-        input: buildList["build-office"].constructInput[0] + "~" + buildList["build-office"].constructInput[1],
-        total: buildList["build-office"].constructTotal,
-    }
-];
-generateHtmlFromTemplate("build", buildData);
-
 // 载具展示模板
 const vehicleData = [
     {
@@ -87,14 +77,6 @@ const fieldData = [
     }
 ];
 generateHtmlFromTemplate("market-shared", fieldData, "field");
-
-// 建筑展示模板
-const buildingData = [
-    {
-        id: "office"
-    }
-];
-generateHtmlFromTemplate("building", buildingData);
 
 // 劳动力展示模板
 const workForceData = [
