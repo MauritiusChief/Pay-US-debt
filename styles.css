@@ -16,7 +16,19 @@ body div {
 }
 
 #total-display { grid-area: header; }
-#shop { grid-area: menu; }
+#shop-title { grid-area: sh-title; }
+#shop-left { grid-area: sh-left; }
+#shop-right { grid-area: sh-right; }
+#shop-footer { grid-area: sh-footer; }
+#shop {
+    grid-area: menu;
+    display: grid;
+    grid-template-areas: 
+    'sh-title sh-title'
+    'sh-left sh-right'
+    'sh-footer sh-footer';
+    gap: 10px;
+}
 #clicker { grid-area: main; }
 #model-display { grid-area: right; }
 #notice { grid-area: footer; }
@@ -66,7 +78,7 @@ body div {
     }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 646px) {
     .grid-container {
         grid-template-areas:
             'header'
