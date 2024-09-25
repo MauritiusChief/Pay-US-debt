@@ -126,14 +126,12 @@
 
     <!-- partial模板：管理劳动力按钮 -->
     <script id="partial-work-force-button-template" type="text/x-handlebars-template">
-        <span class="work-force can-hide hidden">
-            <span class="use-worker"> <!-- 劳动力管理按钮 -->
-                <button type="decr">-</button>
-                <span class="work-force-input">0</span>/<span class="work-force-limit">0</span>
-                <button type="incr">+</button>
-            </span>
-            <span class="work-here"><input type="checkbox"><span i18n-key="mkt-{{id}}-prompt">在此工作占位</span></span>
+        <span class="work-force use-worker can-hide hidden"> <!-- 劳动力管理按钮 -->
+            <button type="decr">-</button>
+            <span class="work-force-input">0</span>/<span class="work-force-limit">0</span>
+            <button type="incr">+</button>
         </span>
+        <span class="work-here"><input type="checkbox"><span i18n-key="mkt-{{id}}-prompt">在此工作占位</span></span>
     </script>
     <!-- 载具、地产通用 展示模板 -->
     <script id="market-shared-template" type="text/x-handlebars-template">
