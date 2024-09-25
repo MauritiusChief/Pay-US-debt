@@ -1,4 +1,4 @@
-console.log('加载display.js')
+console.log('03-加载display.js')
 
 /** 更新显示（不是所有显示都在此更新）
  *********************************/

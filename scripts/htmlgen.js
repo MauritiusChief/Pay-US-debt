@@ -1,4 +1,4 @@
-console.log('加载htmlgen.js')
+console.log('05-加载htmlgen.js')
 
 // 生成partial模板：劳动力管理按钮
 Handlebars.registerPartial('_workforce_button', $('#partial-work-force-button-template').html());

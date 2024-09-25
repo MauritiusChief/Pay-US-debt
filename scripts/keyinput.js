@@ -1,4 +1,4 @@
-console.log('加载keyinput.js')
+console.log('09-加载keyinput.js')
 
 /** 键盘输入 */
 let userKeyInput = ''

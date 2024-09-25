@@ -1,4 +1,4 @@
-console.log('加载main.js')
+console.log('08-加载main.js')
 
 /** 初始化
  ********/

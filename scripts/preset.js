@@ -1,4 +1,4 @@
-console.log('加载preset.js')
+console.log('02-加载preset.js')
 
 /* 存储所有游戏数据的变量 */
 // 实在想不到还有什么别的方法可以快速实现存储数据了

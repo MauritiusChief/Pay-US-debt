@@ -1,4 +1,4 @@
-console.log('加载shop.js')
+console.log('06-加载shop.js')
 
 $('#install-pay [type=checkbox]').on('change', () => {
     gameData.installPay = !gameData.installPay;
