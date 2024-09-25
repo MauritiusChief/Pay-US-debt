@@ -6,6 +6,7 @@ $('#install-pay [type=checkbox]').on('change', () => {
     updateShop();
     updateDisplay();
 })
+// 可分期购买的物品
 $('#buy-mini-truck').click(() => {
     buyEvent('mini-truck', '🚚', 30);
     addToHiddenRemoved("#gear");
@@ -25,7 +26,7 @@ $('#buy-excavator').click(() => {
 $('#buy-warehouse').click(() => {
     buyEvent('warehouse', '🏚️', 30);
 })
-
+// 解锁与辅助性质的物品
 $('#buy-health-elixir').click(() => {
     shopItem = shopList['buy-health-elixir']
     gameData.coinCount -= shopItem.price;
@@ -41,6 +42,7 @@ $('#buy-laptop').click(() => {
     deleteFromHiddenRemoved("#buy-laptop");
 })
 
+// 雇佣
 $('#employ-zombie').click(() => {
     employEvent('zombie', '🧟‍♀️', '🧟‍♂️');
     addToHiddenRemoved("#manage");
@@ -132,6 +134,7 @@ function employEvent(empId, iconF, iconM) {
     } else { // 没有这个商品，创建这个商品
         gameData.employeeList[empId] = {amount: 1, amountWorking: 0, maintainStatus: 5, maintainDecrChance: 0.2};
     }
+    gameData.coinCount -= empSalary/4;
     gender = Math.random() > 0.5 ? 'F' : 'M';
     gameData.employeeGStack[empId] ? {} : gameData.employeeGStack[empId] = [];
     gameData.employeeGStack[empId].push(gender);
@@ -152,6 +155,7 @@ function employEvent(empId, iconF, iconM) {
 
 function dismissEvent(empId, iconF, iconM) {
     employeeItem = gameData.employeeList[empId];
+    empSalary = employList['employ-'+empId].salary;
     if (employeeItem.amount > 1) { // 劳动力数量-1
         employeeItem.amount--;
         // 锁定按钮，避免人被解雇了其工作的资产还在运转
@@ -163,6 +167,7 @@ function dismissEvent(empId, iconF, iconM) {
         delete gameData.employeeList[empId];
         deleteFromHiddenRemoved(`#${empId}`);
     }
+    gameData.coinCount -= empSalary/4;
     icon = $(`#${empId} .icon`);
     iconToDelete = gameData.employeeGStack[empId].pop() === 'F' ? iconF : iconM;
     // 以下四行是为了实现删除最后一个emoji而不是第一个emoji的效果
