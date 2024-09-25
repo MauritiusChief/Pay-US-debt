@@ -17,7 +17,6 @@ body div {
 
 #total-display { grid-area: header; }
 #shop { grid-area: menu; }
-#build { grid-area: menu2; }
 #clicker { grid-area: main; }
 #model-display { grid-area: right; }
 #notice { grid-area: footer; }
