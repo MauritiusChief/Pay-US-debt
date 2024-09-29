@@ -155,10 +155,12 @@ function gamePause() {
     if (gamePaused) { // 已暂停
         currentTimer = setInterval(passiveHourEvent, 1000);
         $('#game-pause').attr("i18n-key", "game-pause");
+        $('body').removeClass("pause-mode");
         gamePaused = false;
     } else { // 没暂停
         clearInterval(currentTimer);
         $('#game-pause').attr("i18n-key", "game-continue");
+        $('body').addClass("pause-mode");
         gamePaused = true;
     }
     $("[i18n-key]").each(translateElement); // 更新文本翻译
@@ -333,6 +335,7 @@ function updateConstruct() {
 
 function checkGoal() {
     if (gameData.coinCount >= gameData.goal && !gameData.gameFinished) {
+        $('body').addClass("goal-mode");
         const alertMsg = translations[locale]["game-finished"];
         gameData.gameFinished = true;
         alert(alertMsg);

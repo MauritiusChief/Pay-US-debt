@@ -3,7 +3,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f0f0f0;
+    background-color: rgb(240, 240, 240);
     transition: background-color 0.5s ease, color 0.1s ease;
 }
 body div {
@@ -45,7 +45,7 @@ body div {
 
 .grid-container .grid-panel {
     text-align: center;
-    background: #fff;
+    background: rgb(255, 255, 255);
     padding: 20px 30px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -152,5 +152,28 @@ td {
 }
 .dark-mode .grid-container .grid-panel {
     background-color: rgb(40, 40, 40);
+    color: white;
+}
+
+/* .pause-mode {
+    background-color: rgb(139,69,19);
+}
+.pause-mode .grid-container .grid-panel {
+    background-color: rgb(244,164,96);
+} */
+
+.goal-mode {
+    background-color: #B22234;
+    background: repeating-linear-gradient(
+        0deg,           /* 条纹角度 */
+        #B22234,         /* 第一个颜色 */
+        #B22234 40px,    /* 第一个颜色的条纹宽度 */
+        #f0f0f0 40px,    /* 第二个颜色开始的位置 */
+        #f0f0f0 80px     /* 第二个颜色的条纹宽度 */
+    );
+    color: white;
+}
+.goal-mode .grid-container .grid-panel {
+    background-color: #3C3B6E;
     color: white;
 }
