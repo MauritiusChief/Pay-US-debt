@@ -26,6 +26,8 @@ function bindEvents(item, workForceType, icon) {
 bindEvents('mini-truck', 'zombie', '🚚');
 bindEvents('semi-truck', 'zombie', '🚛');
 bindEvents('excavator', 'zombie', '🏗️');
+bindEvents('mini-bus', 'zombie', '🚐');
+bindEvents('tuk-tuk', 'zombie', '🛺');
 bindEvents('warehouse', 'zombie', '🏚️');
 bindEvents('office', 'vampire', '🏢');
 

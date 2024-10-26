@@ -25,6 +25,20 @@ const buttonVehicleData = [
         installment:
             marketList["buy-excavator"].installPrice.toLocaleString() + " $ * " +
             marketList["buy-excavator"].installMonth + "<span i18n-key=\"mkt-month\">月</span>"
+    },
+    {
+        id: "tuk-tuk",
+        price: marketList["buy-tuk-tuk"].price.toLocaleString() + " $",
+        installment:
+            marketList["buy-tuk-tuk"].installPrice.toLocaleString() + " $ * " +
+            marketList["buy-tuk-tuk"].installMonth + "<span i18n-key=\"mkt-month\">月</span>"
+    },
+    {
+        id: "mini-bus",
+        price: marketList["buy-mini-bus"].price.toLocaleString() + " $",
+        installment:
+            marketList["buy-mini-bus"].installPrice.toLocaleString() + " $ * " +
+            marketList["buy-mini-bus"].installMonth + "<span i18n-key=\"mkt-month\">月</span>"
     }
 ];
 generateHtmlFromTemplate("buy-vehicle", buttonVehicleData);
@@ -73,6 +87,12 @@ const vehicleData = [
     },
     {
         id: "excavator"
+    },
+    {
+        id: "tuk-tuk"
+    },
+    {
+        id: "mini-bus"
     }
 ];
 generateHtmlFromTemplate("market-shared", vehicleData, "vehicle");
@@ -107,6 +127,11 @@ const tableData = [
         id: "transport",
         icon: "📦",
         unit: "kg"
+    },
+    {
+        id: "service",
+        icon: "🛎️",
+        unit: "<span i18n-key=\"reso-labor\">人</span>"
     },
     {
         id: "construct",

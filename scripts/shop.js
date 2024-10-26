@@ -23,6 +23,18 @@ $('#buy-excavator').click(() => {
     addToHiddenRemoved("#nut-bolt");
     addToHiddenRemoved("#construct");
 })
+$('#buy-tuk-tuk').click(() => {
+    buyEvent('tuk-tuk', '🛺', 30);
+    addToHiddenRemoved("#gear");
+    addToHiddenRemoved("#nut-bolt");
+    addToHiddenRemoved("#service");
+})
+$('#buy-mini-bus').click(() => {
+    buyEvent('mini-bus', '🚐', 30);
+    addToHiddenRemoved("#gear");
+    addToHiddenRemoved("#nut-bolt");
+    addToHiddenRemoved("#service");
+})
 $('#buy-warehouse').click(() => {
     buyEvent('warehouse', '🏚️', 30);
 })

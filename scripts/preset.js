@@ -34,17 +34,21 @@ gameData.disabledButton = {};
  ***************/
 // 加商品和职业可以很方便地在这里加
 const marketList = { // 可分期商品列表（目前包括 载具 和 地产）
+    'buy-tuk-tuk': { price: genPrice(800, 1200, 5), installMonth: 3 },
     'buy-mini-truck': { price: genPrice(7190, 10700, 10), installMonth: 12 },
     'buy-semi-truck': { price: genPrice(138500, 183500, 100), installMonth: 24 },
     'buy-excavator': { price: genPrice(40000, 61000, 50), installMonth: 12 },
+    'buy-mini-bus': { price: genPrice(50000, 73000, 50), installMonth: 12 },
 
     'buy-warehouse': { price: genPrice(3000, 5000, 50), installMonth: 3 },
     'buy-office': { price: genPrice(6000, 10000, 50), installMonth: 6 },
 }
 const marketStep = { // 价格倍数
+    'buy-tuk-tuk': { step: 5 },
     'buy-mini-truck': { step: 10 },
     'buy-semi-truck': { step: 50 },
     'buy-excavator': { step: 50 },
+    'buy-mini-bus': { step: 50 },
 
     'buy-warehouse': { step: 100 },
     'buy-office': { step: 100 },
@@ -71,6 +75,7 @@ gameData.employeeList = {};
 gameData.employeeGStack = {}; // F 代表女，M 代表男
 let initialResourceList = {
     'transport': { produce: 0, consume: 0, stock: 0, price: 0.5, buy: 1.5 },
+    'service': { produce: 0, consume: 0, stock: 0, price: 3.0, buy: 1.5 },
     'construct': { produce: 0, consume: 0, stock: 0, price: 4.5, buy: 1.5 },
     'manage': { produce: 0, consume: 0, stock: 0, price: 7.5, buy: 2.0 },
     'gear': { produce: 0, consume: 0, stock: 0, price: 0.56, buy: 1.2 },
@@ -80,10 +85,13 @@ let initialResourceList = {
 gameData.resourceList = initialResourceList;
 let initialSelfResourceList = {
     'transport': { produce: 0 },
+    'service': { produce: 0 },
     'construct': { produce: 0 },
     'manage': { produce: 0 },
 };
 gameData.selfResourceList = initialSelfResourceList;
+
+// console.log(gameData.selfResourceList)
 
 const produceAddMapping = { // 各种资源可由何种资产产出，每个资产产出多少（在有劳动力工作的前提下）
     'transport': {
@@ -91,7 +99,9 @@ const produceAddMapping = { // 各种资源可由何种资产产出，每个资�
         'mini-truck': 45,
         'warehouse': 25,
         'NONE': 25, // 仅个人使用
-        'default': 0
+        'tuk-tuk': 10,
+        'mini-bus': 25,
+        'default': 0,
     },
     'construct': {
         'excavator': 5,
@@ -101,19 +111,28 @@ const produceAddMapping = { // 各种资源可由何种资产产出，每个资�
         'office': 4,
         'laptop': 3, // 仅个人使用
         'default': 0
+    },
+    'service': {
+        'mini-bus': 8,
+        'tuk-tuk': 3,
+        'default': 0,
     }
 };
 const consumeAddMapping = {
     'gear': {
-        'semi-truck': 0.02,
-        'mini-truck': 0.04,
+        'tuk-tuk': 0.01,
+        'semi-truck': 0.04,
+        'mini-truck': 0.02,
         'excavator': 0.05,
+        'mini-bus': 0.05,
         'default': 0
     },
     'nut-bolt': {
-        'semi-truck': 0.4,
-        'mini-truck': 0.8,
+        'tuk-tuk': 0.1,
+        'semi-truck': 0.8,
+        'mini-truck': 0.4,
         'excavator': 1.0,
+        'mini-bus': 0.6,
         'default': 0
     },
     'manage': { // 共用这个const
@@ -146,6 +165,7 @@ function updateResource() {
     // 帮助函数，根据 资源类型 和 资产，决定这个资源类型的产量
     const getValueByPropertyName = (mapping, resourceType, propertyName) => {
         if (mapping[resourceType] && mapping[resourceType][propertyName] !== undefined) {
+            // console.log(mapping[resourceType][propertyName])
             return mapping[resourceType][propertyName];
         }
         return mapping[resourceType] ? mapping[resourceType]['default'] : 0;
@@ -153,7 +173,9 @@ function updateResource() {
 
     // 根据当前工作使用的资产处理小人自己的资源产出
     for (let id in gameData.selfResourceList) {
+        // console.log(id + " - " + gameData.selfResourceList[id].produce)
         gameData.selfResourceList[id].produce = getValueByPropertyName(produceAddMapping, id, gameData.workingProperty);
+        // console.log(id + " - " + gameData.selfResourceList[id].produce)
     }
     for (let id in gameData.resourceList) {
         let resource = gameData.resourceList[id];
