@@ -291,7 +291,7 @@ function removeProperty(remId, remIcon) {
         // 更新勾选盒以及gameData.workingProperty
         $('#model-display [type=checkbox]').not(remId).prop('checked', false);
         deleteFromHiddenRemoved(`#${remId}`);
-        gameData.workingProperty === remId ? gameData.workingProperty = '' : {};
+        gameData.workingProperty === remId ? gameData.workingProperty = 'NONE' : {};
     }
 
     $(`#${remId} .icon`).html( countToIconStr(propertyItem.amount, remIcon) );

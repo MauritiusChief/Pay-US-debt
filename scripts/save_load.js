@@ -33,7 +33,7 @@ function resetGame() {
         gameData.health = 100.00;
         gameData.effectList = []
         gameData.workStat = 0; // 上班与否标记，用在资源列表更新中，0代表不上班1代表上班，以后可能会改一个方式
-        gameData.workingProperty = ''
+        gameData.workingProperty = 'NONE'
         gameData.GIdx = 0
         let dateArray = [1000, 0, 1, 9]
         gameData.currDate = new Date(...dateArray);
@@ -129,7 +129,7 @@ function loading(gameData) {
         for (let icon in gameData.iconStore) { // 写入存储的图标
             $(icon).html( gameData.iconStore[icon] );
         }
-        gameData.workingProperty !== '' ? $(`#${gameData.workingProperty} [type=checkbox]`).prop('checked', true) : {}; // 根据workingProperty复原勾选盒
+        gameData.workingProperty !== 'NONE' ? $(`#${gameData.workingProperty} [type=checkbox]`).prop('checked', true) : {}; // 根据workingProperty复原勾选盒
         $('#install-pay [type=checkbox]').prop('checked', gameData.installPay);
         for (let button in gameData.disabledButton) { // 禁用不能点的按钮，可能会有启用不了的bug？
             $(button).prop('disabled', true);

@@ -80,14 +80,14 @@ function checkBoxEvent(propertyName) {
             gameData.workingProperty = propertyName; // gameData.workingProperty更新
         } else { // 否则取消勾选此勾选盒
             $(thisName).prop('checked', false);
-            gameData.workingProperty = '';
+            gameData.workingProperty = 'NONE';
         }
         // console.log(gameData.propertyList[propertyName])
 
     } else { // 此勾选盒不勾选的情况
 
         if (propertyName in gameData.propertyList) gameData.propertyList[propertyName].amountUsed--;
-        gameData.workingProperty = ''
+        gameData.workingProperty = 'NONE'
         // console.log(gameData.propertyList[propertyName])
 
     }

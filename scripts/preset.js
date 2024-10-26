@@ -13,7 +13,7 @@ gameData.health = 100.00;
 gameData.effectList = []
 gameData.workStat = 0; // 上班与否标记，用在资源列表更新中，0代表不上班1代表上班，以后可能会改一个方式
 let estiIncomePerH = 12.5;
-gameData.workingProperty = ''
+gameData.workingProperty = 'NONE'
 gameData.GIdx = 0
 const GIcon = ['🧍', '🧍‍♂️', '🧍‍♀️']
 const GTxt = ['?', '♂', '♀']
@@ -89,11 +89,9 @@ const produceAddMapping = { // 各种资源可由何种资产产出，每个资�
     'transport': {
         'semi-truck': 85,
         'mini-truck': 45,
-        'excavator': 0,
         'warehouse': 25,
-        'office': 0,
-        'laptop': 0, // 仅个人使用
-        'default': 25
+        'NONE': 25, // 仅个人使用
+        'default': 0
     },
     'construct': {
         'excavator': 5,
@@ -228,6 +226,7 @@ function updateDisplayJob() {
         case 'office':
             currentJobKey = "click-job-office-clerk";
             break;
+        case 'NONE':
         default:
             currentJobKey = "click-job-porter";
             break;
