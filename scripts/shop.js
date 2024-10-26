@@ -7,6 +7,8 @@ $('#install-pay [type=checkbox]').on('change', () => {
     updateDisplay();
 })
 // 可分期购买的物品
+//【添加】【新资产】
+//【添加】【新资源】移除显示
 $('#buy-mini-truck').click(() => {
     buyEvent('mini-truck', '🚚', 30);
     addToHiddenRemoved("#gear");

@@ -23,6 +23,7 @@ function bindEvents(item, workForceType, icon) {
 }
 
 // 为每个 item 绑定事件
+//【添加】【新资产】
 bindEvents('mini-truck', 'zombie', '🚚');
 bindEvents('semi-truck', 'zombie', '🚛');
 bindEvents('excavator', 'zombie', '🏗️');

@@ -33,7 +33,9 @@ gameData.disabledButton = {};
 /** 商品及职业列表
  ***************/
 // 加商品和职业可以很方便地在这里加
-const marketList = { // 可分期商品列表（目前包括 载具 和 地产）
+
+ // 可分期商品列表（目前包括 载具 和 地产）
+const marketList = { //【添加】【新资产】
     'buy-tuk-tuk': { price: genPrice(800, 1200, 5), installMonth: 3 },
     'buy-mini-truck': { price: genPrice(7190, 10700, 10), installMonth: 12 },
     'buy-semi-truck': { price: genPrice(138500, 183500, 100), installMonth: 24 },
@@ -43,7 +45,8 @@ const marketList = { // 可分期商品列表（目前包括 载具 和 地产�
     'buy-warehouse': { price: genPrice(3000, 5000, 50), installMonth: 3 },
     'buy-office': { price: genPrice(6000, 10000, 50), installMonth: 6 },
 }
-const marketStep = { // 价格倍数
+ // 价格倍数
+const marketStep = { //【添加】【新资产】
     'buy-tuk-tuk': { step: 5 },
     'buy-mini-truck': { step: 10 },
     'buy-semi-truck': { step: 50 },
@@ -73,17 +76,17 @@ gameData.propertyList = {};
 gameData.employeeList = {};
 //示例employeeList:{ employee-name': {amount:1, amountWorking:0, maintainStatus:5, maintainDecrChance:0.5} }
 gameData.employeeGStack = {}; // F 代表女，M 代表男
-let initialResourceList = {
+let initialResourceList = { //【添加】【新资源】
     'transport': { produce: 0, consume: 0, stock: 0, price: 0.5, buy: 1.5 },
     'service': { produce: 0, consume: 0, stock: 0, price: 3.0, buy: 1.5 },
     'construct': { produce: 0, consume: 0, stock: 0, price: 4.5, buy: 1.5 },
-    'manage': { produce: 0, consume: 0, stock: 0, price: 7.5, buy: 2.0 },
+    'manage': { produce: 0, consume: 0, stock: 0, price: 5.0, buy: 3.0 },
     'gear': { produce: 0, consume: 0, stock: 0, price: 0.56, buy: 1.2 },
     'nut-bolt': { produce: 0, consume: 0, stock: 0, price: 0.16, buy: 1.2 },
     'steel': { produce: 0, consume: 0, stock: 0, price: 0.37, buy: 1.2 },
 };
 gameData.resourceList = initialResourceList;
-let initialSelfResourceList = {
+let initialSelfResourceList = { //【添加】【新资源】
     'transport': { produce: 0 },
     'service': { produce: 0 },
     'construct': { produce: 0 },
@@ -93,7 +96,8 @@ gameData.selfResourceList = initialSelfResourceList;
 
 // console.log(gameData.selfResourceList)
 
-const produceAddMapping = { // 各种资源可由何种资产产出，每个资产产出多少（在有劳动力工作的前提下）
+// 各种资源可由何种资产产出，每个资产产出多少（在有劳动力工作的前提下）
+const produceAddMapping = { //【添加】【新资源】【添加】【新资产】
     'transport': {
         'semi-truck': 85,
         'mini-truck': 45,
@@ -118,7 +122,7 @@ const produceAddMapping = { // 各种资源可由何种资产产出，每个资�
         'default': 0,
     }
 };
-const consumeAddMapping = {
+const consumeAddMapping = { //【添加】【新资产】【添加】【新资源】
     'gear': {
         'tuk-tuk': 0.01,
         'semi-truck': 0.04,

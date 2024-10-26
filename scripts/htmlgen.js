@@ -4,7 +4,7 @@ console.log('05-加载htmlgen.js')
 Handlebars.registerPartial('_workforce_button', $('#partial-work-force-button-template').html());
 
 // 买载具模板
-const buttonVehicleData = [
+const buttonVehicleData = [ //【添加】【新资产】
     {
         id: "mini-truck",
         price: marketList["buy-mini-truck"].price.toLocaleString() + " $",
@@ -44,7 +44,7 @@ const buttonVehicleData = [
 generateHtmlFromTemplate("buy-vehicle", buttonVehicleData);
 
 // 买地产模板
-const buttonFieldData = [
+const buttonFieldData = [ //【添加】【新资产】
     {
         id: "warehouse",
         price: marketList["buy-warehouse"].price.toLocaleString() + " $",
@@ -78,7 +78,7 @@ const employData = [
 generateHtmlFromTemplate("employ", employData);
 
 // 载具展示模板
-const vehicleData = [
+const vehicleData = [ //【添加】【新资产】
     {
         id: "mini-truck"
     },
@@ -98,7 +98,7 @@ const vehicleData = [
 generateHtmlFromTemplate("market-shared", vehicleData, "vehicle");
 
 // 地产展示模板
-const fieldData = [
+const fieldData = [ //【添加】【新资产】
     {
         id: "warehouse"
     },
@@ -122,7 +122,7 @@ const workForceData = [
 generateHtmlFromTemplate("work-force", workForceData);
 
 // 资源列表模板
-const tableData = [
+const tableData = [ //【添加】【新资源】
     {
         id: "transport",
         icon: "📦",
