@@ -258,6 +258,28 @@ function addToPropertyList(id) {
     }
 }
 
+// 压缩和解压图标的函数
+function countToIconStr(count, icon) {
+    let units = [100, 10];
+    let result = '';
+    let remaining = count;
+
+    // Go through each unit (100, 50, 10, 5) to form the string
+    for (let unit of units) {
+        let num = Math.floor(remaining / unit);
+        if (num > 0) {
+            result += `[${icon}×${unit}] `.repeat(num);
+            remaining %= unit;
+        }
+    }
+
+    // Add the remaining emojis (1s)
+    if (remaining > 0) {
+        result += icon.repeat(remaining);
+    }
+
+    return result.trim();
+}
 // 方便修改数据的函数
 function updateIconStore(containerId) {
     gameData.iconStore[`#${containerId} .icon`] = $(`#${containerId} .icon`).html();

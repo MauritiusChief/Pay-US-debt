@@ -93,10 +93,11 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
         // 资产列表添加商品
         addToPropertyList(buyId);
 
-        $(`#${buyId} .icon`).html( $(`#${buyId} .icon`).html()+buyIcon );
+        propertyAmount = gameData.propertyList[buyId].amount;
+        $(`#${buyId} .icon`).html( countToIconStr(propertyAmount, buyIcon) );
         updateIconStore(buyId);
         addToHiddenRemoved(`#${buyId}`);
-        console.log( $(`#${buyId} .work-force`) )
+        // console.log( $(`#${buyId} .work-force`) )
 
     } else if ( buyPayCountDown > 0 && gameData.installPay) { // console.log("进入分期付款流程")
         // 这部分代码只有运行分期付款的商品才执行
@@ -115,7 +116,8 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
             // 添加商品以及分期付款标识
             addToPropertyList(buyId);
             
-            $(`#${buyId} .icon`).html( $(`#${buyId} .icon`).html()+buyIcon );
+            propertyAmount = gameData.propertyList[buyId].amount;
+            $(`#${buyId} .icon`).html( countToIconStr(propertyAmount, buyIcon) );
             updateIconStore(buyId);
             $(`#${buyId} .install-month`).html( buyInstallMonth );
             $(`#${buyId} .pay-count-down`).html( buyPayCountDown );
