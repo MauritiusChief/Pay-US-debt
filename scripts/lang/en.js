@@ -81,8 +81,8 @@ translations['en'] = {
     "prop-laptop": "Poor performance, but enough to run office software.",
     "prop-use-laptop": "Manage workforce",
     "prop-use-laptop-alt": "Take outsourcing",
-    "prop-zombie-lore": "Worrying about high cholesterol.",
-    "prop-vampire-lore": "Likes to collect parasols and sunscreen.",
+    "prop-zombie-lore": "Worrying about brains are rich in cholesterol.", //PvZ
+    "prop-vampire-lore": "Likes to stock up parasols and sunscreen.",
     "dismiss-button": "Dismiss",
 
     "notice": "Notice",
