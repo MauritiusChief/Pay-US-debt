@@ -258,10 +258,9 @@ function addToPropertyList(id) {
 
 // 压缩和解压图标的函数
 function countToIconStr(count, icon) {
-    let units = [100, 10];
+    let units = [500, 100, 50, 10];
     let result = '';
     let remaining = count;
-
     // Go through each unit (100, 50, 10, 5) to form the string
     for (let unit of units) {
         let num = Math.floor(remaining / unit);
@@ -276,6 +275,35 @@ function countToIconStr(count, icon) {
         result += icon.repeat(remaining);
     }
 
+    return result.trim();
+}
+function countToIconStrGender(count, iconAry, genderStack) { 
+    console.log("countToIconStrGender运行")
+    let units = [500, 100, 50, 10];
+    let result = '';
+    let remaining = count;
+    for (let unit of units) {
+        let num = Math.floor(remaining / unit);
+        if (num > 0) {
+            for (let i = 0; i < num; i++) {
+                // Determine the first gender in the current unit
+                let firstGender = genderStack[0];
+                let genderIcon = firstGender === 'F' ? iconAry[0] : iconAry[1];
+
+                // Add the unit representation to the result
+                result += `[${genderIcon}×${unit}] `;
+                
+                // Remove the processed part of genderStack
+                genderStack = genderStack.slice(unit);
+            }
+            remaining %= unit;
+        }
+    }
+
+    if (remaining > 0) {
+        let remainingIcons = genderStack.slice(0, remaining).map(gender => gender === 'F' ? iconAry[0] : iconAry[1]).join('');
+        result += remainingIcons;
+    }
     return result.trim();
 }
 // 方便修改数据的函数

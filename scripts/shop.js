@@ -144,8 +144,9 @@ function employEvent(empId, iconF, iconM) {
     gender = Math.random() > 0.5 ? 'F' : 'M';
     gameData.employeeGStack[empId] ? {} : gameData.employeeGStack[empId] = [];
     gameData.employeeGStack[empId].push(gender);
-    empIcon = gender === 'F' ? iconF : iconM;
-    $(`#${empId} .icon`).html( $(`#${empId} .icon`).html()+empIcon );
+
+    empAmount = gameData.employeeList[empId].amount;
+    $(`#${empId} .icon`).html( countToIconStrGender(empAmount, [iconF, iconM], gameData.employeeGStack[empId]) );
     updateIconStore(empId);
     addToHiddenRemoved(`#${empId}`);
 
@@ -174,15 +175,20 @@ function dismissEvent(empId, iconF, iconM) {
         deleteFromHiddenRemoved(`#${empId}`);
     }
     gameData.coinCount -= empSalary/4;
-    icon = $(`#${empId} .icon`);
-    iconToDelete = gameData.employeeGStack[empId].pop() === 'F' ? iconF : iconM;
-    // 以下四行是为了实现删除最后一个emoji而不是第一个emoji的效果
-    reversedHtml = icon.html().split('').reverse().join('');
-    revIconToDelete = iconToDelete.split('').reverse().join('');
-    reversedHtml = reversedHtml.replace(revIconToDelete, "");
-    reversedHtml = reversedHtml.split('').reverse().join('');
+    
+    // icon = $(`#${empId} .icon`);
+    // iconToDelete = gameData.employeeGStack[empId].pop() === 'F' ? iconF : iconM;
+    // // 以下四行是为了实现删除最后一个emoji而不是第一个emoji的效果
+    // reversedHtml = icon.html().split('').reverse().join('');
+    // revIconToDelete = iconToDelete.split('').reverse().join('');
+    // reversedHtml = reversedHtml.replace(revIconToDelete, "");
+    // reversedHtml = reversedHtml.split('').reverse().join('');
 
-    icon.html( reversedHtml );
+    // icon.html( reversedHtml );
+
+    gameData.employeeGStack[empId].pop();
+    empAmount = gameData.employeeList[empId].amount;
+    $(`#${empId} .icon`).html( countToIconStrGender(empAmount, [iconF, iconM], gameData.employeeGStack[empId]) );
     updateIconStore(empId);
 
     
