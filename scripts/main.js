@@ -273,26 +273,29 @@ function updateInstallment() {
         gameData.installmentList[id].payCountDown--;
         if (gameData.installmentList[id].payCountDown === 0) {
             // 移除这个资产
-            propertyItem = gameData.propertyList[id];
-            // 移除这个资产前，先把在此资产工作的劳动力解放
-            $(`#${id} [type=decr]`).click(); // 模拟点击减少劳动力的按钮
-            if (propertyItem.amount > 1) { // 资产数量-1
-                propertyItem.amount--;
-            } else { // 资产数量不足1，直接移除
-                delete gameData.propertyList[id];
-                // 更新勾选盒以及gameData.workingProperty
-                $('#model-display [type=checkbox]').not(id).prop('checked', false);
-                addToHiddenRemoved(id);
-                gameData.workingProperty === id ? gameData.workingProperty = '' : {};
-            }
-
-            icon = $(`#${id} .icon`);
-            icon.html(icon.html().replace(gameData.installmentList[id].icon, ""));
-            updateIconStore(id);
+            removeProperty(id, gameData.installmentList[id].icon)
             addToHiddenRemoved(`#install-${id}`);
             delete gameData.installmentList[id]; // 移除这个分期付款
         }
     }
+}
+
+function removeProperty(remId, remIcon) {
+    propertyItem = gameData.propertyList[remId];
+    // 移除这个资产前，先把在此资产工作的劳动力解放
+    $(`#${remId} [type=decr]`).click(); // 模拟点击减少劳动力的按钮
+    if (propertyItem.amount > 1) { // 资产数量-1
+        propertyItem.amount--;
+    } else { // 资产数量不足1，直接移除
+        delete gameData.propertyList[remId];
+        // 更新勾选盒以及gameData.workingProperty
+        $('#model-display [type=checkbox]').not(remId).prop('checked', false);
+        deleteFromHiddenRemoved(`#${remId}`);
+        gameData.workingProperty === remId ? gameData.workingProperty = '' : {};
+    }
+
+    $(`#${remId} .icon`).html( countToIconStr(propertyItem.amount, remIcon) );
+    updateIconStore(remId);
 }
 
 // 每小时只能执行一次，否则会出现反复投入建造力的情况

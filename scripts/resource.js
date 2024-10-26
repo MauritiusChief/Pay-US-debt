@@ -4,51 +4,30 @@ $('#laptop [type=checkbox]').on('change', () => {
     checkBoxEvent('laptop');
 })
 
-$('#mini-truck [type=decr]').click(() => {
-    changeWorkForce(false, 'mini-truck', 'zombie')
-})
-$('#mini-truck [type=incr]').click(() => {
-    changeWorkForce(true, 'mini-truck', 'zombie')
-})
-$('#mini-truck [type=checkbox]').on('change', () => {
-    checkBoxEvent('mini-truck');
-})
-$('#semi-truck [type=decr]').click(() => {
-    changeWorkForce(false, 'semi-truck', 'zombie')
-})
-$('#semi-truck [type=incr]').click(() => {
-    changeWorkForce(true, 'semi-truck', 'zombie')
-})
-$('#semi-truck [type=checkbox]').on('change', () => {
-    checkBoxEvent('semi-truck');
-})
-$('#excavator [type=decr]').click(() => {
-    changeWorkForce(false, 'excavator', 'zombie')
-})
-$('#excavator [type=incr]').click(() => {
-    changeWorkForce(true, 'excavator', 'zombie')
-})
-$('#excavator [type=checkbox]').on('change', () => {
-    checkBoxEvent('excavator');
-})
-$('#warehouse [type=decr]').click(() => {
-    changeWorkForce(false, 'warehouse', 'zombie')
-})
-$('#warehouse [type=incr]').click(() => {
-    changeWorkForce(true, 'warehouse', 'zombie')
-})
-$('#warehouse [type=checkbox]').on('change', () => {
-    checkBoxEvent('warehouse');
-})
-$('#office [type=decr]').click(() => {
-    changeWorkForce(false, 'office', 'vampire')
-})
-$('#office [type=incr]').click(() => {
-    changeWorkForce(true, 'office', 'vampire')
-})
-$('#office [type=checkbox]').on('change', () => {
-    checkBoxEvent('office');
-})
+// 绑定事件的通用函数
+function bindEvents(item, workForceType, icon) {
+    $(`#${item} [type=decr]`).click(() => {
+        changeWorkForce(false, item, workForceType);
+    });
+    $(`#${item} [type=incr]`).click(() => {
+        changeWorkForce(true, item, workForceType);
+    });
+    $(`#${item} [type=checkbox]`).on('change', () => {
+        checkBoxEvent(item);
+    });
+    $(`#${item} [type=sell]`).click(() => {
+        removeProperty(item, icon);
+        gameData.coinCount += marketList[`buy-${item}`].price / 2;
+        updateDisplay();
+    });
+}
+
+// 为每个 item 绑定事件
+bindEvents('mini-truck', 'zombie', '🚚');
+bindEvents('semi-truck', 'zombie', '🚛');
+bindEvents('excavator', 'zombie', '🏗️');
+bindEvents('warehouse', 'zombie', '🏚️');
+bindEvents('office', 'vampire', '🏢');
 
 // 修改劳动力数量
 function changeWorkForce(increaseWorkForce, propertyName, workForceName) {
