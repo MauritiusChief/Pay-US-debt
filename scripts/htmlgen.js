@@ -37,6 +37,13 @@ const buttonFieldData = [
         installment:
             marketList["buy-warehouse"].installPrice.toLocaleString() + " $ * " +
             marketList["buy-warehouse"].installMonth + "<span i18n-key=\"mkt-month\">月</span>"
+    },
+    {
+        id: "office",
+        price: marketList["buy-office"].price.toLocaleString() + " $",
+        installment:
+            marketList["buy-office"].installPrice.toLocaleString() + " $ * " +
+            marketList["buy-office"].installMonth + "<span i18n-key=\"mkt-month\">月</span>"
     }
 ];
 generateHtmlFromTemplate("buy-field", buttonFieldData);
@@ -74,6 +81,9 @@ generateHtmlFromTemplate("market-shared", vehicleData, "vehicle");
 const fieldData = [
     {
         id: "warehouse"
+    },
+    {
+        id: "office"
     }
 ];
 generateHtmlFromTemplate("market-shared", fieldData, "field");

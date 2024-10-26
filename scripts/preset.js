@@ -39,6 +39,7 @@ const marketList = { // 可分期商品列表（目前包括 载具 和 地产�
     'buy-excavator': { price: genPrice(40000, 61000, 50), installMonth: 12 },
 
     'buy-warehouse': { price: genPrice(3000, 5000, 50), installMonth: 3 },
+    'buy-office': { price: genPrice(6000, 10000, 50), installMonth: 6 },
 }
 const marketStep = { // 价格倍数
     'buy-mini-truck': { step: 10 },
@@ -46,6 +47,7 @@ const marketStep = { // 价格倍数
     'buy-excavator': { step: 50 },
 
     'buy-warehouse': { step: 100 },
+    'buy-office': { step: 100 },
 }
 for (let id in marketList) {
     item = marketList[id];
@@ -91,6 +93,7 @@ const produceAddMapping = { // 各种资源可由何种资产产出，每个资�
         'mini-truck': 45,
         'excavator': 0,
         'warehouse': 25,
+        'office': 0,
         'laptop': 0, // 仅个人使用
         'default': 25
     },
@@ -223,6 +226,9 @@ function updateDisplayJob() {
             break;
         case 'laptop':
             currentJobKey = "click-job-self-employ-manager";
+            break;
+        case 'office':
+            currentJobKey = "click-job-office-clerk";
             break;
         default:
             currentJobKey = "click-job-porter";

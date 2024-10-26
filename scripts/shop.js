@@ -26,6 +26,9 @@ $('#buy-excavator').click(() => {
 $('#buy-warehouse').click(() => {
     buyEvent('warehouse', '🏚️', 30);
 })
+$('#buy-office').click(() => {
+    buyEvent('office', '🏢', 30);
+})
 // 解锁与辅助性质的物品
 $('#buy-health-elixir').click(() => {
     shopItem = shopList['buy-health-elixir']

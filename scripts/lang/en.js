@@ -25,6 +25,7 @@ translations['en'] = {
     "click-job-semi-truck-driver": "Semi-trailer Truck Driver",
     "click-job-excavator-operator": "Excavator Operator",
     "click-job-porter": "Porter",
+    "click-job-office-clerk": "Clerk",
     "click-job-self-employ-manager": "Self-Employ Manager",
 
     "market": "Market",
@@ -39,6 +40,7 @@ translations['en'] = {
     "shop": "Shop",
     "shop-health-elixir": "Adrenaline💉",
     "shop-laptop": "Office Laptop💻",
+    "shop-laptop-desc": "Allowing employment after purchase",
     "employ": "Employment",
     "mkt-mini-truck": "Mini Truck",
     "mkt-mini-truck-prompt": "Drive Mini Truck",

@@ -25,6 +25,7 @@ translations['zh'] = {
     "click-job-semi-truck-driver": "半挂车司机",
     "click-job-excavator-operator": "挖掘机操作员",
     "click-job-porter": "搬运工",
+    "click-job-office-clerk": "办公室文员",
     "click-job-self-employ-manager": "个体户老板",
 
     "market": "市场",
@@ -39,6 +40,7 @@ translations['zh'] = {
     "shop": "商店",
     "shop-health-elixir": "肾上腺素💉",
     "shop-laptop": "办公笔记本💻",
+    "shop-laptop-desc": "购买后即可雇佣劳动力",
     "employ": "雇佣",
     "mkt-mini-truck": "小货车",
     "mkt-mini-truck-prompt": "开小货车",

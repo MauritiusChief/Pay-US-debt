@@ -40,6 +40,15 @@ $('#warehouse [type=incr]').click(() => {
 $('#warehouse [type=checkbox]').on('change', () => {
     checkBoxEvent('warehouse');
 })
+$('#office [type=decr]').click(() => {
+    changeWorkForce(false, 'office', 'vampire')
+})
+$('#office [type=incr]').click(() => {
+    changeWorkForce(true, 'office', 'vampire')
+})
+$('#office [type=checkbox]').on('change', () => {
+    checkBoxEvent('office');
+})
 
 // 修改劳动力数量
 function changeWorkForce(increaseWorkForce, propertyName, workForceName) {
