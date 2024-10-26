@@ -24,6 +24,9 @@
             <p><span i18n-key="click-date">当前时间：</span><span id="current-date" i18n-key-int="disp-load">加载中...</span></p>
             <p><span i18n-key="click-wage">工作时薪: </span><span id="coins-per-click">12.5 $</span></p>
             <button id="click-button" i18n-key="click-button">努力赚美刀</button>
+            <button id="watch-tv" class="can-hide hidden hastooltip" i18n-key="watch-tv">看电视</button>
+            <button id="use-alarm-clock" class="can-hide hidden hastooltip"><span i18n-key="use-alarm-clock">闹钟</span> ⏰×<span id="alarm-clock-remain">111</span></button>
+            <button id="take-sleeping-pill" class="can-hide hidden hastooltip"><span i18n-key="take-sleeping-pill">吃安眠药</span> 💊×<span id="sleeping-pill-remain">111</span></button>
         </div>
         <div id="shop" class="grid-panel">
             <div id="shop-title">
@@ -43,7 +46,10 @@
             <div id="shop-footer">
                 <h2 i18n-key="shop">商店</h2>
                 <button id="buy-health-elixir" class="shop-goods can-hide hastooltip"><span i18n-key="shop-health-elixir">肾上腺素</span><span class="tooltiptext">149.99 $</span></span></button>
-                <button id="buy-laptop" class="shop-goods can-hide hastooltip"><span i18n-key="shop-laptop">办公笔记本</span><span class="tooltiptext">259.99 $<br><span i18n-key="shop-laptop-desc">买后可雇佣劳动力</span></span></span></button>
+                <button id="buy-laptop" class="shop-goods can-hide hastooltip"><span i18n-key="shop-laptop">办公笔记本</span><span class="tooltiptext">259.99 $<br><span i18n-key="shop-laptop-desc">办公笔记本描述占位符</span></span></span></button>
+                <button id="buy-television" class="shop-goods hastooltip"><span i18n-key="shop-television">电视机</span><span class="tooltiptext">799.99 $<br><span i18n-key="shop-television-desc">电视机描述占位符</span></span></span></button>
+                <button id="buy-alarm-clock" class="shop-goods hastooltip"><span i18n-key="shop-alarm-clock">闹钟</span><span class="tooltiptext">19.99 $<br><span i18n-key="shop-alarm-clock-desc">闹钟描述占位符</span></span></span></button>
+                <button id="buy-sleeping-pill" class="shop-goods hastooltip"><span i18n-key="shop-sleeping-pill">安眠药</span><span class="tooltiptext">29.99 $<br><span i18n-key="shop-sleeping-pill-desc">闹钟描述占位符</span></span></span></button>
 
                 <h2 i18n-key="employ">雇佣</h2>
                 <div id="employ-container"></div><!-- 雇佣按钮 -->
@@ -62,6 +68,11 @@
                     <em><span class="tooltiptext" i18n-key="prop-laptop">性能很差，但足以运行办公软件</span></em>
                 </span>
                 <span class="self-manage"><input type="checkbox"><span id="use-laptop-lore" i18n-key="prop-use-laptop">管理劳动力</span></span>
+            </div>
+            <div id="television" class="can-hide hidden">
+                <span class="icon hastooltip">📺
+                    <em><span class="tooltiptext" i18n-key="prop-television">24小时循环播放娱乐节目</span></em>
+                </span>
             </div>
 
             <div id="work-force-container"></div><!-- 劳动力列表 -->

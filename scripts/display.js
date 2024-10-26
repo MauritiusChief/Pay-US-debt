@@ -11,6 +11,9 @@ function updateDisplay() {
     $('#current-date').html(`${gameData.currDate.getFullYear()}-${(gameData.currDate.getMonth() + 1).toString().padStart(2, '0')}-${gameData.currDate.getDate().toString().padStart(2, '0')};  ${genClockIcon(gameData.currDate.getHours())}${gameData.currDate.getHours()}<span i18n-key="o-clock"></span>`);
     $('#health').text(Math.round(gameData.health * 100) / 100); // 避免 1.099999999 这样的数字出现
 
+    $('#alarm-clock-remain').text(gameData.propertyList["alarm-clock"] == undefined ? 0 : gameData.propertyList["alarm-clock"].amount);
+    $('#sleeping-pill-remain').text(gameData.propertyList["sleeping-pill"] == undefined ? 0 : gameData.propertyList["sleeping-pill"].amount);
+
     /**健康值相关的图标跟新
      * 需要变量：
      *      gameData.health

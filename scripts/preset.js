@@ -64,6 +64,9 @@ for (let id in marketList) {
 const shopList = { // 不可分期商品列表
     'buy-health-elixir': { price: 149.99 },
     'buy-laptop': { price: 259.99 }, // 买了之后解锁产出管理力的能力
+    'buy-television': { price: 799.99 },
+    'buy-alarm-clock': { price: 19.99 },
+    'buy-sleeping-pill': { price: 29.99 },
 }
 const employList = { // 雇员列表
     'employ-zombie': { salary: 3000 },

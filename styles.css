@@ -104,7 +104,7 @@ button {
     cursor: pointer;
 }
 
-#shop button {
+#shop button, #clicker button {
     display: block;
     margin: 10px auto;
 }

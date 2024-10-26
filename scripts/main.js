@@ -102,6 +102,8 @@ function everyMonthEvent() {
 
 }
 
+
+$('#click-button').click(clickButton);
 /**点击挣钱按钮（工作点击触发的时间流逝）
  * 需要变量：
  *      gameData.currDate
@@ -115,7 +117,6 @@ function everyMonthEvent() {
  *      gamePaused（false，解除暂停）
  * HTML更新
  */
-$('#click-button').click(clickButton);
 function clickButton() {
 
     // 触发上班的效果
@@ -148,6 +149,39 @@ function clickButton() {
     everyHourEvent();
     updateDisplay();
 };
+$('#watch-tv').click(() => {
+    clearInterval(currentTimer);
+    Array(8).fill().forEach(() => passiveHourEvent());
+    if (!gamePaused) {
+        currentTimer = setInterval(passiveHourEvent, 1000);
+    }
+})
+$('#use-alarm-clock').click(() => {
+    gameData.propertyList['alarm-clock'].amount--;
+    clearInterval(currentTimer);
+    Array(12).fill().forEach(() => {
+        clickButton();
+        clearInterval(currentTimer);
+    });
+    updateDisplay();
+    if (gameData.propertyList['alarm-clock'].amount <= 0) deleteFromHiddenRemoved("#use-alarm-clock");
+    if (!gamePaused) {
+        currentTimer = setInterval(passiveHourEvent, 1000);
+    }
+})
+$('#take-sleeping-pill').click(() => {
+    gameData.propertyList['sleeping-pill'].amount--;
+    clearInterval(currentTimer);
+    Array(8).fill().forEach(() => {
+        gameData.health++;
+        passiveHourEvent();
+    });
+    updateDisplay();
+    if (gameData.propertyList['sleeping-pill'].amount <= 0) deleteFromHiddenRemoved("#take-sleeping-pill");
+    if (!gamePaused) {
+        currentTimer = setInterval(passiveHourEvent, 1000);
+    }
+})
 
 $('#game-pause').click(gamePause);
 function gamePause() {
@@ -256,6 +290,8 @@ function updateShop() {
     }
     // 得病无法工作也借用此处
     $("#click-button").prop('disabled', gameData.health < 0)
+    $("#use-alarm-clock").prop('disabled', gameData.health < 0)
+    $("#take-sleeping-pill").prop('disabled', gameData.health < 0)
 }
 
 /**根据分期付款到期未还款更新或移除资产（包含相关更新显示）

@@ -57,6 +57,28 @@ $('#buy-laptop').click(() => {
     addToHiddenRemoved("#laptop");
     addToHiddenRemoved("#manage");
     deleteFromHiddenRemoved("#buy-laptop");
+    updateDisplay();
+})
+$('#buy-television').click(() => {
+    shopItem = shopList['buy-television']
+    gameData.coinCount -= shopItem.price;
+    addToHiddenRemoved("#watch-tv");
+    deleteFromHiddenRemoved("#buy-television");
+    updateDisplay();
+})
+$('#buy-alarm-clock').click(() => {
+    shopItem = shopList['buy-alarm-clock']
+    addToPropertyList('alarm-clock')
+    gameData.coinCount -= shopItem.price;
+    addToHiddenRemoved("#use-alarm-clock");
+    updateDisplay();
+})
+$('#buy-sleeping-pill').click(() => {
+    shopItem = shopList['buy-sleeping-pill']
+    addToPropertyList('sleeping-pill')
+    gameData.coinCount -= shopItem.price;
+    addToHiddenRemoved("#take-sleeping-pill");
+    updateDisplay();
 })
 
 // 雇佣
