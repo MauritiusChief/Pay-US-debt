@@ -80,7 +80,6 @@ function everyHourEvent() {
     if (gameData.currDate.getHours() === 10) everyDayEvent();
 
     // 无论时间流逝是定时触发还是点击触发都需执行的内容
-    updateConstruct();
     updateShop();
     updateResource();
     gameData.coinCount += actuIncomePerH;

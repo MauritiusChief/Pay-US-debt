@@ -277,7 +277,7 @@ function countToIconStr(count, icon) {
     return result.trim();
 }
 function countToIconStrGender(count, iconAry, genderStack) { 
-    console.log("countToIconStrGender运行")
+    // console.log("countToIconStrGender运行")
     let units = [500, 100, 50, 10];
     let result = '';
     let remaining = count;
