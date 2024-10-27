@@ -29,6 +29,7 @@ translations['zh'] = {
     "click-job-excavator-operator": "挖掘机操作员",
     "click-job-porter": "搬运工",
     "click-job-office-clerk": "办公室文员",
+    "click-job-store-worker": "便利店员工",
     "click-job-self-employ-manager": "个体户老板",
 
     "market": "市场",
@@ -72,6 +73,8 @@ translations['zh'] = {
     "mkt-vampire-lore": "毕业于德古拉堡大学",
     "mkt-office": "办公室",
     "mkt-office-prompt": "在办公室办公",
+    "mkt-store": "便利店",
+    "mkt-store-prompt": "在便利店工作",
 
     "resource": "资源",
     "resource-name": "名称",
@@ -89,7 +92,7 @@ translations['zh'] = {
     "reso-service": "服务",
     "reso-gear": "齿轮",
     "reso-nut-bolt": "螺母螺栓",
-    "reso-steel": "钢材",
+    "reso-snack": "零食",
 
     "property": "资产",
     "prop-health": "健康:",

@@ -46,9 +46,17 @@ $('#buy-bus').click(() => {
 
 $('#buy-warehouse').click(() => {
     buyEvent('warehouse', '🏚️', 30);
+    addToShowingList("#construct");
 })
 $('#buy-office').click(() => {
     buyEvent('office', '🏢', 30);
+    addToShowingList("#construct");
+    addToShowingList("#service");
+})
+$('#buy-store').click(() => {
+    buyEvent('store', '🏪', 30);
+    addToShowingList("#construct");
+    addToShowingList("#snack");
 })
 // 解锁与辅助性质的物品
 $('#buy-health-elixir').click(() => {

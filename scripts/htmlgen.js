@@ -65,7 +65,14 @@ const buttonFieldData = [ //【添加】【新资产】
         installment:
             marketList["buy-office"].installPrice.toLocaleString() + " $ * " +
             marketList["buy-office"].installMonth + "<span i18n-key=\"mkt-month\">月</span>"
-    }
+    },
+    {
+        id: "store",
+        price: marketList["buy-store"].price.toLocaleString() + " $",
+        installment:
+            marketList["buy-store"].installPrice.toLocaleString() + " $ * " +
+            marketList["buy-store"].installMonth + "<span i18n-key=\"mkt-month\">月</span>"
+    },
 ];
 generateHtmlFromTemplate("buy-field", buttonFieldData);
 
@@ -114,7 +121,10 @@ const fieldData = [ //【添加】【新资产】
     },
     {
         id: "office"
-    }
+    },
+    {
+        id: "store"
+    },
 ];
 generateHtmlFromTemplate("market-shared", fieldData, "field");
 
@@ -164,8 +174,8 @@ const tableData = [ //【添加】【新资源】
         unit: "<span i18n-key=\"reso-set\">组</span>"
     },
     {
-        id: "steel",
-        icon: "⬜",
+        id: "snack",
+        icon: "🍫",
         unit: "kg"
     }
 ];

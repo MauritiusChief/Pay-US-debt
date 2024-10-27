@@ -45,6 +45,7 @@ const marketList = { //【添加】【新资产】
 
     'buy-warehouse': { price: genPrice(3000, 5000, 50), installMonth: 3 },
     'buy-office': { price: genPrice(6000, 10000, 50), installMonth: 6 },
+    'buy-store': { price: genPrice(20000, 34500, 50), installMonth: 6 },
 }
  // 价格倍数
 const marketStep = { //【添加】【新资产】
@@ -55,8 +56,9 @@ const marketStep = { //【添加】【新资产】
     'buy-mini-bus': { step: 5 },
     'buy-bus': { step: 5 },
 
-    'buy-warehouse': { step: 100 },
-    'buy-office': { step: 100 },
+    'buy-warehouse': { step: 50 },
+    'buy-office': { step: 50 },
+    'buy-store': { step: 50 },
 }
 for (let id in marketList) {
     item = marketList[id];
@@ -88,7 +90,7 @@ let initialResourceList = { //【添加】【新资源】
     'manage': { produce: 0, consume: 0, stock: 0, price: 5.0, buy: 3.0 },
     'gear': { produce: 0, consume: 0, stock: 0, price: 0.56, buy: 1.2 },
     'nut-bolt': { produce: 0, consume: 0, stock: 0, price: 0.16, buy: 1.2 },
-    'steel': { produce: 0, consume: 0, stock: 0, price: 0.37, buy: 1.2 },
+    'snack': { produce: 0, consume: 0, stock: 0, price: 1.5, buy: 1.0 },
 };
 gameData.resourceList = initialResourceList;
 let initialSelfResourceList = { //【添加】【新资源】
@@ -96,6 +98,7 @@ let initialSelfResourceList = { //【添加】【新资源】
     'service': { produce: 0 },
     'construct': { produce: 0 },
     'manage': { produce: 0 },
+    'snack': { produce: 0 },
 };
 gameData.selfResourceList = initialSelfResourceList;
 
@@ -110,6 +113,7 @@ const produceAddMapping = { //【添加】【新资源】【添加】【新资�
         'NONE': 25, // 仅个人使用
         'tuk-tuk': 10,
         'mini-bus': 25,
+        'store': -25,
         'default': 0,
     },
     'construct': {
@@ -126,7 +130,11 @@ const produceAddMapping = { //【添加】【新资源】【添加】【新资�
         'tuk-tuk': 3,
         'bus': 24,
         'default': 0,
-    }
+    },
+    'snack': {
+        'store': 25,
+        'default': 0,
+    },
 };
 const consumeAddMapping = { //【添加】【新资产】【添加】【新资源】
     'gear': {
@@ -155,6 +163,7 @@ const consumeAddMapping = { //【添加】【新资产】【添加】【新资�
     'construct': {
         'warehouse': 0.2,
         'office': 0.1,
+        'store': 0.2,
         'default': 0
     },
 }
@@ -264,6 +273,9 @@ function updateDisplayJob() {
             break;
         case 'office':
             currentJobKey = "click-job-office-clerk";
+            break;
+        case 'store':
+            currentJobKey = "click-job-store-worker";
             break;
         case 'NONE':
         default:

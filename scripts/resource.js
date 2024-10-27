@@ -38,6 +38,7 @@ bindEvents('bus', 'zombie', '🚌');
 bindEvents('tuk-tuk', 'zombie', '🛺');
 bindEvents('warehouse', 'zombie', '🏚️');
 bindEvents('office', 'vampire', '🏢');
+bindEvents('store', 'zombie', '🏪');
 
 // 修改劳动力数量
 function changeWorkForce(increaseWorkForce, propertyName, workForceName) {

@@ -29,6 +29,7 @@ translations['en'] = {
     "click-job-excavator-operator": "Excavator Operator",
     "click-job-porter": "Porter",
     "click-job-office-clerk": "Clerk",
+    "click-job-store-worker": "Store Worker",
     "click-job-self-employ-manager": "Self-Employ Manager",
 
     "market": "Market",
@@ -72,6 +73,8 @@ translations['en'] = {
     "mkt-vampire-lore": "Graduated from the University of Fort Dracula.",
     "mkt-office": "Office",
     "mkt-office-prompt": "Work in Office",
+    "mkt-store": "convenience Store",
+    "mkt-store-prompt": "Work in convenience Store",
 
     "resource": "Resource",
     "resource-name": "Name",
@@ -89,7 +92,7 @@ translations['en'] = {
     "reso-service": "Service",
     "reso-gear": "Gears",
     "reso-nut-bolt": "Nut & Bolt",
-    "reso-steel": "Steel",
+    "reso-snack": "Snacks",
 
     "property": "Property",
     "prop-health": "Health:",
