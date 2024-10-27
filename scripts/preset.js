@@ -338,11 +338,11 @@ function countToIconStrGender(count, iconAry, genderStack) {
 function updateIconStore(containerId) {
     gameData.iconStore[`#${containerId} .icon`] = $(`#${containerId} .icon`).html();
 }
-function addToHiddenRemoved(selector) {
+function addToShowingList(selector) {
     $(selector).removeClass("hidden");
     gameData.removeHidden[selector] = 1;
 }
-function deleteFromHiddenRemoved(selector) {
+function deleteFromShowingList(selector) {
     $(selector).addClass('hidden');
     delete gameData.removeHidden[selector];
 }

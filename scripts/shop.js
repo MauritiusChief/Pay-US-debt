@@ -11,31 +11,31 @@ $('#install-pay [type=checkbox]').on('change', () => {
 //【添加】【新资源】移除显示
 $('#buy-mini-truck').click(() => {
     buyEvent('mini-truck', '🚚', 30);
-    addToHiddenRemoved("#gear");
-    addToHiddenRemoved("#nut-bolt");
+    addToShowingList("#gear");
+    addToShowingList("#nut-bolt");
 })
 $('#buy-semi-truck').click(() => {
     buyEvent('semi-truck', '🚛', 30);
-    addToHiddenRemoved("#gear");
-    addToHiddenRemoved("#nut-bolt");
+    addToShowingList("#gear");
+    addToShowingList("#nut-bolt");
 })
 $('#buy-excavator').click(() => {
     buyEvent('excavator', '🏗️', 30);
-    addToHiddenRemoved("#gear");
-    addToHiddenRemoved("#nut-bolt");
-    addToHiddenRemoved("#construct");
+    addToShowingList("#gear");
+    addToShowingList("#nut-bolt");
+    addToShowingList("#construct");
 })
 $('#buy-tuk-tuk').click(() => {
     buyEvent('tuk-tuk', '🛺', 30);
-    addToHiddenRemoved("#gear");
-    addToHiddenRemoved("#nut-bolt");
-    addToHiddenRemoved("#service");
+    addToShowingList("#gear");
+    addToShowingList("#nut-bolt");
+    addToShowingList("#service");
 })
 $('#buy-mini-bus').click(() => {
     buyEvent('mini-bus', '🚐', 30);
-    addToHiddenRemoved("#gear");
-    addToHiddenRemoved("#nut-bolt");
-    addToHiddenRemoved("#service");
+    addToShowingList("#gear");
+    addToShowingList("#nut-bolt");
+    addToShowingList("#service");
 })
 $('#buy-warehouse').click(() => {
     buyEvent('warehouse', '🏚️', 30);
@@ -54,40 +54,40 @@ $('#buy-laptop').click(() => {
     shopItem = shopList['buy-laptop']
     gameData.coinCount -= shopItem.price;
     gameData.propertyList['laptop'] = {amount: 1, amountUsed: 0, maintainStatus: 5, maintainDecrChance: 0.2};
-    addToHiddenRemoved("#laptop");
-    addToHiddenRemoved("#manage");
-    deleteFromHiddenRemoved("#buy-laptop");
+    addToShowingList("#laptop");
+    addToShowingList("#manage");
+    deleteFromShowingList("#buy-laptop");
     updateDisplay();
 })
 $('#buy-television').click(() => {
     shopItem = shopList['buy-television']
     gameData.coinCount -= shopItem.price;
-    addToHiddenRemoved("#watch-tv");
-    deleteFromHiddenRemoved("#buy-television");
+    addToShowingList("#watch-tv");
+    deleteFromShowingList("#buy-television");
     updateDisplay();
 })
 $('#buy-alarm-clock').click(() => {
     shopItem = shopList['buy-alarm-clock']
     addToPropertyList('alarm-clock')
     gameData.coinCount -= shopItem.price;
-    addToHiddenRemoved("#use-alarm-clock");
+    addToShowingList("#use-alarm-clock");
     updateDisplay();
 })
 $('#buy-sleeping-pill').click(() => {
     shopItem = shopList['buy-sleeping-pill']
     addToPropertyList('sleeping-pill')
     gameData.coinCount -= shopItem.price;
-    addToHiddenRemoved("#take-sleeping-pill");
+    addToShowingList("#take-sleeping-pill");
     updateDisplay();
 })
 
 // 雇佣
 $('#employ-zombie').click(() => {
     employEvent('zombie', '🧟‍♀️', '🧟‍♂️');
-    addToHiddenRemoved("#manage");
-    addToHiddenRemoved(".use-worker");
+    addToShowingList("#manage");
+    addToShowingList(".use-worker");
     if (!'laptop' in gameData.propertyList) {
-       addToHiddenRemoved("#buy-laptop");
+       addToShowingList("#buy-laptop");
     }
 })
 $('#dismiss-zombie').click(() => {
@@ -95,10 +95,10 @@ $('#dismiss-zombie').click(() => {
 })
 $('#employ-vampire').click(() => {
     employEvent('vampire', '🧛‍♀️', '🧛‍♂️');
-    addToHiddenRemoved("#manage");
-    addToHiddenRemoved(".use-worker");
+    addToShowingList("#manage");
+    addToShowingList(".use-worker");
     if (!'laptop' in gameData.propertyList) {
-       addToHiddenRemoved("#buy-laptop");
+       addToShowingList("#buy-laptop");
     }
 })
 $('#dismiss-vampire').click(() => {
@@ -132,7 +132,7 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
         propertyAmount = gameData.propertyList[buyId].amount;
         $(`#${buyId} .icon`).html( countToIconStr(propertyAmount, buyIcon) );
         updateIconStore(buyId);
-        addToHiddenRemoved(`#${buyId}`);
+        addToShowingList(`#${buyId}`);
         // console.log( $(`#${buyId} .work-force`) )
 
     } else if ( buyPayCountDown > 0 && gameData.installPay) { // console.log("进入分期付款流程")
@@ -157,8 +157,8 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
             updateIconStore(buyId);
             $(`#${buyId} .install-month`).html( buyInstallMonth );
             $(`#${buyId} .pay-count-down`).html( buyPayCountDown );
-            addToHiddenRemoved(`#install-${buyId}`);
-            addToHiddenRemoved(`#${buyId}`);
+            addToShowingList(`#install-${buyId}`);
+            addToShowingList(`#${buyId}`);
             $("[i18n-key]").each(translateElement);
         }
     }
@@ -184,7 +184,7 @@ function employEvent(empId, iconF, iconM) {
     empAmount = gameData.employeeList[empId].amount;
     $(`#${empId} .icon`).html( countToIconStrGender(empAmount, [iconF, iconM], gameData.employeeGStack[empId]) );
     updateIconStore(empId);
-    addToHiddenRemoved(`#${empId}`);
+    addToShowingList(`#${empId}`);
 
     // 解锁解雇按钮
     if (gameData.employeeList[empId].amountWorking < gameData.employeeList[empId].amount) {
@@ -208,7 +208,7 @@ function dismissEvent(empId, iconF, iconM) {
         }
     } else { // 劳动力数量不足1，直接移除
         delete gameData.employeeList[empId];
-        deleteFromHiddenRemoved(`#${empId}`);
+        deleteFromShowingList(`#${empId}`);
     }
     gameData.coinCount -= empSalary/4;
     

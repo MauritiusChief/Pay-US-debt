@@ -167,7 +167,7 @@ $('#use-alarm-clock').click(() => {
         clearInterval(currentTimer);
     });
     updateDisplay();
-    if (gameData.propertyList['alarm-clock'].amount <= 0) deleteFromHiddenRemoved("#use-alarm-clock");
+    if (gameData.propertyList['alarm-clock'].amount <= 0) deleteFromShowingList("#use-alarm-clock");
     if (!gamePaused) {
         currentTimer = setInterval(passiveHourEvent, 1000);
     }
@@ -180,7 +180,7 @@ $('#take-sleeping-pill').click(() => {
         passiveHourEvent();
     });
     updateDisplay();
-    if (gameData.propertyList['sleeping-pill'].amount <= 0) deleteFromHiddenRemoved("#take-sleeping-pill");
+    if (gameData.propertyList['sleeping-pill'].amount <= 0) deleteFromShowingList("#take-sleeping-pill");
     if (!gamePaused) {
         currentTimer = setInterval(passiveHourEvent, 1000);
     }
@@ -312,7 +312,7 @@ function updateInstallment() {
         if (gameData.installmentList[id].payCountDown === 0) {
             // 移除这个资产
             removeProperty(id, gameData.installmentList[id].icon)
-            deleteFromHiddenRemoved(`#install-${id}`);
+            deleteFromShowingList(`#install-${id}`);
             delete gameData.installmentList[id]; // 移除这个分期付款
         }
     }
@@ -329,7 +329,7 @@ function removeProperty(remId, remIcon) {
         delete gameData.propertyList[remId];
         // 更新勾选盒以及gameData.workingProperty
         $('#model-display [type=checkbox]').not(remId).prop('checked', false);
-        deleteFromHiddenRemoved(`#${remId}`);
+        deleteFromShowingList(`#${remId}`);
         gameData.workingProperty === remId ? gameData.workingProperty = 'NONE' : {};
     }
 
@@ -348,8 +348,8 @@ function updateConstruct() {
             $(`#build-${id} .build-or-cancel`).attr("i18n-key", "build") // 原文字为取消建造，变换成建造
             addToPropertyList(id);
             delete gameData.constructList[id];
-            deleteFromHiddenRemoved(`#construct-${id}`);
-            addToHiddenRemoved(`#${id} .work-force`)
+            deleteFromShowingList(`#construct-${id}`);
+            addToShowingList(`#${id} .work-force`)
             // console.log( $(`#${id} .work-force`) )
         } else {
             let resource = gameData.resourceList['construct'];

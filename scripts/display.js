@@ -21,7 +21,7 @@ function updateDisplay() {
      */
     let selfElement = $("#self .icon");
     if (gameData.health >= 0) {
-        deleteFromHiddenRemoved("#buy-health-elixir");
+        deleteFromShowingList("#buy-health-elixir");
         if (gameData.currDate.getHours() < 9 && gameData.workStat == 0) { // 0-8点
             selfElement.html('🛌');
         } else if (gameData.currDate.getHours() > 16 && gameData.workStat == 0) { // 17-23点
@@ -30,7 +30,7 @@ function updateDisplay() {
             selfElement.html(GIcon[gameData.GIdx]);
         }
     } else {
-        addToHiddenRemoved("#buy-health-elixir");
+        addToShowingList("#buy-health-elixir");
         selfElement.html('🚑');
     }
 
@@ -50,7 +50,7 @@ function updateDisplay() {
             currPayCountDown = $(`#${id} .pay-count-down`);
             currPayCountDown.text(installmentItem.payCountDown);
         } else if ($(`#${id}:has(.install-month)`).length > 0) { // 没有分期付款，去掉分期付款显示（注意：这部分如果到期不还款资产被收回则不会执行）
-            addToHiddenRemoved(`install-${id}`);
+            addToShowingList(`install-${id}`);
         } // 到期不还款的情况在 updateInstallment()
 
         // 更新劳动力分配面板
