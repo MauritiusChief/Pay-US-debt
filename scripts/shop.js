@@ -37,6 +37,13 @@ $('#buy-mini-bus').click(() => {
     addToShowingList("#nut-bolt");
     addToShowingList("#service");
 })
+$('#buy-bus').click(() => {
+    buyEvent('bus', '🚌', 30);
+    addToShowingList("#gear");
+    addToShowingList("#nut-bolt");
+    addToShowingList("#service");
+})
+
 $('#buy-warehouse').click(() => {
     buyEvent('warehouse', '🏚️', 30);
 })

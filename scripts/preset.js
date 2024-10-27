@@ -36,22 +36,24 @@ gameData.disabledButton = {};
 
  // 可分期商品列表（目前包括 载具 和 地产）
 const marketList = { //【添加】【新资产】
-    'buy-tuk-tuk': { price: genPrice(800, 1200, 5), installMonth: 3 },
-    'buy-mini-truck': { price: genPrice(7190, 10700, 10), installMonth: 12 },
-    'buy-semi-truck': { price: genPrice(138500, 183500, 100), installMonth: 24 },
-    'buy-excavator': { price: genPrice(40000, 61000, 50), installMonth: 12 },
-    'buy-mini-bus': { price: genPrice(50000, 73000, 50), installMonth: 12 },
+    'buy-tuk-tuk': { price: genPrice(800, 1200, 1), installMonth: 3 },
+    'buy-mini-truck': { price: genPrice(7190, 10700, 5), installMonth: 12 },
+    'buy-semi-truck': { price: genPrice(138500, 183500, 10), installMonth: 24 },
+    'buy-excavator': { price: genPrice(40000, 61000, 10), installMonth: 12 },
+    'buy-mini-bus': { price: genPrice(50000, 73000, 5), installMonth: 12 },
+    'buy-bus': { price: genPrice(12995, 164995, 5), installMonth: 24 },
 
     'buy-warehouse': { price: genPrice(3000, 5000, 50), installMonth: 3 },
     'buy-office': { price: genPrice(6000, 10000, 50), installMonth: 6 },
 }
  // 价格倍数
 const marketStep = { //【添加】【新资产】
-    'buy-tuk-tuk': { step: 5 },
-    'buy-mini-truck': { step: 10 },
-    'buy-semi-truck': { step: 50 },
-    'buy-excavator': { step: 50 },
-    'buy-mini-bus': { step: 50 },
+    'buy-tuk-tuk': { step: 1 },
+    'buy-mini-truck': { step: 5 },
+    'buy-semi-truck': { step: 10 },
+    'buy-excavator': { step: 10 },
+    'buy-mini-bus': { step: 5 },
+    'buy-bus': { step: 5 },
 
     'buy-warehouse': { step: 100 },
     'buy-office': { step: 100 },
@@ -122,6 +124,7 @@ const produceAddMapping = { //【添加】【新资源】【添加】【新资�
     'service': {
         'mini-bus': 8,
         'tuk-tuk': 3,
+        'bus': 24,
         'default': 0,
     }
 };
@@ -132,6 +135,7 @@ const consumeAddMapping = { //【添加】【新资产】【添加】【新资�
         'mini-truck': 0.02,
         'excavator': 0.05,
         'mini-bus': 0.05,
+        'bus': 0.05,
         'default': 0
     },
     'nut-bolt': {
@@ -140,13 +144,19 @@ const consumeAddMapping = { //【添加】【新资产】【添加】【新资�
         'mini-truck': 0.4,
         'excavator': 1.0,
         'mini-bus': 0.6,
+        'bus': 0.8,
         'default': 0
     },
     'manage': { // 共用这个const
         'zombie': 0.5,
         'vampire': 1.0,
         'default': 0
-    }
+    },
+    'construct': {
+        'warehouse': 0.2,
+        'office': 0.1,
+        'default': 0
+    },
 }
 const produceMultMapping = {
     'transport': {

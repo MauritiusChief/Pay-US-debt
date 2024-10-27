@@ -6,6 +6,13 @@ Handlebars.registerPartial('_workforce_button', $('#partial-work-force-button-te
 // 买载具模板
 const buttonVehicleData = [ //【添加】【新资产】
     {
+        id: "tuk-tuk",
+        price: marketList["buy-tuk-tuk"].price.toLocaleString() + " $",
+        installment:
+            marketList["buy-tuk-tuk"].installPrice.toLocaleString() + " $ * " +
+            marketList["buy-tuk-tuk"].installMonth + "<span i18n-key=\"mkt-month\">月</span>"
+    },
+    {
         id: "mini-truck",
         price: marketList["buy-mini-truck"].price.toLocaleString() + " $",
         installment:
@@ -27,19 +34,19 @@ const buttonVehicleData = [ //【添加】【新资产】
             marketList["buy-excavator"].installMonth + "<span i18n-key=\"mkt-month\">月</span>"
     },
     {
-        id: "tuk-tuk",
-        price: marketList["buy-tuk-tuk"].price.toLocaleString() + " $",
-        installment:
-            marketList["buy-tuk-tuk"].installPrice.toLocaleString() + " $ * " +
-            marketList["buy-tuk-tuk"].installMonth + "<span i18n-key=\"mkt-month\">月</span>"
-    },
-    {
         id: "mini-bus",
         price: marketList["buy-mini-bus"].price.toLocaleString() + " $",
         installment:
             marketList["buy-mini-bus"].installPrice.toLocaleString() + " $ * " +
             marketList["buy-mini-bus"].installMonth + "<span i18n-key=\"mkt-month\">月</span>"
-    }
+    },
+    {
+        id: "bus",
+        price: marketList["buy-bus"].price.toLocaleString() + " $",
+        installment:
+            marketList["buy-bus"].installPrice.toLocaleString() + " $ * " +
+            marketList["buy-bus"].installMonth + "<span i18n-key=\"mkt-month\">月</span>"
+    },
 ];
 generateHtmlFromTemplate("buy-vehicle", buttonVehicleData);
 
@@ -80,6 +87,9 @@ generateHtmlFromTemplate("employ", employData);
 // 载具展示模板
 const vehicleData = [ //【添加】【新资产】
     {
+        id: "tuk-tuk"
+    },
+    {
         id: "mini-truck"
     },
     {
@@ -89,11 +99,11 @@ const vehicleData = [ //【添加】【新资产】
         id: "excavator"
     },
     {
-        id: "tuk-tuk"
+        id: "mini-bus"
     },
     {
-        id: "mini-bus"
-    }
+        id: "bus"
+    },
 ];
 generateHtmlFromTemplate("market-shared", vehicleData, "vehicle");
 

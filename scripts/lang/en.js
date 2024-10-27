@@ -63,6 +63,8 @@ translations['en'] = {
     "mkt-tuk-tuk-prompt": "Drive Tuk Tuk",
     "mkt-mini-bus": "Mini Bus",
     "mkt-mini-bus-prompt": "Drive Mini Bus",
+    "mkt-mini-bus": "Bus",
+    "mkt-mini-bus-prompt": "Drive Bus",
     "mkt-hire": "Hire ",
     "mkt-zombie": "Nzambi Worker",
     "mkt-zombie-lore": "Hard-working, but not very good at brains.",

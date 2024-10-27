@@ -63,6 +63,8 @@ translations['zh'] = {
     "mkt-tuk-tuk-prompt": "开三轮车",
     "mkt-mini-bus": "小巴车",
     "mkt-mini-bus-prompt": "开小巴车",
+    "mkt-bus": "大巴车",
+    "mkt-bus-prompt": "开大巴车",
     "mkt-hire": "雇用",
     "mkt-zombie": "脏比工人",
     "mkt-zombie-lore": "勤奋但脑子不太好",
