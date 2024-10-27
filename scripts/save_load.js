@@ -48,7 +48,7 @@ function resetGame() {
         gameData.selfResourceList = initialSelfResourceList;
 
         $(".can-hide").addClass('hidden');
-        gameData.removeHidden = {"#transport": 1, "#buy-laptop": 1}; // 只有这个是不被隐藏的
+        gameData.removeHidden = {"#transport": 1, "#buy-laptop": 1, "#buy-television": 1}; // 只有这个是不被隐藏的
         // console.log(gameData.removeHidden)
         for (let tag in gameData.removeHidden) {
             $(tag).removeClass('hidden');

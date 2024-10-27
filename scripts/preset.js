@@ -41,7 +41,7 @@ const marketList = { //【添加】【新资产】
     'buy-semi-truck': { price: genPrice(138500, 183500, 10), installMonth: 24 },
     'buy-excavator': { price: genPrice(40000, 61000, 10), installMonth: 12 },
     'buy-mini-bus': { price: genPrice(50000, 73000, 5), installMonth: 12 },
-    'buy-bus': { price: genPrice(12995, 164995, 5), installMonth: 24 },
+    'buy-bus': { price: genPrice(129995, 164995, 5), installMonth: 24 },
 
     'buy-warehouse': { price: genPrice(3000, 5000, 50), installMonth: 3 },
     'buy-office': { price: genPrice(6000, 10000, 50), installMonth: 6 },
