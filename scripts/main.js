@@ -312,7 +312,7 @@ function updateInstallment() {
         if (gameData.installmentList[id].payCountDown === 0) {
             // 移除这个资产
             removeProperty(id, gameData.installmentList[id].icon)
-            addToHiddenRemoved(`#install-${id}`);
+            deleteFromHiddenRemoved(`#install-${id}`);
             delete gameData.installmentList[id]; // 移除这个分期付款
         }
     }

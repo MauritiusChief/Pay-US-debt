@@ -16,6 +16,8 @@ function bindEvents(item, workForceType, icon) {
         checkBoxEvent(item);
     });
     $(`#${item} [type=sell]`).click(() => {
+        installmentItem = gameData.installmentList[item];
+        if ( installmentItem !== undefined ) delete gameData.installmentList[item];
         removeProperty(item, icon);
         gameData.coinCount += marketList[`buy-${item}`].price / 2;
         updateDisplay();
@@ -44,6 +46,7 @@ function changeWorkForce(increaseWorkForce, propertyName, workForceName) {
         }
     } else { // 减少劳动力
         amountUsedLimit = propertyName === gameData.workingProperty ? 1 : 0 ;
+        console.log(`workForceName: ${workForceName}  propertyName: ${propertyName}`)
         if (propertyItem.amountUsed > amountUsedLimit && employeeItem.amountWorking > 0) {
             propertyItem.amountUsed--;
             employeeItem.amountWorking--;
