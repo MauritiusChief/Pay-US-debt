@@ -17,9 +17,13 @@ function bindEvents(item, workForceType, icon) {
     });
     $(`#${item} [type=sell]`).click(() => {
         installmentItem = gameData.installmentList[item];
-        if ( installmentItem !== undefined ) delete gameData.installmentList[item];
+        deleteFromShowingList(`#install-${item}`);
+        if ( installmentItem !== undefined ) {
+            delete gameData.installmentList[item]
+        } else {
+            gameData.coinCount += marketList[`buy-${item}`].price / 2;
+        }
         removeProperty(item, icon);
-        gameData.coinCount += marketList[`buy-${item}`].price / 2;
         updateDisplay();
     });
 }

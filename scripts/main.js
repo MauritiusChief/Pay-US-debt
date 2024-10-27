@@ -314,10 +314,10 @@ function updateInstallment() {
             removeProperty(id, gameData.installmentList[id].icon)
             deleteFromShowingList(`#install-${id}`);
             delete gameData.installmentList[id]; // 移除这个分期付款
+            updateDisplay();
         }
     }
 }
-
 function removeProperty(remId, remIcon) {
     propertyItem = gameData.propertyList[remId];
     // console.log('移除这个资产前，先把在此资产工作的劳动力解放')

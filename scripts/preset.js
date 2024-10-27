@@ -344,5 +344,6 @@ function addToShowingList(selector) {
 }
 function deleteFromShowingList(selector) {
     $(selector).addClass('hidden');
+    // console.log(selector+"已添加class hidden")
     delete gameData.removeHidden[selector];
 }

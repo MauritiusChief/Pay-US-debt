@@ -145,6 +145,7 @@ function buyEvent(buyId, buyIcon, buyPayCountDown) {
                 installmentItem.installMonth--;
                 installmentItem.payCountDown = 30;
             }  else { // console.log('只剩1期，移除该分期付款')
+                deleteFromShowingList(`#install-${buyId}`);
                 delete gameData.installmentList[buyId]
             }
         } else { // console.log('没有分期付款，创建新分期付款')
