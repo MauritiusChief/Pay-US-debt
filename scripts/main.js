@@ -320,10 +320,9 @@ function updateInstallment() {
 
 function removeProperty(remId, remIcon) {
     propertyItem = gameData.propertyList[remId];
-    // 移除这个资产前，先把在此资产工作的劳动力解放
-    console.log('移除这个资产前，先把在此资产工作的劳动力解放')
-    $(`#${remId} [type=decr]`).click(); // 模拟点击减少劳动力的按钮
-    console.log('模拟点击减少劳动力的按钮')
+    // console.log('移除这个资产前，先把在此资产工作的劳动力解放')
+    $(`#${remId} [type=decr]`).click();
+    // console.log('模拟点击减少劳动力的按钮')
     if (propertyItem.amount > 1) { // 资产数量-1
         propertyItem.amount--;
     } else { // 资产数量不足1，直接移除
