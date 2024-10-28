@@ -95,12 +95,12 @@ let initialResourceList = { //【添加】【新资源】
 };
 gameData.resourceList = initialResourceList;
 let initialSelfResourceList = { //【添加】【新资源】
-    'transport': { produce: 0 },
-    'service': { produce: 0 },
-    'construct': { produce: 0 },
-    'manage': { produce: 0 },
-    'snack': { produce: 0 },
-    'retail': { produce: 0 },
+    'transport': { produce: 0, consume: 0 },
+    'service': { produce: 0, consume: 0 },
+    'construct': { produce: 0, consume: 0 },
+    'manage': { produce: 0, consume: 0 },
+    'snack': { produce: 0, consume: 0 },
+    'retail': { produce: 0, consume: 0 },
 };
 gameData.selfResourceList = initialSelfResourceList;
 
@@ -115,7 +115,6 @@ const produceAddMapping = { //【添加】【新资源】【添加】【新资�
         'NONE': 25, // 仅个人使用
         'tuk-tuk': 10,
         'mini-bus': 25,
-        'store': -25,
         'default': 0,
     },
     'construct': {
@@ -134,7 +133,6 @@ const produceAddMapping = { //【添加】【新资源】【添加】【新资�
         'default': 0,
     },
     'snack': {
-        'store': -25,
         'default': 0,
     },
     'retail': {
@@ -142,7 +140,23 @@ const produceAddMapping = { //【添加】【新资源】【添加】【新资�
         'default': 0,
     },
 };
+// 每个资产消耗多少资源（在有劳动力工作的前提下）
 const consumeAddMapping = { //【添加】【新资产】【添加】【新资源】
+    'transport': {
+        'store': 25,
+        'default': 0,
+    },
+    'snack': {
+        'store': 25,
+        'default': 0,
+    },
+    'manage': { // 共用这个const
+        'zombie': 0.5,
+        'vampire': 1.0,
+        'default': 0
+    },
+}
+const consumePasiveAddMapping = { //【添加】【新资产】【添加】【新资源】
     'gear': {
         'tuk-tuk': 0.01,
         'semi-truck': 0.04,
@@ -159,11 +173,6 @@ const consumeAddMapping = { //【添加】【新资产】【添加】【新资�
         'excavator': 1.0,
         'mini-bus': 0.6,
         'bus': 0.8,
-        'default': 0
-    },
-    'manage': { // 共用这个const
-        'zombie': 0.5,
-        'vampire': 1.0,
         'default': 0
     },
     'construct': {
@@ -184,7 +193,6 @@ const produceMultMapping = {
  * 需要变量：
  *      gameData.workingProperty
  *      gameData.selfResourceList（必须先处理，因为后续更新estiIncomePerH需要）
- *      gameData.
  *      gameData.resourceList
  * 更新变量：
  *      actuIncomePerH
@@ -207,6 +215,7 @@ function updateResource() {
     for (let id in gameData.selfResourceList) {
         // console.log(id + " - " + gameData.selfResourceList[id].produce)
         gameData.selfResourceList[id].produce = getValueByPropertyName(produceAddMapping, id, gameData.workingProperty);
+        gameData.selfResourceList[id].consume = getValueByPropertyName(consumeAddMapping, id, gameData.workingProperty);
         // console.log(id + " - " + gameData.selfResourceList[id].produce)
     }
     for (let id in gameData.resourceList) {
@@ -218,9 +227,11 @@ function updateResource() {
         if (gameData.selfResourceList[id] !== undefined) {
             let selfResource = gameData.selfResourceList[id];
             resource.produce += selfResource.produce * gameData.workStat; // 根据工作状态调整产量
+            resource.consume += selfResource.consume * gameData.workStat; // 根据工作状态调整产量
 
-            let priceMultiplier = selfResource.produce < 0 ? resource.buy : 1.0; // 根据生产/消耗决定价格乘数
-            estiIncomePerH += selfResource.produce * resource.price * priceMultiplier;
+            let selfNetProduct = selfResource.produce - selfResource.consume;
+            let priceMultiplier = selfNetProduct < 0 ? resource.buy : 1.0; // 根据生产/消耗决定价格乘数
+            estiIncomePerH += selfNetProduct * resource.price * priceMultiplier;
         }
         
         /** 被动生产&消耗的资源 **/
@@ -232,7 +243,7 @@ function updateResource() {
             let propertyAmount = property.amount;
 
             let propertyAddProduce = getValueByPropertyName(produceAddMapping, id, propId); // 数值加成
-            let propertyAddConsume = getValueByPropertyName(consumeAddMapping, id, propId); // 数值消耗
+            let propertyAddConsume = getValueByPropertyName(consumePasiveAddMapping, id, propId); // 数值消耗
             propertyMultProduce += getValueByPropertyName(produceMultMapping, id, propId) * propertyAmount; // 百分比加成
 
             resource.consume += propertyAddConsume * propertyUsed; // 此处故意不减去小人自己使用的资产
