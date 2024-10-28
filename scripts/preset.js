@@ -243,13 +243,15 @@ function updateResource() {
             let propertyAmount = property.amount;
 
             let propertyAddProduce = getValueByPropertyName(produceAddMapping, id, propId); // 数值加成
-            let propertyAddConsume = getValueByPropertyName(consumePasiveAddMapping, id, propId); // 数值消耗
+            let propertyAddConsume = getValueByPropertyName(consumeAddMapping, id, propId); // 数值消耗
+            let propertyPassiveAddConsume = getValueByPropertyName(consumePasiveAddMapping, id, propId); // 被动数值消耗
             propertyMultProduce += getValueByPropertyName(produceMultMapping, id, propId) * propertyAmount; // 百分比加成
 
-            resource.consume += propertyAddConsume * propertyUsed; // 此处故意不减去小人自己使用的资产
+            resource.consume += propertyPassiveAddConsume * propertyUsed; // 此处故意不减去小人自己使用的资产
 
             if (propId === gameData.workingProperty) propertyUsed--; // 减去小人自己使用的资产
 
+            resource.consume += propertyAddConsume * propertyUsed;
             resource.produce += propertyAddProduce * propertyUsed;
         }
         resource.produce *= (1 + propertyMultProduce / 100); // 对资源产量进行百分比加成
