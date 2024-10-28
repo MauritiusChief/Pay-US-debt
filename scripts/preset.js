@@ -90,7 +90,8 @@ let initialResourceList = { //【添加】【新资源】
     'manage': { produce: 0, consume: 0, stock: 0, price: 5.0, buy: 3.0 },
     'gear': { produce: 0, consume: 0, stock: 0, price: 0.56, buy: 1.2 },
     'nut-bolt': { produce: 0, consume: 0, stock: 0, price: 0.16, buy: 1.2 },
-    'snack': { produce: 0, consume: 0, stock: 0, price: 1.5, buy: 1.0 },
+    'snack': { produce: 0, consume: 0, stock: 0, price: 4.5, buy: 1.5 },
+    'retail': { produce: 0, consume: 0, stock: 0, price: 9.9, buy: 1.5 },
 };
 gameData.resourceList = initialResourceList;
 let initialSelfResourceList = { //【添加】【新资源】
@@ -99,6 +100,7 @@ let initialSelfResourceList = { //【添加】【新资源】
     'construct': { produce: 0 },
     'manage': { produce: 0 },
     'snack': { produce: 0 },
+    'retail': { produce: 0 },
 };
 gameData.selfResourceList = initialSelfResourceList;
 
@@ -132,7 +134,11 @@ const produceAddMapping = { //【添加】【新资源】【添加】【新资�
         'default': 0,
     },
     'snack': {
-        'store': 25,
+        'store': -25,
+        'default': 0,
+    },
+    'retail': {
+        'store': 20,
         'default': 0,
     },
 };

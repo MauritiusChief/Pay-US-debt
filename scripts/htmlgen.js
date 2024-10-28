@@ -151,7 +151,7 @@ const tableData = [ //【添加】【新资源】
     {
         id: "service",
         icon: "🛎️",
-        unit: "<span i18n-key=\"reso-labor\">人</span>"
+        unit: "<span i18n-key=\"reso-order\">单</span>"
     },
     {
         id: "construct",
@@ -177,7 +177,12 @@ const tableData = [ //【添加】【新资源】
         id: "snack",
         icon: "🍫",
         unit: "kg"
-    }
+    },
+    {
+        id: "retail",
+        icon: "🛒",
+        unit: "<span i18n-key=\"reso-order\">单</span>"
+    },
 ];
 generateHtmlFromTemplate("resource", tableData);
 

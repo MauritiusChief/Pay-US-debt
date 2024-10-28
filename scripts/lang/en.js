@@ -86,6 +86,7 @@ translations['en'] = {
     "reso-h": "h",
     "reso-set": "set",
     "reso-labor": "labor",
+    "reso-order": "order",
     "reso-transport": "Transportation",
     "reso-construct": "Construction",
     "reso-manage": "Management",
@@ -93,6 +94,7 @@ translations['en'] = {
     "reso-gear": "Gears",
     "reso-nut-bolt": "Nut & Bolt",
     "reso-snack": "Snacks",
+    "reso-retail": "Retail Selling",
 
     "property": "Property",
     "prop-health": "Health:",

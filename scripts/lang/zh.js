@@ -86,6 +86,7 @@ translations['zh'] = {
     "reso-h": "h",
     "reso-set": "组",
     "reso-labor": "人",
+    "reso-order": "单",
     "reso-transport": "运力",
     "reso-construct": "建造力",
     "reso-manage": "管理力",
@@ -93,6 +94,7 @@ translations['zh'] = {
     "reso-gear": "齿轮",
     "reso-nut-bolt": "螺母螺栓",
     "reso-snack": "零食",
+    "reso-retail": "零售服务",
 
     "property": "资产",
     "prop-health": "健康:",
